@@ -1,0 +1,37 @@
+\name{plot.lifetable}
+\alias{plot.lifetable}
+\alias{lines.lifetable}
+\title{Plot life expectancy from lifetable}
+\usage{
+\method{plot}{lifetable}(x, years = x$year, main, xlab = "Age",
+	ylab = "Expected number of years left", ...)
+\method{lines}{lifetable}(x, years = x$year, ...)
+}
+
+\arguments{
+\item{x}{Output from \code{\link{lifetable}}.}
+\item{years}{Years to plot. Default: all available years.}
+\item{main}{Main title.}
+\item{xlab}{Label for x-axis.}
+\item{ylab}{Label for y-axis.}
+\item{...}{Additional arguments passed to \code{\link[rainbow]{plot.fds}}.}
+}
+
+\description{plots life expectancy for each age and each year as functional time series.}
+
+
+\value{None.}
+
+\seealso{\code{\link{life.expectancy}}, \code{\link{lifetable}}.}
+
+\author{Rob J Hyndman}
+\examples{
+france.lt <- lifetable(fr.mort)
+plot(france.lt)
+
+france.LC <- lca(fr.mort)
+france.fcast <- forecast(france.LC)
+france.lt.f <- lifetable(france.fcast)
+plot(france.lt.f,years=2010)
+}
+\keyword{models}
