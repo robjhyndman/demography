@@ -144,7 +144,7 @@ forecast.fdm <- function(object,h=50,jumpchoice=c("fit","actual"),
 
     # Compute observational variance
     # Update to deal with general transformations
-    fred <- InvBoxCox(object[[4]],object$lambda)
+#    fred <- InvBoxCox(object[[4]],object$lambda)
 #    if(object$type != "migration")
 #        fred <- pmax(fred,0.000000001)
 #    if(object$type == "mortality") # Use binomial distribution

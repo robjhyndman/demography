@@ -64,7 +64,6 @@ forecast.fdmpr <- function(object, K=100, ...)
 {
   fcast.ratio <- fc <- totalvar.r <- list()
   J <- length(object$ratio)
-  data <- object$y
   ny <- length(object$ratio[[1]]$year)
   K <- min(K,ny)
   

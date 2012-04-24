@@ -1,5 +1,6 @@
 v1.12
 - Removed partial arg matching throughout.
+- Added updating methods for fmforecast and fmforecast2 classes.
 
 v1.11
 - added warnings option to forecast.fdm().

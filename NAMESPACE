@@ -7,7 +7,7 @@ median.demogdata, netmigration, plot.demogdata, plot.errorfdm,
 plot.lifetable, read.demogdata,flife.expectancy,
 residuals.fdm, residuals.lca, set.upperage,
 smooth.demogdata, tfr, simulate.fmforecast, simulate.fmforecast2, pop.sim, e0, sex.ratio,models,
-models.fmforecast,models.fmforecast2)
+models.fmforecast,models.fmforecast2,update.fmforecast,update.fmforecast2)
 
 S3method(fitted,fdm)
 S3method(fitted,lca)
@@ -43,7 +43,10 @@ S3method(summary,fmforecast2)
 S3method(summary,fdmpr)
 S3method(models,fmforecast)
 S3method(models,fmforecast2)
+S3method(update,fmforecast)
+S3method(update,fmforecast2)
 
 import(forecast)
 import(ftsa)
 importFrom("stats", "simulate")
+importFrom("stats", "update")
