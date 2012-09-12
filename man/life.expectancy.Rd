@@ -48,8 +48,9 @@ france.e0.f <- life.expectancy(france.fcast)
 
 france.fdm <- fdm(extract.years(fr.mort,years=1950:2006))
 france.fcast <- forecast(france.fdm)
+\dontrun{
 e0.fcast <- e0(france.fcast,PI=TRUE,nsim=200)
-plot(e0.fcast)
+plot(e0.fcast)}
 
 life.expectancy(fr.mort,type='cohort',age=50)
 

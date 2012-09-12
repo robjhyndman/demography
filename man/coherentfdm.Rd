@@ -11,7 +11,7 @@
 \item{...}{Extra arguments passed to \code{\link{fdm}}.}
 }
 
-\description{Fits a coherent functional model to demographic data as described in Yasmeen, Hyndman and Booth (2010). If two of the series
+\description{Fits a coherent functional model to demographic data as described in Hyndman, Booth & Yasmeen (2012). If two of the series
 in \code{data} are named \code{male} and \code{female}, then it will use these two groups. Otherwise it will use all available groups.
 }
 
@@ -22,8 +22,8 @@ ratio of each series with the geometric mean).}
 
 \author{Rob J Hyndman.}
 
-\references{Yasmeen, F., Hyndman, R.J., and Booth, H. (2010) Coherent forecasting of mortality rates using functional time series models.
-Working paper. \url{http://robjhyndman.com/papers/coherentfdm}
+\references{Hyndman, R.J., Booth, H., and Yasmeen, F. (2012) Coherent mortality forecasting: the product-ratio method with functional time series models.
+\emph{Demography}, to appear. \url{http://robjhyndman.com/papers/coherentfdm}
 }
 
 \seealso{\code{\link{fdm}}, \code{\link{forecast.fdmpr}}}

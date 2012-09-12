@@ -60,15 +60,19 @@ coherentfdm <- function(data, order1=6, order2=6, ...)
 }
 
 
-forecast.fdmpr <- function(object, K=100, ...) 
+forecast.fdmpr <- function(object, h=50, level=80, K=100, drange=c(0.0,0.5), ...) 
 {
   fcast.ratio <- fc <- totalvar.r <- list()
   J <- length(object$ratio)
   ny <- length(object$ratio[[1]]$year)
   K <- min(K,ny)
-  
+	
   # GM model
-  fcast.mean <- forecast(object$product, method="arima",...)
+	fcast.mean <- forecast(object$product,method="arima",h=h,level=level,...)
+  # Make sure first coefficient is not I(1) with drift.
+  #mod <- auto.arima(object$product$coeff[,2],d=2)
+  #fcast.mean$coeff[[2]] <- forecast(mod, h=h, level=level, ...)
+  #fcast.mean <- update(fcast.mean)
   
   # Obtain forecasts for each group
 	is.mortality <- (object$product$type=="mortality")
@@ -77,7 +81,7 @@ forecast.fdmpr <- function(object, K=100, ...)
   {
     if(K < ny)
       object$ratio[[j]]$weights[1:(ny-K)] <- 0
-    fcast.ratio[[j]] <- forecast(object$ratio[[j]], method="arfima", estim="mle", ...)
+    fcast.ratio[[j]] <- forecast(object$ratio[[j]], h=h, level=level, method="arfima", estim="mle", drange=drange,...)
     fc[[j]] <- fcast.mean
     if(is.mortality)
       fc[[j]]$rate[[1]] <- fcast.mean$rate$product * fcast.ratio[[j]]$rate[[1]]

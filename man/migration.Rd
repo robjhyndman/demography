@@ -28,7 +28,8 @@ based on the total population numbers, deaths and births in each year.}
 \author{Rob J Hyndman}
 
 \examples{
-\dontrun{require(addb)
+\dontrun{
+require(addb)
 aus.mig <- netmigration(australia,aus.fertility)
 plot(aus.mig)}
 }

@@ -356,9 +356,9 @@ print.lifetable <- function(x,digits=4,...)
 
 
 # Compute expected age from single year mortality rates
-get.e0 <- function(x,agegroup,sex)
+get.e0 <- function(x,agegroup,sex,startage=0)
 {
-    lt(x, 0, agegroup, sex)$ex[1]
+    lt(x, startage, agegroup, sex)$ex[1]
 }
 
 # Compute expected ages for multiple years

@@ -74,33 +74,32 @@ netmigration <- function(mort,fert,mfratio=1.05)
 pop.sim <- function(mort,fert=NULL,mig=NULL,firstyearpop, N=100, mfratio=1.05, bootstrap=FALSE)
 {
 	no.mortality <- FALSE # Not possible to proceed without mort object
-    no.fertility <- is.null(fert)
-    no.migration <- is.null(mig)
+	no.fertility <- is.null(fert)
+	no.migration <- is.null(mig)
 
-    #Basic checks on inputs
-    if(!no.mortality)
-    {
-        if(class(mort) !="fmforecast2")
-            stop("Inputs not fmforecast2 objects")
-        if(mort$female$type != "mortality" | mort$male$type != "mortality")
-            stop("mort not based on mortality data")
-    }
-    if(!no.fertility)
-    {
-        if(class(fert)[1] !="fmforecast" )
-            stop("Inputs not fmforecast objects")
-        if(fert$type != "fertility")
-            stop("fert not based on fertility data")
-    }
-    if(!no.migration)
-    {
-        if(class(mig) !="fmforecast2")
-            stop("Inputs not fmforecast2 objects")
-        if(mig$male$type != "migration" | mig$female$type != "migration")
-            stop("mig not based on migration data")
-    }
+	#Basic checks on inputs
+	if(!no.mortality)
+	{
+		if(class(mort) !="fmforecast2")
+			stop("Inputs not fmforecast2 objects")
+		if(mort$female$type != "mortality" | mort$male$type != "mortality")
+			stop("mort not based on mortality data")
+	}
+	if(!no.fertility)
+	{
+		if(class(fert)[1] !="fmforecast" )
+			stop("Inputs not fmforecast objects")
+		if(fert$type != "fertility")
+			stop("fert not based on fertility data")
+}
+	if(!no.migration)
+	{
+		if(class(mig) !="fmforecast2")
+			stop("Inputs not fmforecast2 objects")
+		if(mig$male$type != "migration" | mig$female$type != "migration")
+			stop("mig not based on migration data")
+	}
 	
-    p <- length(firstyearpop$age)
 	firstyr <- mort$male$year
 	if(!no.fertility)
 		firstyr <- intersect(firstyr,fert$year)
@@ -109,141 +108,150 @@ pop.sim <- function(mort,fert=NULL,mig=NULL,firstyearpop, N=100, mfratio=1.05, b
 	firstyr <- min(firstyr)
 	pop <- extract.years(firstyearpop,firstyr)$pop
 
-    # Simulate all components
-    hm <- hf <- h <- Inf
-    if(!no.mortality)
-    {
-        mort.sim <- simulate(mort,nsim=N,bootstrap=bootstrap)
-        hm <- length(mort$male$year)
-    }
-    if(!no.fertility)
-    {
-        fert.sim <- simulate(fert,nsim=N,bootstrap=bootstrap)
-        hf <- length(fert$year)
-    }
-    if(!no.migration)
-    {
-        mig.sim <- simulate(mig,nsim=N,bootstrap=bootstrap)
-        h <- length(mig$male$year)
-        nm <- length(mig$male$model$year)
-    }
-    h <- min(hm,hf,h)
+	# Check ages match.
+	# First make them all integers to prevent integer/numeric clashes
+	firstyearpop$age <- as.integer(firstyearpop$age)
+	mort$male$age <- as.integer(mort$male$age)
+	mig$male$age <- as.integer(mig$male$age)
+	if(!identical(firstyearpop$age,mort$male$age) | !identical(firstyearpop$age,mig$male$age))
+		stop("Please ensure that mortality, migration and population data have the same age dimension")
+	p <- length(firstyearpop$age)
+		
+	# Simulate all components
+	hm <- hf <- h <- Inf
+	if(!no.mortality)
+	{
+		mort.sim <- simulate(mort,nsim=N,bootstrap=bootstrap)
+		hm <- length(mort$male$year)
+	}
+	if(!no.fertility)
+	{
+		fert.sim <- simulate(fert,nsim=N,bootstrap=bootstrap)
+		hf <- length(fert$year)
+	}
+	if(!no.migration)
+	{
+		mig.sim <- simulate(mig,nsim=N,bootstrap=bootstrap)
+		h <- length(mig$male$year)
+		nm <- length(mig$male$model$year)
+	}
+	h <- min(hm,hf,h)
 
-    # Set up storage space
-    if(!no.fertility)
-        fage <- is.element(rownames(pop$female),fert$age)
-    pop.f <- pop.m <- array(0,c(p,h,N))
-    dimnames(pop.f) <- dimnames(pop.m) <- list(mort$female$age,1:h,1:N)
+	# Set up storage space
+	if(!no.fertility)
+		fage <- is.element(rownames(pop$female),fert$age)
+	pop.f <- pop.m <- array(0,c(p,h,N))
+	dimnames(pop.f) <- dimnames(pop.m) <- list(mort$female$age,1:h,1:N)
 
-    advance <- function(x0,x)
-    {
-        n <- length(x)
-        newx <- c(x0,x[1:(n-2)],x[n-1]+x[n])
-    }
+	advance <- function(x0,x)
+	{
+			n <- length(x)
+			newx <- c(x0,x[1:(n-2)],x[n-1]+x[n])
+	}
 
-    # Simulate N future sample paths of population numbers
-    for(i in 1:N)
-    {
-        # Start with final observed populations
-        popf <- round(c(pop$female))
-        popm <- round(c(pop$male))
+	# Simulate N future sample paths of population numbers
+	for(i in 1:N)
+	{
+			# Start with final observed populations
+			popf <- round(c(pop$female))
+			popm <- round(c(pop$male))
 
-        for(j in 1:h)
-        {
-            # Compute net migration
-            if(no.migration)
-                netf <- netm <- 0
-            else
-            {
-                # Simulate net migration
-                netf <- round(mig.sim$female[,j,i] + mig$female$model$res$y[,sample(1:nm,1)])
-                netm <- round(mig.sim$male[,j,i] + mig$male$model$res$y[,sample(1:nm,1)])
-            }
+			for(j in 1:h)
+			{
+					# Compute net migration
+					if(no.migration)
+							netf <- netm <- 0
+					else
+					{
+							# Simulate net migration
+							netf <- round(mig.sim$female[,j,i] + mig$female$model$res$y[,sample(1:nm,1)])
+							netm <- round(mig.sim$male[,j,i] + mig$male$model$res$y[,sample(1:nm,1)])
+					}
 
-            # Add half migrants to current population
-            Rf <- pmax(popf + 0.5*c(netf[2:(p-1)],0.5*netf[p],0.5*netf[p]),0)
-            Rm <- pmax(popm + 0.5*c(netm[2:(p-1)],0.5*netm[p],0.5*netm[p]),0)
+					# Add half migrants to current population
+					Rf <- pmax(popf + 0.5*c(netf[2:(p-1)],0.5*netf[p],0.5*netf[p]),0)
+					Rm <- pmax(popm + 0.5*c(netm[2:(p-1)],0.5*netm[p],0.5*netm[p]),0)
 
-            # Survivorship ratios
-            Rt <- firstyearpop # firstyear pop used only to get structure. Data replaced.
-            Rt$type <- "mortality"
-            Rt$lambda <- 0
-            Rt$year <- 1
-            Rt$rate$female <- matrix(mort.sim$female[,j,i],ncol=1)
-            Rt$rate$male <- matrix(mort.sim$male[,j,i],ncol=1)
-            Rt$pop$female <- matrix(Rf,ncol=1)
-            Rt$pop$male <- matrix(Rm,ncol=1)
-			Rt$rate$total <- Rt$pop$total <- NULL
-            colnames(Rt$pop$male) <- colnames(Rt$pop$female) <- colnames(Rt$rate$male) <- colnames(Rt$rate$female) <- "1"
-            rownames(Rt$pop$male) <- rownames(Rt$pop$female) <- rownames(Rt$rate$male) <- rownames(Rt$rate$female) <- Rt$age
-            nsr.f <- 1-lifetable(Rt,'female',max.age=max(Rt$age))$rx
-            nsr.m <- 1- lifetable(Rt,'male',max.age=max(Rt$age))$rx
+					# Survivorship ratios
+					Rt <- firstyearpop # firstyear pop used only to get structure. Data replaced.
+					Rt$type <- "mortality"
+					Rt$lambda <- 0
+					Rt$year <- 1
+					Rt$rate$female <- matrix(mort.sim$female[,j,i],ncol=1)
+					Rt$rate$male <- matrix(mort.sim$male[,j,i],ncol=1)
+					Rt$pop$female <- matrix(Rf,ncol=1)
+					Rt$pop$male <- matrix(Rm,ncol=1)
+		Rt$rate$total <- Rt$pop$total <- NULL
+					colnames(Rt$pop$male) <- colnames(Rt$pop$female) <- colnames(Rt$rate$male) <- colnames(Rt$rate$female) <- "1"
+					rownames(Rt$pop$male) <- rownames(Rt$pop$female) <- rownames(Rt$rate$male) <- rownames(Rt$rate$female) <- Rt$age
+					nsr.f <- 1-lifetable(Rt,'female',max.age=max(Rt$age))$rx
+					nsr.m <- 1- lifetable(Rt,'male',max.age=max(Rt$age))$rx
 
-            # Simulate deaths
-            cohDf <- pmax(nsr.f[c(2:p,p)] * Rf, 0)
-            cohDm <- pmax(nsr.m[c(2:p,p)] * Rm, 0)
-            Rf2 <- advance(0,Rf - cohDf) # Ignore deaths to births for now
-            Rm2 <- advance(0,Rm - cohDm)
-            Ef <- 0.5*(Rf + Rf2)
-            Em <- 0.5*(Rm + Rm2)
-            Df <- rpois(rep(1,p),Ef*mort.sim$female[,j,i])
-            Dm <- rpois(rep(1,p),Em*mort.sim$male[,j,i])
+					# Simulate deaths
+					cohDf <- pmax(nsr.f[c(2:p,p)] * Rf, 0)
+					cohDm <- pmax(nsr.m[c(2:p,p)] * Rm, 0)
+					Rf2 <- advance(0,Rf - cohDf) # Ignore deaths to births for now
+					Rm2 <- advance(0,Rm - cohDm)
+					Ef <- 0.5*(Rf + Rf2)
+					Em <- 0.5*(Rm + Rm2)
+					Df <- rpois(rep(1,p),Ef*mort.sim$female[,j,i])
+					Dm <- rpois(rep(1,p),Em*mort.sim$male[,j,i])
 
-            # Compute adjusted population ignoring births
-            cohDf[2:(p-2)] <- 0.5*(Df[2:(p-2)]+Df[3:(p-1)])
-            cohDm[2:(p-2)] <- 0.5*(Dm[2:(p-2)]+Dm[3:(p-1)])
-            cohDf[p-1] <- 0.5*Df[p-1] + Df[p]
-            cohDm[p-1] <- 0.5*Dm[p-1] + Dm[p]
-            cohDf[p] <- cohDm[p] <- 0
+					# Compute adjusted population ignoring births
+					cohDf[2:(p-2)] <- 0.5*(Df[2:(p-2)]+Df[3:(p-1)])
+					cohDm[2:(p-2)] <- 0.5*(Dm[2:(p-2)]+Dm[3:(p-1)])
+					cohDf[p-1] <- 0.5*Df[p-1] + Df[p]
+					cohDm[p-1] <- 0.5*Dm[p-1] + Dm[p]
+					cohDf[p] <- cohDm[p] <- 0
 
-            Rf2 <- advance(0,Rf - cohDf) # Fix problem with deaths to births later
-            Rm2 <- advance(0,Rm - cohDm)
+					Rf2 <- advance(0,Rf - cohDf) # Fix problem with deaths to births later
+					Rm2 <- advance(0,Rm - cohDm)
 
-            # Simulate births from Poisson distribution
-            if(no.fertility)
-                B <- 0
-            else
-            {
-                lambda <- 0.5*(Rf[fage]+Rf2[fage])*fert.sim[,j,i]/1000
-                B <- sum(rpois(rep(1,length(fert$age)),lambda))
-            }
-            # Randomly split births into two sexes
-            Bm <- rbinom(1,B,mfratio/(1+mfratio))
-            Bf <- B-Bm
+					# Simulate births from Poisson distribution
+					if(no.fertility)
+							B <- 0
+					else
+					{
+							lambda <- 0.5*(Rf[fage]+Rf2[fage])*fert.sim[,j,i]/1000
+							B <- sum(rpois(rep(1,length(fert$age)),lambda))
+					}
+					# Randomly split births into two sexes
+					Bm <- rbinom(1,B,mfratio/(1+mfratio))
+					Bf <- B-Bm
 
-            # Infant mortality
-            RfB  <- pmax(Bf + 0.5*netf[1],0)
-            RmB  <- pmax(Bm + 0.5*netm[1],0)
-            cohDfB <- pmax(nsr.f[1]*RfB,0)
-            cohDmB <- pmax(nsr.m[1]*RmB,0)
-            Rf20 <- RfB - cohDfB
-            Rm20 <- RmB - cohDmB
-            Ef0 <- 0.5*(Rf[1] + Rf20)
-            Em0 <- 0.5*(Rm[1] + Rm20)
-            Df0 <- rpois(1,Ef0*mort.sim$female[1,j,i])
-            Dm0 <- rpois(1,Em0*mort.sim$male[1,j,i])
-            f0f <- cohDfB/(Ef0*mort.sim$female[1,j,i])
-            f0m <- cohDmB/(Em0*mort.sim$male[1,j,i])
-            cohDfB <- f0f*Df0
-            cohDmB <- f0m*Dm0
+					# Infant mortality
+					RfB  <- pmax(Bf + 0.5*netf[1],0)
+					RmB  <- pmax(Bm + 0.5*netm[1],0)
+					cohDfB <- pmax(nsr.f[1]*RfB,0)
+					cohDmB <- pmax(nsr.m[1]*RmB,0)
+					Rf20 <- RfB - cohDfB
+					Rm20 <- RmB - cohDmB
+					Ef0 <- 0.5*(Rf[1] + Rf20)
+					Em0 <- 0.5*(Rm[1] + Rm20)
+					Df0 <- rpois(1,Ef0*mort.sim$female[1,j,i])
+					Dm0 <- rpois(1,Em0*mort.sim$male[1,j,i])
+					f0f <- cohDfB/(Ef0*mort.sim$female[1,j,i])
+					f0m <- cohDmB/(Em0*mort.sim$male[1,j,i])
+					cohDfB <- f0f*Df0
+					cohDmB <- f0m*Dm0
 
-            # Now we can fix infant deaths
-            cohDf[1] <- (1 - f0f)*Df0 + 0.5*Df[1]
-            cohDm[1] <- (1 - f0m)*Dm0 + 0.5*Dm[1]
-            Rf2 <- advance(RfB-cohDfB , Rf - cohDf)
-            Rm2 <- advance(RmB-cohDmB , Rm - cohDm)
+					# Now we can fix infant deaths
+					cohDf[1] <- (1 - f0f)*Df0 + 0.5*Df[1]
+					cohDm[1] <- (1 - f0m)*Dm0 + 0.5*Dm[1]
+					Rf2 <- advance(RfB-cohDfB , Rf - cohDf)
+					Rm2 <- advance(RmB-cohDmB , Rm - cohDm)
 
-            # Add remaining migrants
-            popf <- round(pmax(Rf2 + 0.5*netf, 0))
-            popm <- round(pmax(Rm2 + 0.5*netm, 0))
+					# Add remaining migrants
+					popf <- round(pmax(Rf2 + 0.5*netf, 0))
+					popm <- round(pmax(Rm2 + 0.5*netm, 0))
 
-            # Store final population numbers
-            pop.f[,j,i] <- popf
-            pop.m[,j,i] <- popm
-        }
-    }
-    # Return all sample paths
-    return(list(male=pop.m,female=pop.f))
+					# Store final population numbers
+					pop.f[,j,i] <- popf
+					pop.m[,j,i] <- popm
+			}
+	}
+	# Return all sample paths
+	return(list(male=pop.m,female=pop.f))
 }
 
 

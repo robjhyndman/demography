@@ -26,7 +26,8 @@ and N is the number of simulated sample paths.}
 
 \seealso{\code{\link{simulate.fmforecast}}, \code{\link{simulate.fmforecast2}}.}
 \examples{
-\dontrun{require(addb)
+\dontrun{
+require(addb)
 # Construct data objects
 mort.sm <- smooth.demogdata(set.upperage(extract.years(australia,1950:2002),100))
 fert.sm <- smooth.demogdata(extract.years(aus.fertility,1950:2002))
@@ -40,7 +41,7 @@ mort.fcast <- forecast(mort.fit)
 fert.fcast <- forecast(fert.fit)
 mig.fcast <- forecast(mig.fit)
 # Simulate
-aus.sim <- pop.sim(mort.fcast,fert.fcast,mig.fcast,australia)
-}}
+aus.sim <- pop.sim(mort.fcast,fert.fcast,mig.fcast,australia)}
+}
 
 \keyword{models}

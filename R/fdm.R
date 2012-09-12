@@ -128,7 +128,7 @@ plot.fmres <- function(x,type=c("image","fts","contour","persp"),xlab="Year",yla
         persp = persp(x$x,x$y,x$z,ylab=ylab,xlab=xlab,zlab=zlab,...))
 }
 
-forecast.fdm <- function(object,h=50,jumpchoice=c("fit","actual"),
+forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
     method="arima",warnings=FALSE,...)
 {
     jumpchoice <- match.arg(jumpchoice)
@@ -139,7 +139,7 @@ forecast.fdm <- function(object,h=50,jumpchoice=c("fit","actual"),
     oldwarn <- options()$warn
     olderror <- options()$show.error.messages
     options(show.error.messages=warnings,warn=ifelse(warnings,0,-1))
-    fcast <- forecast.ftsm(object,h,jumpchoice=jumpchoice,method=method,...)
+    fcast <- forecast.ftsm(object,h=h,level=level,jumpchoice=jumpchoice,method=method,...)
     options(show.error.messages=olderror,warn=oldwarn)
 
     # Compute observational variance

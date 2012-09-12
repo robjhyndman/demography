@@ -23,7 +23,7 @@ FDA model using \code{\link{fdm}}.
 \details{In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}), 
 and obtain a valid username and password.
 
-The country codes (as at 24 August 2010) are as follows.
+The country codes (as at 31 July 2012) are as follows.
 \tabular{ll}{
 Australia \tab AUS\cr
 Austria \tab AUT\cr
@@ -92,9 +92,9 @@ Later additions to the HMD are listed at \url{http://www.mortality.org/cgi-bin/h
 \seealso{\code{\link{demogdata}},\code{\link{read.demogdata}},\code{\link{life.expectancy}}}
 
 \examples{
-\dontrun{norway <- hmd.mx("NOR", username, password, "Norway")
-summary(norway)
-}
+\dontrun{
+norway <- hmd.mx("NOR", username, password, "Norway")
+summary(norway)}
 }
 
 \author{Rob J Hyndman}

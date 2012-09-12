@@ -60,3 +60,4 @@ hmd.e0 = function(country, username, password)
 	lt <- ts(lt[,-1],start=lt[1,1],frequency=1)
     return(lt)
 }
+

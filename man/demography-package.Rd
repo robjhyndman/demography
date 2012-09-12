@@ -8,7 +8,7 @@
 }
 
 \author{
-Rob J Hyndman with contributions from Heather Booth, Leonie Tickle, John Maindonald
+Rob J Hyndman with contributions from Heather Booth, Leonie Tickle, John Maindonald, Simon Wood and the R Core Team.
 
 Maintainer: <Rob.Hyndman@monash.edu>
 }

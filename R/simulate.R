@@ -1,20 +1,16 @@
 # Function to simulate future sample paths of functional data
 # given output from forecast.fdm
 
-simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE,
-    adjust.modelvar=TRUE,...)
+simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjust.modelvar=TRUE,...)
 {
-    n <- length(object$model$year)
-    p <- length(object$age)
-    h <- length(object$year)
+  n <- length(object$model$year)
+  p <- length(object$age)
+  h <- length(object$year)
 
 	# Fix lca objects to be able to use this function.
 	if(is.element("lca",class(object$model)))
 	{
-		if(abs(object$model$kt[n]) < 1e-8) # Used actuals as jump-off
-			object$model$basis <- cbind(log(object$model[[4]][,n]),object$model$bx)
-		else
-			object$model$basis <- cbind(object$model$ax,object$model$bx)
+		object$model$basis <- cbind(log(object$model$jumprates), object$model$bx)
 		object$model$coeff <- ts(cbind(rep(1,n),object$model$kt))
 		tsp(object$model$coeff) <- tsp(object$model$kt)
 		zval <- qnorm(0.5 + 0.005*object$kt.f$level)
@@ -28,37 +24,36 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE,
 		adjust.modelvar <- FALSE
 	}
 	
-    nb <- length(object$coeff)
+  nb <- length(object$coeff)
 
-    ridx <- (1:n)[!is.na(colSums(object$model$residuals$y))]
-    fmean <- BoxCox(object$rate[[1]],object$lambda)
+  ridx <- (1:n)[!is.na(colSums(object$model$residuals$y))]
+  fmean <- BoxCox(object$rate[[1]],object$lambda)
 
-    fcoeff <- matrix(1,nrow=h,ncol=nb)
-    output <- array(0,c(p,h,nsim))
-    for(i in 1:nsim)
+  fcoeff <- matrix(1,nrow=h,ncol=nb)
+  output <- array(0,c(p,h,nsim))
+  for(i in 1:nsim)
+  {
+    output[,,i] <- object$model$basis[,1]
+    if(nb > 1)
     {
-        output[,,i] <- object$model$basis[,1]
-        if(nb > 1)
-        {
-            for(j in 2:nb)
-            {
-                mod <- object$coeff[[j]]$model
-                if(class(mod)=="forecast")
-                    mod <- mod$model
-                output[,,i] <- output[,,i] + object$model$basis[,j] %*%
-                    matrix(simulate(mod,nsim=h,bootstrap=bootstrap,future=TRUE),nrow=1)
-            }
-        }
-        output[,,i] <- output[,,i] + object$model$residuals$y[,sample(ridx,h,replace=TRUE)]
-        if(adjust.modelvar)
-            output[,,i] <- fmean + sweep(output[,,i]-fmean,1,sqrt(object$var$adj.factor),"*")
+      for(j in 2:nb)
+      {
+        mod <- object$coeff[[j]]$model
+        if(class(mod)=="forecast")
+          mod <- mod$model
+        output[,,i] <- output[,,i] + object$model$basis[,j] %*% matrix(simulate(mod,nsim=h,bootstrap=bootstrap,future=TRUE),nrow=1)
+      }
     }
-    dimnames(output) <- list(object$age,object$year,1:nsim)
-    output <- InvBoxCox(output,object$lambda)
-    output[is.na(output)] <- 0
-    if(object$type != "migration")
-        output[output<0] <- 0
-    return(output)
+    output[,,i] <- output[,,i] + object$model$residuals$y[,sample(ridx,h,replace=TRUE)]
+    if(adjust.modelvar)
+      output[,,i] <- fmean + sweep(output[,,i]-fmean,1,sqrt(object$var$adj.factor),"*")
+  }
+  dimnames(output) <- list(object$age,object$year,1:nsim)
+  output <- InvBoxCox(output,object$lambda)
+  output[is.na(output)] <- 0
+  if(object$type != "migration")
+    output[output<0] <- 0
+  return(output)
 }
 
 

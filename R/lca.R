@@ -19,6 +19,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     data <- extract.ages(data,ages,combine.upper=FALSE)
     if(max.age < max(ages))
         data <- extract.ages(data,min(ages):max.age,combine.upper=TRUE)
+    startage <- min(data$age)
 
     # Extract mortality rates and population numbers
     mx <- get.series(data$rate,series)
@@ -69,9 +70,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     if(sum(ax < -1e9) > 0)
         stop("Some mortality rates are zero.\n Try reducing the maximum age or setting interpolate=TRUE.")
     clogrates <- sweep(logrates,2,ax) # central log rates (with ax subtracted) (dimensions m*n)
-    svd.mx <- try(svd(clogrates))
-    if(class(svd.mx)=="try-error")
-        svd.mx <- svd(clogrates,LINPACK=TRUE)
+    svd.mx <- svd(clogrates)
 
     # Extract first principal component
     sumv <- sum(svd.mx$v[,1])
@@ -118,15 +117,15 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     }
     else if(adjust=="e0")
     {
-        e0 <- apply(mx,1,get.e0,agegroup=agegroup,sex=series)
-        FUN <- function(p,e0i,ax,bx){e0i - estimate.e0(p,ax,bx,agegroup,series)}
+        e0 <- apply(mx,1,get.e0,agegroup=agegroup,sex=series,startage=startage)
+        FUN <- function(p,e0i,ax,bx,agegroup,series,startage){e0i - estimate.e0(p,ax,bx,agegroup,series,startage)}
         for (i in 1:m)
         {
             if(i==1)
                 guess <- kt[1]
             else
                 guess <- mean(c(ktadj[i-1],kt[i]))
-            ktadj[i] <- findroot(FUN, guess=guess, margin = 3*ktse[i],e0i=e0[i],ax=ax,bx=bx)
+            ktadj[i] <- findroot(FUN, guess=guess, margin = 3*ktse[i],e0i=e0[i],ax=ax,bx=bx,agegroup=agegroup,series=series,startage=startage)
         }
     }
     else if(adjust=="none")
@@ -236,12 +235,12 @@ bms <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     return(out)
 }
 
-estimate.e0 <- function(kt,ax,bx,agegroup,series)
+estimate.e0 <- function(kt,ax,bx,agegroup,series,startage=0)
 {
     if(length(kt)>1)
         stop("Length of kt greater than 1")
     mx <- c(fitmx(kt,ax,bx))
-    return(get.e0(mx,agegroup,series))
+    return(get.e0(mx,agegroup,series,startage=startage))
 }
 
 fitmx <- function (kt,ax,bx,transform=FALSE)
@@ -360,7 +359,7 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
         mx.forecast[,cnt] <- fitmx(kt.f[cnt,1], logjumprates, object$bx)
         mx.lo.forecast[,cnt] <- fitmx(kt.f[cnt,2], logjumprates, object$bx)
         mx.hi.forecast[,cnt] <- fitmx(kt.f[cnt,3], logjumprates, object$bx)
-        e0.forecast[cnt] <- get.e0(mx.forecast[,cnt],agegroup,series)
+        e0.forecast[cnt] <- get.e0(mx.forecast[,cnt],agegroup,series,startage=min(object$age))
     }
     kt.f <- data.frame(kt.forecast,kt.lo.forecast,kt.hi.forecast)
     names(kt.f) <- c("kt forecast","kt lower","kt upper")
@@ -376,6 +375,7 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
     names(output$rate)[1] = names(object)[4]
     output$model <- object
     output$model$jumpchoice <- jumpchoice
+		output$model$jumprates <- jumprates
     output$call <- match.call()
     output$name <- names(object)[4]
     return(structure(output,class=c("fmforecast","demogdata")))

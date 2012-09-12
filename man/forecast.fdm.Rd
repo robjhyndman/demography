@@ -2,13 +2,14 @@
 \alias{forecast.fdm}
 \title{Forecast functional demographic model.}
 \usage{
-\method{forecast}{fdm}(object, h = 50, jumpchoice = c("fit", "actual"), method =
+\method{forecast}{fdm}(object, h = 50, level=80, jumpchoice = c("fit", "actual"), method =
 				 "arima", warnings=FALSE, ...)
 }
 
 \arguments{
 \item{object}{Output from \code{\link{fdm}}.}
 \item{h}{Forecast horizon.}
+\item{level}{Confidence level for prediction intervals.}
 \item{jumpchoice}{If "actual", the forecasts are bias-adjusted by the difference between the fit and the last year of observed data.
 	Otherwise, no adjustment is used.}
 \item{method}{Forecasting method to be used.}

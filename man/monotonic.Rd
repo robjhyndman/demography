@@ -21,13 +21,14 @@ cm.spline(x, y = NULL, n = 3*length(x), method = "fmm",
 \item{gulim}{if \code{gulim!=0} then it is taken as the upper limit on the gradient, and interpolant is gradient limited rather than monotonic.}
 }
 
-\details{Results are identical to \code{\link[stats]{splinefun}} except that Hyman Filtering is used to produce co-monotonic
-interpolation.
+\details{These are modifications of the \code{\link[stats]{spline}} and \code{\link[stats]{splinefun}} functions from the 
+stats package. The resulting output is identical except that Hyman Filtering is used 
+to produce co-monotonic interpolation. 
 }
 
 \value{
-\item{spline}{returns a list containing components \code{x} and \code{y} which give the ordinates where interpolation took place and the interpolated values.}
-\item{splinefun}{returns a function which will perform cubic spline interpolation of the given data points. This is often more useful than \code{spline}.}
+\item{cm.spline}{returns a list containing components \code{x} and \code{y} which give the ordinates where interpolation took place and the interpolated values.}
+\item{cm.splinefun}{returns a function which will perform cubic spline interpolation of the given data points. This is often more useful than \code{spline}.}
 }
 
 
@@ -39,7 +40,7 @@ Hyman (1983) \emph{SIAM J. Sci. Stat. Comput.} \bold{4}(4):645-654.
 Dougherty, Edelman and Hyman 1989 \emph{Mathematics of Computation}, \bold{52}: 471-494.
 }
 
-\author{Simon N. Wood, Rob J Hyndman}
+\author{Simon N Wood, R Core Team, Rob J Hyndman}
 \examples{
 x <- seq(0,4,l=20)
 y <- sort(rnorm(20))

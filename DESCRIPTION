@@ -1,8 +1,8 @@
 Package: demography
-Version: 1.12
-Date: 2012-04-24
+Version: 1.13
+Date: 2012-08-06
 Title: Forecasting mortality, fertility, migration and population data
-Author: Rob J Hyndman with contributions from Heather Booth, Leonie Tickle and John Maindonald
+Author: Rob J Hyndman with contributions from Heather Booth, Leonie Tickle, John Maindonald, Simon Wood and R Core Team.
 Maintainer: Rob J Hyndman <Rob.Hyndman@monash.edu>
 Depends: R (>= 2.10), forecast (>= 3.09), rainbow, ftsa
 Suggests: mgcv, cobs, strucchange, RCurl
