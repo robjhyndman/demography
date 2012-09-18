@@ -2,8 +2,8 @@ export(bms, cm.spline, cm.splinefun, coherentfdm, combine.demogdata,
 compare.demogdata, demogdata, extract.ages, extract.years, fdm,
 fitted.fdm, fitted.lca, forecast.fdm, forecast.lca, forecast.fdmpr,
 isfe, isfe.demogdata, lca, hmd.mx,hmd.e0,
-life.expectancy, lifetable, mean.demogdata, 
-median.demogdata, netmigration, plot.demogdata, plot.errorfdm, 
+life.expectancy, lifetable, mean.demogdata,
+median.demogdata, netmigration, plot.demogdata, plot.errorfdm,
 plot.lifetable, read.demogdata,flife.expectancy,
 residuals.fdm, residuals.lca, set.upperage,
 smooth.demogdata, tfr, simulate.fmforecast, simulate.fmforecast2, pop.sim, e0, sex.ratio,models,
@@ -15,7 +15,6 @@ S3method(lines,lifetable)
 S3method(lines,demogdata)
 S3method(mean,demogdata)
 S3method(median,demogdata)
-S3method(plot,fmres)
 S3method(plot,fmforecast)
 S3method(plot,lca)
 S3method(plot,lifetable)

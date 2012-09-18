@@ -30,7 +30,7 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
 
     data.fts <- fts(ages,mx,start=data$year[1],xname="Age",yname=yname)
     fit <- ftsm(data.fts, order=order, method=method, mean=mean, level=level, lambda=lambda, ...)
-	
+
 	# Adjust signs of output so that basis functions are primarily positive. (Easier to interpret.)
 	nx <- length(data$age)
 	for(i in 1+(1:order))
@@ -41,7 +41,7 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
 			fit$coeff[,i] <- -fit$coeff[,i]
 		}
 	}
-		
+
 
     if(is.element("obs.var",names(data)))
         ov <- data$obs.var[[match(series,tolower(names(data$rate)))]]
@@ -118,24 +118,14 @@ residuals.fdm <- function(object,...)
     return(structure(list(x=object$year,y=object$age,z=t(object$residuals$y)),class="fmres"))
 }
 
-plot.fmres <- function(x,type=c("image","fts","contour","persp"),xlab="Year",ylab="Age",zlab="Error",...)
-{
-    type <- match.arg(type)
-    switch(type,
-        image = image(x$x,x$y,x$z,ylab=ylab,xlab=xlab,...),
-        fts = plot(fts(x$y,t(x$z),start=x$x[1],xname="Age",yname="Residuals demographic rate"),...),
-        contour = contour(x$x,x$y,x$z,ylab=ylab,xlab=xlab,...),
-        persp = persp(x$x,x$y,x$z,ylab=ylab,xlab=xlab,zlab=zlab,...))
-}
-
 forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
     method="arima",warnings=FALSE,...)
 {
     jumpchoice <- match.arg(jumpchoice)
-    
+
     if(sum(object$weights < 0.1)/length(object$weights) > 0.2) # Probably exponential weights for fitting. Can be ignored for forecasting
         object$weights[object$weights > 0] <- 1
-    
+
     oldwarn <- options()$warn
     olderror <- options()$show.error.messages
     options(show.error.messages=warnings,warn=ifelse(warnings,0,-1))
