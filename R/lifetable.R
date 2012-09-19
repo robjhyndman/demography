@@ -144,132 +144,108 @@ lifetable <- function(data, series=names(data$rate)[1], years=data$year, ages=da
         series=series, type=type, label=data$label),class="lifetable"))
 }
 
-lt <- function (mx, startage=0, agegroup=5, sex)
+lt <- function (mx, startage = 0, agegroup = 5, sex)
 {
-  # Omit missing ages
-  if(is.na(mx[1]))
-    mx[1] <- 0
-  firstmiss <- (1:length(mx))[is.na(mx)][1]
-  if (!is.na(firstmiss)) 
-    mx <- mx[1:(firstmiss - 1)]
-  nn <- length(mx)
-	if(nn < 1)
-		stop("Not enough data to proceed")
+    # Omit missing ages
+    if (is.na(mx[1]))
+        mx[1] <- 0
+    firstmiss <- (1:length(mx))[is.na(mx)][1]
+    if (!is.na(firstmiss))
+        mx <- mx[1:(firstmiss - 1)]
+    nn <- length(mx)
+    if (nn < 1)
+        stop("Not enough data to proceed")
 
-  # Compute width of each age group
-  if(agegroup == 1)
-    nx <- c(rep(1,nn-1),Inf)
-  else if(agegroup == 5) # First age group 0, then 1-4, then 5-year groups.
-    nx <- c(1,4,rep(5,nn-3),Inf)     
-  else
-    stop("agegroup must be either 1 or 5")
-  
-  if(agegroup==5 & startage > 0 & startage < 5)
-    stop("0 < startage < 5 not supported for 5-year age groups")
+    # Compute width of each age group
+    if (agegroup == 1)
+        nx <- c(rep(1, nn - 1), Inf)
+    else if (agegroup == 5) # First age group 0, then 1-4, then 5-year groups.
+        nx <- c(1, 4, rep(5, nn - 3), Inf)
+    else stop("agegroup must be either 1 or 5")
 
-  if (startage == 0) # for single year data and the first age (0) in 5-year data
-  {
-    if (sex == "female")
-    {
-      if (mx[1] < 0.107) 
-        a0 <- 0.053 + 2.800 * mx[1] 
-      else 
-        a0 <- .35 
-    }
-    else if (sex == "male")  
-    {
-      if (mx[1] < 0.107) 
-        a0 <- 0.045 + 2.684 * mx[1] 
-      else 
-        a0 <- .33 
-    }
-    else #if (sex == "total") 
-    {
-      if (mx[1] < 0.107) 
-        a0 <- 0.049 + 2.742 * mx[1] 
-      else 
-        a0 <- .34 
-    }
-  }
-  else if (startage > 0)
-      a0 <- 0.5
-  else
-      stop("startage must be non-negative")
-  if (agegroup == 1)
-  {
-		if(nn>1)
-			ax <- c(a0, rep(0.5, nn-2),Inf) ## last ax not used 
-		else
-			ax <- Inf
-	}
-	else if(agegroup == 5 & startage==0) 
-  {
-    if (sex == "female") 
-    {
-      if (mx[1] < 0.107) 
-        a1 <- 1.522 - 1.518 * mx[1] 
-      else 
-        a1 <- 1.361 
-    }
-    else if (sex == "male") 
-    {
-      if (mx[1] < 0.107) 
-        a1 <- 1.651 - 2.816 * mx[1] 
-      else 
-        a1 <- 1.352 
-    }
-    else #if (sex == "total") 
-    {
-      if (mx[1] < 0.107) 
-        a1 <- 1.5865 - 2.167 * mx[1] 
-      else 
-        a1 <- 1.3565 
-    }
-    ax <- c(a0,a1,rep(2.6, nn-3),Inf)           
-    ### ax=2.5 known to be too low esp at low levels of mortality
-  }
-  else # agegroup==5 & startage > 0
-  { 
-    ax <- c(rep(2.6, nn-1),Inf)
-    nx <- c(rep(5,nn))  
-  }
-  
-  qx <- nx * mx /(1 + (nx - ax)* mx)
+    if (agegroup == 5 & startage > 0 & startage < 5)
+        stop("0 < startage < 5 not supported for 5-year age groups")
 
-  age <- startage + cumsum(nx) - 1
-    
-  if (max(age) >= 75)
-  {
-    idx <- (age>=75)
-    ax[idx] <- (1/mx + nx - nx/(1-exp(-nx*mx)))[idx]
-    qx[idx] <- 1 - exp(-nx * mx)[idx]
-  }
-    
-  qx[qx > 1] <- 1  # this problem  avoided by recalc at 75+ ...should not be needed
-  qx[nn] <- 1 
-	if(nn>1)
-	{
-		lx <- c(1, cumprod(1 - qx[1:(nn-1)]))
-		dx <- -diff(c(lx, 0))
-	}
-	else
-  lx <- dx <- 1
-  Lx <- nx * lx - dx * (nx - ax)
-  Lx[nn] <- lx[nn]/mx[nn]
-  Tx <- rev(cumsum(rev(Lx)))
-  ex <- Tx/lx
-	if(nn>2)
-		rx <- c(Lx[1]/lx[1], Lx[2:(nn-1)]/Lx[1:(nn-2)], Tx[nn]/Tx[nn-1])
-	else if(nn==2)
-		rx <- c(Lx[1]/lx[1],Tx[nn]/Tx[nn-1])
-	else
-		rx <- c(Lx[1]/lx[1])
-  if( agegroup == 5) 
-    rx <- c(0, (Lx[1]+Lx[2])/5*lx[1], Lx[3]/(Lx[1]+Lx[2]), 
-        Lx[4:(nn-1)]/Lx[3:(nn-2)], Tx[nn]/Tx[nn-1]) # note rx[1]= 0 (not used) to maintain length = nn 
-  result <- data.frame(ax = ax, mx = mx, qx = qx, lx = lx, dx = dx,
-      Lx = Lx, Tx = Tx, ex = ex, rx = rx, nx =nx)
-  return(result)
+    if (startage == 0) { # for single year data and the first age (0) in 5-year data
+        if (sex == "female") {
+            if (mx[1] < 0.107)
+                a0 <- 0.053 + 2.8 * mx[1]
+            else a0 <- 0.35
+        }
+        else if (sex == "male") {
+            if (mx[1] < 0.107)
+                a0 <- 0.045 + 2.684 * mx[1]
+            else a0 <- 0.33
+        }
+        else { # if(sex == "total")
+            if (mx[1] < 0.107)
+                a0 <- 0.049 + 2.742 * mx[1]
+            else a0 <- 0.34
+        }
+    }
+    else if (startage > 0)
+        a0 <- 0.5
+    else stop("startage must be non-negative")
+    if (agegroup == 1) {
+        if (nn > 1)
+            ax <- c(a0, rep(0.5, nn - 2), Inf)
+        else ax <- Inf
+    }
+    else if (agegroup == 5 & startage == 0) {
+        if (sex == "female") {
+            if (mx[1] < 0.107)
+                a1 <- 1.522 - 1.518 * mx[1]
+            else a1 <- 1.361
+        }
+        else if (sex == "male") {
+            if (mx[1] < 0.107)
+                a1 <- 1.651 - 2.816 * mx[1]
+            else a1 <- 1.352
+        }
+        else { # sex == "total"
+            if (mx[1] < 0.107)
+                a1 <- 1.5865 - 2.167 * mx[1]
+            else a1 <- 1.3565
+        }
+        ax <- c(a0, a1, rep(2.6, nn - 3), Inf)
+        ### ax=2.5 known to be too low esp at low levels of mortality
+    }
+    else { # agegroup==5 and startage > 0
+        ax <- c(rep(2.6, nn - 1), Inf)
+        nx <- c(rep(5, nn))
+    }
+    qx <- nx * mx/(1 + (nx - ax) * mx)
+   # age <- startage + cumsum(nx) - 1
+   # if (max(age) >= 75) {
+    #    idx <- (age >= 75)
+     #   ax[idx] <- (1/mx + nx - nx/(1 - exp(-nx * mx)))[idx]
+      #  qx[idx] <- 1 - exp(-nx * mx)[idx]
+    #    }
+    #qx[qx > 1] <- 1  ################  NOT NEEDED IN THEORY
+
+#plot(qx)  #### TO CHECK RESULT RE QX>1
+
+    qx[nn] <- 1
+    if (nn > 1) {
+        lx <- c(1, cumprod(1 - qx[1:(nn - 1)]))
+        dx <- -diff(c(lx, 0))
+    }
+    else lx <- dx <- 1
+    Lx <- nx * lx - dx * (nx - ax)
+    Lx[nn] <- lx[nn]/mx[nn]
+    Tx <- rev(cumsum(rev(Lx)))
+    ex <- Tx/lx
+    if (nn > 2)
+        rx <- c(Lx[1]/lx[1], Lx[2:(nn - 1)]/Lx[1:(nn - 2)], Tx[nn]/Tx[nn-1])
+    else if (nn == 2)
+        rx <- c(Lx[1]/lx[1], Tx[nn]/Tx[nn - 1])
+    else rx <- c(Lx[1]/lx[1])
+    if (agegroup == 5)
+        rx <- c(0, (Lx[1] + Lx[2])/5 * lx[1], Lx[3]/(Lx[1]+Lx[2]),
+                Lx[4:(nn - 1)]/Lx[3:(nn - 2)], Tx[nn]/Tx[nn-1])
+    result <- data.frame(ax = ax, mx = mx, qx = qx, lx = lx,
+        dx = dx, Lx = Lx, Tx = Tx, ex = ex, rx = rx, nx = nx)
+    return(result)
 }
 
 plot.lifetable <- function(x,years=x$year,main,xlab="Age",ylab="Expected number of years left",...)
@@ -422,8 +398,8 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
         hdata$rate[[1]][is.na(hdata$rate[[1]])] <- 1-1e-5
 		if(is.null(max.age))
 			max.age <- min(100,max(data$age))
-        
-        x <- window(life.expectancy(hdata,type=type,age=age,max.age=max.age),end=max(data$model$year))      
+
+        x <- window(life.expectancy(hdata,type=type,age=age,max.age=max.age),end=max(data$model$year))
         xf <- na.omit(life.expectancy(data,years=years,type=type,age=age,max.age=max.age))
         if(type=="cohort")
         {
@@ -517,7 +493,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
 		else
 			out <- flife.expectancy(data[[series]],PI=PI,nsim=nsim,max.age=max.age,type=type,age=age)
 		return(out)
-	}		
+	}
     else
 	{
 	    if(!is.element("demogdata",class(data)))

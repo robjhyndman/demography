@@ -1,8 +1,12 @@
+v1.14
+- minor changes to lifetable calculation.
+-
+
 v1.13
 - Generalized lca with e0 adjustment to allow starting ages other than 0.
 - Modified forecast.fdmpr() to allow better control of fractional differencing parameter.
 - Modified tfr to be more robust to series names other than "female".
-- Fixed bug in production prediction intervals in flife.expectancy from 
+- Fixed bug in production prediction intervals in flife.expectancy from
   an lca object.
 - Added Simon Wood and R Core Team as contributing authors.
 
