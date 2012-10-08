@@ -1,6 +1,6 @@
 v1.14
 - minor changes to lifetable calculation.
--
+- replaced cm.spline and cm.splinefun with wrappers to spline and splinefun, now that these include hyman filtering.
 
 v1.13
 - Generalized lca with e0 adjustment to allow starting ages other than 0.
