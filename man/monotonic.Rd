@@ -3,28 +3,23 @@
 \alias{cm.splinefun}
 \title{Monotonic interpolating splines}
 
-\description{Perform cubic spline monotonic interpolation of given data points,
-returning either a list of points obtained by the interpolation or a function performing the interpolation. The
-splines are constrained to be monotonically increasing (i.e., the slope is never negative).}
+\description{Perform cubic spline monotonic interpolation of given data points, returning either a list of points obtained by the interpolation or a function performing the interpolation. The splines are constrained to be monotonically increasing (i.e., the slope is never negative).}
 
-\usage{cm.splinefun(x, y = NULL, method = "fmm", gulim=0)
-cm.spline(x, y = NULL, n = 3*length(x), method = "fmm",
-       xmin = min(x), xmax = max(x), gulim=0)
+\usage{cm.splinefun(x, y = NULL, ...)
+cm.spline(x, y = NULL, n = 3*length(x), 
+       xmin = min(x), xmax = max(x), ...)
 }
 
 \arguments{
 \item{x,y}{vectors giving the coordinates of the points to be interpolated. Alternatively a single plotting structure can be specified: see \code{\link[grDevices]{xy.coords}}.}
-\item{method}{specifies the type of spline to be used. Possible values are \dQuote{fmm}, \dQuote{natural} and \dQuote{periodic}.}
 \item{n}{interpolation takes place at n equally spaced points spanning the interval [\code{xmin}, \code{xmax}].}
 \item{xmin}{left-hand endpoint of the interpolation interval.}
 \item{xmax}{right-hand endpoint of the interpolation interval.}
-\item{gulim}{if \code{gulim!=0} then it is taken as the upper limit on the gradient, and interpolant is gradient limited rather than monotonic.}
+\item{...}{Other arguments are ignored.}
 }
 
-\details{These are modifications of the \code{\link[stats]{spline}} and \code{\link[stats]{splinefun}} functions from the 
-stats package. The resulting output is identical except that Hyman Filtering is used 
-to produce co-monotonic interpolation. 
-}
+\details{From version 1.14 in R 2.15.2 or later, these are simply wrappers to the \code{\link[stats]{spline}} and \code{\link[stats]{splinefun}} functions from the 
+stats package.}
 
 \value{
 \item{cm.spline}{returns a list containing components \code{x} and \code{y} which give the ordinates where interpolation took place and the interpolated values.}
@@ -40,7 +35,7 @@ Hyman (1983) \emph{SIAM J. Sci. Stat. Comput.} \bold{4}(4):645-654.
 Dougherty, Edelman and Hyman 1989 \emph{Mathematics of Computation}, \bold{52}: 471-494.
 }
 
-\author{Simon N Wood, R Core Team, Rob J Hyndman}
+\author{Rob J Hyndman}
 \examples{
 x <- seq(0,4,l=20)
 y <- sort(rnorm(20))
