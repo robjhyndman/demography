@@ -1,16 +1,16 @@
-# cm.splinefun <- function(x, y = NULL, ...) 
-# # wrapper for splinefun()
-# # Function retained for backwards compatibility
-# { 
-#     splinefun(x, y, method="hyman")
-# }
+cm.splinefun <- function(x, y = NULL, ...) 
+# wrapper for splinefun()
+# Function retained for backwards compatibility
+{ 
+    splinefun(x, y, method="hyman")
+}
 
-# cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...) 
-# # wrapper for spline()
-# # Function retained for backwards compatibility
-# {
-#     spline(x, y, n=n, xmin=xmin, xmax=xmax, method="hyman")
-# }
+cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...) 
+# wrapper for spline()
+# Function retained for backwards compatibility
+{
+    spline(x, y, n=n, xmin=xmin, xmax=xmax, method="hyman")
+}
 
 # Function to do cubic smoothing spline fit to y ~ x
 # with constraint of monotonic increasing for x>b.

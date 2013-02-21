@@ -1,3 +1,6 @@
+v1.15
+- smooth.demogdata will no longer return NAs for fertility data. Instead, the fertility rate for the nearest age with positive rate is used.
+
 v1.14
 - minor changes to lifetable calculation.
 - replaced cm.spline and cm.splinefun with wrappers to spline and splinefun, now that these include hyman filtering.

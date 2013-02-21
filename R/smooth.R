@@ -221,8 +221,8 @@ fert.curve <- function(x,y,w,age.grid,lambda=1,interpolate=TRUE,tlambda,...)
 
 #    fred[,1] <- abs(fred[,1])^(5/9)*sign(fred[,1])+30
 
-    fit <- approx(fred[,1],fred[,2],xout=age.grid)$y
-    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid)$y
+    fit <- approx(fred[,1],fred[,2],xout=age.grid,rule=2)$y
+    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid,rule=2)$y
     return(list(fit=fit,se=se))
 }
 
