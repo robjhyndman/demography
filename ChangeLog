@@ -1,5 +1,8 @@
 v1.15
 - smooth.demogdata will no longer return NAs for fertility data. Instead, the fertility rate for the nearest age with positive rate is used.
+- Fixed occasional bug in computing life expectancy prediction intervals from coherent fdm model.
+- Changed the way missing values are handled at the ends of the age range when smoothing.
+- Allowed missing values when using fdm().
 
 v1.14
 - minor changes to lifetable calculation.

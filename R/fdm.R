@@ -35,7 +35,7 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
 	nx <- length(data$age)
 	for(i in 1+(1:order))
 	{
-		if(sum(fit$basis[,i] > 0) < nx/2)
+		if(sum(na.omit(fit$basis[,i]) > 0) < nx/2)
 		{
 			fit$basis[,i] <- -fit$basis[,i]
 			fit$coeff[,i] <- -fit$coeff[,i]

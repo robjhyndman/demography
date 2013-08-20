@@ -5,33 +5,33 @@ coherentfdm <- function(data, order1=6, order2=6, ...)
 {
 	# Check if missing data
 	
-    # Use male and female if available
-    gps <- names(data$rate)
-    if(is.element("male",gps) & is.element("female",gps))
-    {
-        notneeded <- (1:length(gps))[-match(c("male","female"),gps)]
-        for(i in notneeded)
-            data$rate[[i]] <- data$pop[[i]] <- NULL
-    }
+  # Use male and female if available
+  gps <- names(data$rate)
+  if(is.element("male",gps) & is.element("female",gps))
+  {
+    notneeded <- (1:length(gps))[-match(c("male","female"),gps)]
+    for(i in notneeded)
+      data$rate[[i]] <- data$pop[[i]] <- NULL
+  }
 
-    J <- length(data$rate)
-    rate.ratio <- fdm.ratio <- list()
- 
-    # Construct ratio and product objects
+  J <- length(data$rate)
+  rate.ratio <- fdm.ratio <- list()
+
+  # Construct ratio and product objects
 	is.mortality <- (data$type=="mortality")
-    y <- as.numeric(is.mortality)
-    pop.total <- 0
-    for (j in 1:J) 
-    {
-		if(is.mortality)
-			y <- y * data$rate[[j]]^(1/J)
-		else
-			y <- y + data$rate[[j]]/J
-        pop.total <- pop.total + data$pop[[j]]
-    }
-    rate.product <- demogdata(y, pop=pop.total, data$age, data$year, type=data$type, 
-        label=data$label, name="product")
-    for (j in 1:J)
+  y <- as.numeric(is.mortality)
+  pop.total <- 0
+  for (j in 1:J) 
+  {
+  	if(is.mortality)
+  		y <- y * data$rate[[j]]^(1/J)
+  	else
+  		y <- y + data$rate[[j]]/J
+    pop.total <- pop.total + data$pop[[j]]
+  }
+  rate.product <- demogdata(y, pop=pop.total, data$age, data$year, type=data$type, lambda=data$lambda,
+      label=data$label, name="product")
+  for (j in 1:J)
 	{
 		if(is.mortality)
 		{
@@ -48,15 +48,15 @@ coherentfdm <- function(data, order1=6, order2=6, ...)
 		rate.ratio[[j]]$rate[[1]][infrates] <- NA
 	}
     
-    # GM model
-    fdm.mean <- fdm(rate.product, series="product", order=order1, ...)
-    
-    # Ratio model
-    for (j in 1:J) 
-        fdm.ratio[[j]] <- fdm(rate.ratio[[j]], series=names(data$rate)[j], order=order2, ...)
-    names(fdm.ratio) <- names(data$rate)
-    
-    return(structure(list(product=fdm.mean, ratio=fdm.ratio), class="fdmpr"))
+  # GM model
+  fdm.mean <- fdm(rate.product, series="product", order=order1, ...)
+  
+  # Ratio model
+  for (j in 1:J) 
+    fdm.ratio[[j]] <- fdm(rate.ratio[[j]], series=names(data$rate)[j], order=order2, ...)
+  names(fdm.ratio) <- names(data$rate)
+  
+  return(structure(list(product=fdm.mean, ratio=fdm.ratio), class="fdmpr"))
 }
 
 
@@ -68,7 +68,7 @@ forecast.fdmpr <- function(object, h=50, level=80, K=100, drange=c(0.0,0.5), ...
   K <- min(K,ny)
 	
   # GM model
-	fcast.mean <- forecast(object$product,method="arima",h=h,level=level,...)
+	fcast.mean <- forecast(object$product, method="arima", h=h, level=level, ...)
   # Make sure first coefficient is not I(1) with drift.
   #mod <- auto.arima(object$product$coeff[,2],d=2)
   #fcast.mean$coeff[[2]] <- forecast(mod, h=h, level=level, ...)

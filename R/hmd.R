@@ -1,10 +1,9 @@
 # Function to construct a mortality demogdata object from HMD
 hmd.mx <- function(country, username, password, label=country)
 {
-    require(RCurl)
     path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
-    txt <- getURL(path, userpwd = userpwd)
+    txt <- RCurl:::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
     mx <- try(read.table(con, skip = 2, header = TRUE, na.strings = "."),TRUE)
     close(con)
@@ -13,7 +12,7 @@ hmd.mx <- function(country, username, password, label=country)
 
     path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
-    txt <- getURL(path, userpwd = userpwd)
+    txt <- RCurl:::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
     pop <- try(read.table(con, skip = 2, header = TRUE, na.strings = "."),TRUE)
     close(con)
@@ -46,12 +45,11 @@ hmd.mx <- function(country, username, password, label=country)
 }
 
 
-hmd.e0 = function(country, username, password)
+hmd.e0 <- function(country, username, password)
 {
-    require(RCurl)
     path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
-    txt <- getURL(path, userpwd = userpwd)
+    txt <- RCurl:::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
     lt <- try(read.table(con, skip = 2, header = TRUE, na.strings = "."), TRUE)
     close(con)

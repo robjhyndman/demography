@@ -17,7 +17,7 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
     {
         for(j in 1:ny)
         {
-            fit <- gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
+            fit <- mgcv:::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
             kvec[j] <- sum(fit$edf)
         }
         k <- round(median(kvec)+.5)
@@ -25,8 +25,8 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
     # Smooth using chosen k
     for(j in 1:ny)
     {
-        fit <- gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
-        smooth.fit <- predict(fit,newdata=data.frame(x=xgrid),se.fit=se.fit)
+        fit <- mgcv:::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
+        smooth.fit <- mgcv:::predict.gam(fit,newdata=data.frame(x=xgrid),se.fit=se.fit)
         if(se.fit)
         {
             result$y[,j] <- smooth.fit$fit
@@ -135,7 +135,7 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
             if(sum(is.na(y[,j]) | y[,j]==0) == p)
                 smooth.fit <- list(fit=rep(NA,p),se=rep(NA,p))
 			else if(interpolate)
-				smooth.fit <- list(fit=approx(xx,yy,xout=age.grid^power,rule=2)$y,se=rep(0,length(age.grid)))
+				smooth.fit <- list(fit=approx(xx,yy,xout=age.grid^power,rule=1)$y,se=rep(0,length(age.grid)))
             else if(method=="loess")
             {
                 fit <- loess(yy ~ xx,span=span,degree=2,weights=ww,surface="direct")
@@ -192,7 +192,6 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
 
 fert.curve <- function(x,y,w,age.grid,lambda=1,interpolate=TRUE,tlambda,...)
 {
-    require(cobs)
 #    if(min(age.grid) < min(x))
 #    {
 #        x <- c(13,x)
@@ -221,8 +220,8 @@ fert.curve <- function(x,y,w,age.grid,lambda=1,interpolate=TRUE,tlambda,...)
 
 #    fred[,1] <- abs(fred[,1])^(5/9)*sign(fred[,1])+30
 
-    fit <- approx(fred[,1],fred[,2],xout=age.grid,rule=2)$y
-    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid,rule=2)$y
+    fit <- approx(fred[,1],fred[,2],xout=age.grid,rule=1)$y
+    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid,rule=1)$y
     return(list(fit=fit,se=se))
 }
 

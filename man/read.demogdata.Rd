@@ -21,14 +21,14 @@
 suitable for plotting using \code{\link{plot.demogdata}} and
 fitting an LC or BMS model using \code{\link{lca}} or an FDA model using \code{\link{fdm}}.}
 
-\details{All data are assumed to be text files with the first column 
-containing the year of observation and the second column containing 
-the age level. All remaining columns are assumed to be demographic 
-rates for sections of the population. The first row of the text file 
-is assumed to contain the names of each column. Population data are 
-assumed to have the same format but with population numbers in place 
-of  rates. Note that this format is what is used by the Human 
-Mortality Database \url{http://www.mortality.org}. If \code{popfile} contains the 
+\details{All data are assumed to be tab-delimited text files with the first column
+containing the year of observation and the second column containing
+the age level. All remaining columns are assumed to be demographic
+rates for sections of the population. The first row of the text file
+is assumed to contain the names of each column. Population data are
+assumed to have the same format but with population numbers in place
+of  rates. Note that this format is what is used by the Human
+Mortality Database \url{http://www.mortality.org}. If \code{popfile} contains the
 Exposures and \code{file} contains the Mx rates from the HMD, then everything will work seamlessly.}
 
 \value{Object of class \dQuote{demogdata} with the following components:

@@ -140,10 +140,9 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     {
         if(breakmethod=="bai")
         {
-            require(strucchange)
             x <- 1:m
             # Find breakpoints
-            bp <- breakpoints(kt ~ x)$breakpoints
+            bp <- strucchange:::breakpoints(kt ~ x)$breakpoints
             # Omit breakpoints less than minperiod from end
             bp <- bp[bp <= (m-minperiod)]
             bestbreak <- max(bp)
