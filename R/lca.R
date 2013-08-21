@@ -142,7 +142,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
         {
             x <- 1:m
             # Find breakpoints
-            bp <- strucchange:::breakpoints(kt ~ x)$breakpoints
+            bp <- strucchange::breakpoints(kt ~ x)$breakpoints
             # Omit breakpoints less than minperiod from end
             bp <- bp[bp <= (m-minperiod)]
             bestbreak <- max(bp)
@@ -263,7 +263,7 @@ plot.lca <- function(x,...)
         xlab <- "kt (adjusted)"
     else
         xlab <- "kt"
-    ftsa:::plot.ftsm(x,1,"Age","bx","Year",xlab,mean.lab="ax",...)
+    ftsa::plot.ftsm(x,1,"Age","bx","Year",xlab,mean.lab="ax",...)
 }
 
 
@@ -326,10 +326,10 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
     object$kt <- object$kt - object$kt[nyears]
 
     # Time series estimation of kt as Random walk with drift
-    fit <- ftsa:::rw.drift(object$kt)
-    kt.drift <- fit$drift
-    sec <- fit$sec
-    see <- fit$see
+    fit <- forecast::rwf(object$kt, drift=TRUE)
+    kt.drift <- fit$model$drift
+    sec <- fit$model$drift.se
+    see <- fit$model$sd
 
     # Project kt
     x <- 1:h

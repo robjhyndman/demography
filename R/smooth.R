@@ -17,7 +17,7 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
     {
         for(j in 1:ny)
         {
-            fit <- mgcv:::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
+            fit <- mgcv::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
             kvec[j] <- sum(fit$edf)
         }
         k <- round(median(kvec)+.5)
@@ -25,8 +25,8 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
     # Smooth using chosen k
     for(j in 1:ny)
     {
-        fit <- mgcv:::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
-        smooth.fit <- mgcv:::predict.gam(fit,newdata=data.frame(x=xgrid),se.fit=se.fit)
+        fit <- mgcv::gam(data$y[,j] ~ s(x,k=k), weights=w[,j])
+        smooth.fit <- mgcv::predict.gam(fit,newdata=data.frame(x=xgrid),se.fit=se.fit)
         if(se.fit)
         {
             result$y[,j] <- smooth.fit$fit

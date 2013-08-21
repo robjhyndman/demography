@@ -47,6 +47,7 @@ S3method(update,fmforecast2)
 
 import(forecast)
 import(ftsa)
+import(rainbow)
 importFrom("stats", "simulate")
 importFrom("stats", "update")
 import(mgcv)

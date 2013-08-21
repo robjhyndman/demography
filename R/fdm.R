@@ -293,10 +293,53 @@ fdmMISE <- function(actual,estimate,age=NULL,years=NULL,neval=1000)
     p <- length(age)
     actual = actual[1:p,]
     estimate = estimate[1:p,]
-    out <- ftsa:::MISE(fts(age,actual,start=years[1],frequency=1),fts(age,estimate,start=years[1],frequency=1),neval=neval)
+    out <- ftsaMISE(fts(age,actual,start=years[1],frequency=1),fts(age,estimate,start=years[1],frequency=1),neval=neval)
     out$age <- age
     out$years <- years
     return(out)
+}
+
+# Following function adapted from MISE borrowed from the ftsa package
+# Originally written by RJH a long time ago before Han took over ftsa package
+# Not exported by ftsa, and so included here to avoid using ::: in a call
+ftsaMISE <- function (actual, estimate, neval = 1000) 
+{
+  m <- frequency(actual$time)
+  s <- start(actual$time)
+  x <- actual$x
+  p <- length(x)
+  n <- ncol(actual$y)
+  if (length(estimate$x)!=p | nrow(actual$y)!=p | p!=nrow(estimate$y) | n!=ncol(estimate$y)) 
+    stop("Dimensions of inputs don't match")
+  if (max(abs(actual$x - estimate$x)) > 1e-05) 
+    stop("Different x variables")
+  e <- estimate$y - actual$y
+  e.big <- pe.big <- matrix(NA, nrow = neval, ncol = n)
+  pe <- e/actual$y
+  pe.big <- matrix(NA, nrow = neval, ncol = n)
+  for (i in 1:n) 
+  {
+    if (sum(is.na(e[, i])) == 0) 
+    {
+      idx <- (abs(e[,i]) == Inf) | is.na(e[,i])
+      e.big[,i] <- spline(x[!idx], e[!idx, i], n = neval, method = "natural")$y
+      idx <- (abs(pe[,i]) == Inf) | is.na(pe[,i])
+      pe.big[,i] <- spline(x[!idx], pe[!idx,i], n = neval, method = "natural")$y
+    }
+  }
+  delta <- (max(x) - min(x))/neval
+  out <- list(x = x, error = e)
+  out$MIE <- ts(colSums(e.big, na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MIAE <- ts(colSums(abs(e.big), na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MISE <- ts(colSums(e.big^2, na.rm = TRUE) * delta, start = s, frequency = m)
+  out$ME <- rowMeans(e, na.rm = TRUE)
+  out$MAE <- rowMeans(abs(e), na.rm = TRUE)
+  out$MSE <- rowMeans(e^2, na.rm = TRUE)
+  out$MIPE <- ts(colSums(pe.big, na.rm = TRUE) * delta,  start = s, frequency = m)
+  out$MIAPE <- ts(colSums(abs(pe.big), na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MPE <- rowMeans(pe, na.rm = TRUE)
+  out$MAPE <- rowMeans(abs(pe), na.rm = TRUE)
+  return(out)
 }
 
 compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
