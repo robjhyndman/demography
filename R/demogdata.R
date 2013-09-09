@@ -22,7 +22,7 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
     if(length(years) != n)
         stop("Number of years doesn't match data")
 
-    types <- c("mortality","fertility","migration")
+    types <- c("mortality","fertility","migration","population")
     idx <- pmatch(type,types)
     if(is.na(idx))
         warning("Unknown type")
@@ -39,10 +39,19 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
             lambda <- 1
     }
 
-    obj <- list(year=years, age=ages, rate=list(as.matrix(data)), pop=list(as.matrix(pop)), type=type,
-        label=label, lambda=lambda)
-    dimnames(obj$rate[[1]]) <- dimnames(obj$pop[[1]]) <- list(ages,years)
-    names(obj$rate) <- names(obj$pop) <- name
+    if(type=="population")
+    {
+        obj <- list(year=years, age=ages, pop=list(as.matrix(pop)), type=type,
+            label=label, lambda=lambda)
+        dimnames(obj$pop[[1]]) <- list(ages,years)
+    }
+    else
+    {
+        obj <- list(year=years, age=ages, rate=list(as.matrix(data)), pop=list(as.matrix(pop)), type=type,
+            label=label, lambda=lambda)
+        dimnames(obj$rate[[1]]) <- dimnames(obj$pop[[1]]) <- list(ages,years)
+        names(obj$rate) <- names(obj$pop) <- name
+    }
     return(structure(obj,class="demogdata"))
 }
 
@@ -138,6 +147,8 @@ plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],na
     series <- tolower(series)
     ages <- ages[ages <= max.age]
     data <- extract.ages(extract.years(x,years),ages,FALSE)
+    if(x$type == "population")
+        datatype <- "pop"
 
     # Extract data matrix
     if(!is.element(datatype,names(data)))
@@ -226,6 +237,9 @@ lines.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],n
     ages <- ages[ages <= max.age]
     data <- extract.ages(extract.years(x,years),ages,FALSE)
 
+    if(x$type == "population")
+        datatype <- "pop"
+        
     # Extract data matrix
     if(!is.element(datatype,names(data)))
         stop(paste("Data type",datatype,"not found"))

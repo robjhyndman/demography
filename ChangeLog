@@ -1,3 +1,8 @@
+v1.16
+- Fixed bug in pop.sim when no migration data was used
+- Added hmd.pop() to read population data from www.mortality.org.
+- Fixed a bug in forecast.fdm() when the time series frequency is greater than 1.
+
 v1.15
 - smooth.demogdata will no longer return NAs for fertility data. Instead, the fertility rate for the nearest age with positive rate is used.
 - Fixed occasional bug in computing life expectancy prediction intervals from coherent fdm model.

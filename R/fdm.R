@@ -178,7 +178,7 @@ forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
     output <- list(
         label=object$label,
         age=object$age,
-        year=max(object$year)+(1:h),
+        year=max(object$year)+(1:h)/tsp(object$year)[3],
         rate=list(forecast=fcast$mean$y,
                   lower=fcast$lower$y,
                   upper=fcast$upper$y),

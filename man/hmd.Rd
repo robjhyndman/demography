@@ -2,8 +2,10 @@
 \alias{hmd}
 \alias{hmd.mx}
 \alias{hmd.e0}
+\alias{hmd.pop}
 \title{Read demographic data from the Human Mortality Database}
 \usage{hmd.mx(country, username, password, label = country)
+hmd.mx(country, username, password, label = country)
 hmd.e0(country, username, password)
 }
 
@@ -14,10 +16,10 @@ hmd.e0(country, username, password)
 \item{label}{Character string giving name of country from which the data are taken.}
 }
 
-\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (\url{http://www.mortality.org}) and constructs a demogdata object
-suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an 
+\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD \url{http://www.mortality.org}) and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an 
 FDA model using \code{\link{fdm}}.
-\code{hmd.e0} reads life expectancy at birth from the Human Mortality Database and returns the result as a \code{ts} object.
+\code{hmd.pop} reads "Population" (1x1) data from the HMD and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}}.
+\code{hmd.e0} reads life expectancy at birth from the HMD and returns the result as a \code{ts} object.
 }
 
 \details{In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}), 
@@ -86,10 +88,11 @@ Later additions to the HMD are listed at \url{http://www.mortality.org/cgi-bin/h
 \item{pop}{A list of the same form as \code{rate} but containing population numbers instead of demographic rates.}
 \item{type}{Type of object: \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}.}
 \item{label}{label}
+\code{hmd.pop} returns a similar object but without the \code{rate} component.
 \code{hmd.e0} returns an object of class \code{ts} with columns \code{male}, \code{female} and \code{total}.
 }
 
-\seealso{\code{\link{demogdata}},\code{\link{read.demogdata}},\code{\link{life.expectancy}}}
+\seealso{\code{\link{demogdata}},\code{\link{read.demogdata}},\code{\link{plot.demogdata}}, \code{\link{life.expectancy}}}
 
 \examples{
 \dontrun{

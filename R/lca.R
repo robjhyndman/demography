@@ -118,14 +118,14 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     else if(adjust=="e0")
     {
         e0 <- apply(mx,1,get.e0,agegroup=agegroup,sex=series,startage=startage)
-        FUN <- function(p,e0i,ax,bx,agegroup,series,startage){e0i - estimate.e0(p,ax,bx,agegroup,series,startage)}
+        FUN2 <- function(p,e0i,ax,bx,agegroup,series,startage){e0i - estimate.e0(p,ax,bx,agegroup,series,startage)}
         for (i in 1:m)
         {
             if(i==1)
                 guess <- kt[1]
             else
                 guess <- mean(c(ktadj[i-1],kt[i]))
-            ktadj[i] <- findroot(FUN, guess=guess, margin = 3*ktse[i],e0i=e0[i],ax=ax,bx=bx,agegroup=agegroup,series=series,startage=startage)
+            ktadj[i] <- findroot(FUN2, guess=guess, margin = 3*ktse[i],e0i=e0[i],ax=ax,bx=bx,agegroup=agegroup,series=series,startage=startage)
         }
     }
     else if(adjust=="none")
