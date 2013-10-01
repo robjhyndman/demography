@@ -21,7 +21,8 @@ hmd.mx <- function(country, username, password, label=country)
         
     obj <- list(type="mortality",label=label,lambda=0)
 
-    obj$year = sort(unique(mx[, 1]))
+    obj$year <- sort(unique(mx[, 1]))
+    #obj$year <- ts(obj$year, start=min(obj$year))
     n <- length(obj$year)
     m <- length(unique(mx[, 2]))
     obj$age <- mx[1:m, 2]
@@ -74,6 +75,7 @@ hmd.pop <- function(country, username, password, label=country)
     obj <- list(type="population",label=label,lambda=0)
 
     obj$year = sort(unique(pop[, 1]))
+    #obj$year <- ts(obj$year, start=min(obj$year))
     n <- length(obj$year)
     m <- length(unique(pop[, 2]))
     obj$age <- pop[1:m, 2]

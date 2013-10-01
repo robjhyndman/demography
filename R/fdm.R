@@ -164,10 +164,10 @@ forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
     fcast$mean$y <- InvBoxCox(fcast$mean$y,object$lambda)
     if(object$type != "migration")
     {
-        fcast$mean$y <- pmax(fcast$mean$y,0.000000001)
-        fcast$lower$y <- pmax(fcast$lower$y,0.000000001)
+        fcast$mean$y <- pmax(fcast$mean$y, 0.000000001)
+        fcast$lower$y <- pmax(fcast$lower$y, 0.000000001)
         fcast$lower$y[is.na(fcast$lower$y)] <- 0
-        fcast$upper$y <- pmax(fcast$upper$y,0.000000001)
+        fcast$upper$y <- pmax(fcast$upper$y, 0.000000001)
     }
 #    if(object$type != "migration")
 #    {
@@ -178,7 +178,7 @@ forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
     output <- list(
         label=object$label,
         age=object$age,
-        year=max(object$year)+(1:h)/tsp(object$year)[3],
+        year=max(object$year)+(1:h)/frequency(object$year),
         rate=list(forecast=fcast$mean$y,
                   lower=fcast$lower$y,
                   upper=fcast$upper$y),
