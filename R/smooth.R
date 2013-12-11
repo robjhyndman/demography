@@ -90,7 +90,9 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
         xmin <- min(age.grid)
         xmax <- max(age.grid)
     }
-    age.grid <- xmin:xmax
+    xmin <- floor(xmin)
+    xmax <- ceiling(xmax)
+    age.grid <- seq(xmin,xmax,by=1)
 
     if(method=="spline")
     {

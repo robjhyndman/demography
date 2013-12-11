@@ -2,7 +2,7 @@
 \alias{read.demogdata}
 \title{Read demographic data and construct demogdata object}
 \usage{read.demogdata(file, popfile, type, label, max.mx = 10, skip = 2,
-                 popskip = skip, lambda)
+                 popskip = skip, lambda, scale=1)
 }
 
 \arguments{
@@ -15,6 +15,7 @@
 \item{skip}{Number of lines to skip at the start of \code{file}.}
 \item{popskip}{Number of lines to skip at the start of \code{popfile}.}
 \item{lambda}{Box-Cox transformation parameter to be used in modelling and plotting. If missing, default values are 0 (for mortality), 0.4 (for fertility) and 1 (for migration).}
+\item{scale}{Number of people in the rate definition. \code{scale=1} indicates the rates are per person; \code{scale=1000} indicates the rates are per 1000 people.}
 }
 
 \description{Read data from text files and construct a demogdata object
@@ -25,9 +26,9 @@ fitting an LC or BMS model using \code{\link{lca}} or an FDA model using \code{\
 containing the year of observation and the second column containing
 the age level. All remaining columns are assumed to be demographic
 rates for sections of the population. The first row of the text file
-is assumed to contain the names of each column. Population data are
-assumed to have the same format but with population numbers in place
-of  rates. Note that this format is what is used by the Human
+is assumed to contain the names of each column.
+Population data are assumed to have the same format but with population numbers in place
+of  rates.  The columns names in the two files should be identical. Note that this format is what is used by the Human
 Mortality Database \url{http://www.mortality.org}. If \code{popfile} contains the
 Exposures and \code{file} contains the Mx rates from the HMD, then everything will work seamlessly.}
 

@@ -63,8 +63,9 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
 # Assume age cycles within year and all in order.
 # Population file of same format.
 # Output format:  object of class demogdata
+# scale indicates the rates. scale=1 means per person. scale=1000 means per 1000 people.
 
-read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip,lambda)
+read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip,lambda, scale=1)
 {
     if(missing(lambda))
     {
@@ -97,6 +98,8 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
             # Check bounds
             obj$rate[[i]][obj$rate[[i]] < 0] <- NA
             obj$rate[[i]][obj$rate[[i]] > max.mx] <- max.mx
+            if(scale > 1)
+              obj$rate[[i]] <- obj$rate[[i]] / scale
             dimnames(obj$rate[[i]]) <- list(obj$age,obj$year)
         }
         names(obj$rate) = tolower(mnames)
