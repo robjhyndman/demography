@@ -24,6 +24,7 @@
 \seealso{\code{\link{forecast.fdm}}, \code{\link{forecast.fdmpr}}}
 
 \examples{
+\dontrun{
 france.fit <- fdm(fr.mort,order=2)
 france.fcast <- forecast(france.fit,50)
 # Replace first coefficient model with ARIMA(0,1,2)+drift
@@ -41,5 +42,6 @@ fr.fcast$product$coeff[[2]] <- forecast(ets(fr.fit$product$coeff[,2], damped=TRU
   h=50, level=80)
 fr.fcast <- update(fr.fcast)
 plot(fr.fcast$male)
+}
 }
 \keyword{models}

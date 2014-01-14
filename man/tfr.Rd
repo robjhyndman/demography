@@ -28,6 +28,6 @@ point forecasts and (optionally) prediction intervals.
 \examples{
 plot(tfr(aus.fert))
 ausfert.fcast <- forecast(fdm(aus.fert))
-plot(tfr(ausfert.fcast,PI=TRUE,nsim=500))
+plot(tfr(ausfert.fcast,PI=TRUE,nsim=400))
 }
 \keyword{models}

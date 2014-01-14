@@ -73,6 +73,7 @@ the American Statistical Association}, \bold{87}, 659-671.}
 \seealso{\code{\link{forecast.lca}}, \code{\link{fdm}}}
 
 \examples{
+\dontrun{
 france.LC1 <- lca(fr.mort,adjust="e0")
 plot(france.LC1)
 par(mfrow=c(1,2))
@@ -83,6 +84,6 @@ france.bms <- bms(fr.mort,breakmethod="bai")
 fcast.bms <- forecast(france.bms)
 par(mfrow=c(1,1))
 plot(fcast.bms$kt)
-}
+}}
 
 \keyword{models}
