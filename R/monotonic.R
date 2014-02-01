@@ -15,7 +15,7 @@ cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max
 # Function to do cubic smoothing spline fit to y ~ x
 # with constraint of monotonic increasing for x>b.
 # Based on code provided by Simon Wood
-# Last updated: 2 June 2004 to work with mgcv 1.0
+# Last updated: 1 February 2014
 
 smooth.monotonic <- function(x,y,b,k=-1,w=NULL,newx=x)
 {
@@ -67,7 +67,8 @@ smooth.monotonic <- function(x,y,b,k=-1,w=NULL,newx=x)
 #    G$p[k] <- -mean(0.1*xx)
     G$y <- yy
     G$off <- G$off -1          # indexing inconsistency between pcls and internal gam
-    p <- mgcv::pcls(G)               # fit spline (using s.p. from unconstrained fit)
+    G$C <- matrix(0,0,0)       # fixed constraint matrix (there are none)
+    p <- mgcv::pcls(G)         # fit spline (using s.p. from unconstrained fit)
 
     # now modify the gam object from unconstrained fit a little, to use it
     # for predicting and plotting constrained fit.

@@ -1,3 +1,6 @@
+v1.17
+- fix for smooth.demogdata caused by changes in mgcv package
+
 v1.16
 - Fixed bug in pop.sim when no migration data was used
 - Added hmd.pop() to read population data from www.mortality.org.
