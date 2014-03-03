@@ -467,7 +467,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
             names(simdata$rate) <- names(data$rate)[1]
             e0sim[,i] <- life.expectancy(simdata,type=type,age=age,max.age=max.age)
           }
-          e0sim <- e0sim[1:length(xf),]
+          e0sim <- e0sim[1:length(xf), , drop = FALSE]
           if(is.element("lca",class(data$model)))
             out$level <- data$kt.f$level
           else
