@@ -1,9 +1,9 @@
 \name{lca}
 \alias{lca}
 \alias{bms}
-\title{Model mortality data using Lee-Carter approach}
+\title{Model mortality or fertility data using Lee-Carter approach}
 
-\description{Lee-Carter model of mortality rates. \code{lca}
+\description{Lee-Carter model of mortality or fertility rates. \code{lca}
 produces a standard Lee-Carter model by default, although many
 other options are available. \code{bms} is a wrapper for
 \code{lca} and returns a model based on the
@@ -21,8 +21,8 @@ bms(data, series=names(data$rate)[1], years=data$year,
 }
 
 \arguments{
-\item{data}{demogdata object of type \dQuote{mortality}. Output from read.demogdata.}
-\item{series}{name of series within data containing mortality values (1x1)}
+\item{data}{demogdata object of type \dQuote{mortality} or \dQuote{fertility}. Output from read.demogdata.}
+\item{series}{name of series within data containing mortality or fertility values (1x1)}
 \item{years}{years to include in fit. Default: all available years.}
 \item{ages}{ages to include in fit. Default: all available ages up to \code{max.age}.}
 \item{max.age}{upper age to include in fit. Ages beyond this are collapsed into the upper age group.}
@@ -37,26 +37,26 @@ Defaults are \dQuote{dxt} for \code{bms()} and \dQuote{dt} for \code{lca()}.}
   }
 \item{scale}{If TRUE, it will rescale bx and kt so that kt has drift parameter = 1.}
 \item{restype}{method to use for calculating residuals. Possibilities are \dQuote{logrates}, \dQuote{rates} and \dQuote{deaths}.}
-\item{interpolate}{If TRUE, it will estimate any zero mortality rates using the same age group from nearby years.}
+\item{interpolate}{If TRUE, it will estimate any zero mortality or fertility rates using the same age group from nearby years.}
 }
 
 
-\details{All mortality data are assumed to be in matrices of
-mortality rates within \code{data$rate}. Each row is one age group
+\details{All mortality or fertility data are assumed to be in matrices of
+mortality or fertility rates within \code{data$rate}. Each row is one age group
 (assumed to be single years). Each column is one year. The
-function produces a model for the \code{series} mortality rate matrix
+function produces a model for the \code{series} mortality or fertility rate matrix
 within \code{data$rate}. Forecasts from this model can be obtained using \code{\link{forecast.lca}}.}
 
 \value{Object of class \dQuote{lca} with the following components:
 \item{label}{Name of region}
 \item{age}{Ages from \code{data} object.}
 \item{year}{Years from \code{data} object.}
-\item{<series>}{Matrix of mortality data as contained in \code{data}. It takes the name given by the series argument.}
+\item{<series>}{Matrix of mortality or fertility data as contained in \code{data}. It takes the name given by the series argument.}
 \item{ax}{Average deathrates across fitting period}
 \item{bx}{First principal component in Lee-Carter model}
 \item{kt}{Coefficient of first principal component}
 \item{residuals}{Functional time series of residuals.}
-\item{fitted}{Functional time series containing estimated mortality rates from model}
+\item{fitted}{Functional time series containing estimated mortality or fertility rates from model}
 \item{varprop}{Proportion of variance explained by model.}
 \item{y}{The data stored as a functional time series object.}
 \item{mdev}{Mean deviance of total and base lack of fit, as described in Booth, Maindonald and Smith.}

@@ -9,8 +9,12 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     chooseperiod=FALSE, minperiod=20, breakmethod=c("bai","bms"),
     scale=FALSE, restype=c("logrates","rates","deaths"), interpolate=FALSE)
 {
-    if(class(data) != "demogdata" | data$type != "mortality")
-        stop("Not mortality data")
+  if (class(data) != "demogdata") {
+    stop("Not demography data")
+  }
+  if (!any(data$type == c("mortality", "fertility"))) {
+    stop("Neither mortality nor fertility data")
+  }
 
     adjust <- match.arg(adjust)
     restype <- match.arg(restype)
@@ -68,7 +72,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     # Do SVD
     ax <- apply(logrates,2,mean) # ax is mean of logrates by column
     if(sum(ax < -1e9) > 0)
-        stop("Some mortality rates are zero.\n Try reducing the maximum age or setting interpolate=TRUE.")
+        stop(sprintf("Some %s rates are zero.\n Try reducing the maximum age or setting interpolate=TRUE.", data$type))
     clogrates <- sweep(logrates,2,ax) # central log rates (with ax subtracted) (dimensions m*n)
     svd.mx <- svd(clogrates)
 
@@ -185,8 +189,10 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
         fit <- exp(logfit)*pop
         res <- deaths - fit
     }
-    residuals <- fts(ages,t(res),frequency=1,start=years[1],xname="Age",yname="Residuals mortality rate")
-    fitted <- fts(ages,t(fit),frequency=1,start=years[1],xname="Age",yname="Fitted mortality rate")
+    residuals <- fts(ages,t(res),frequency=1,start=years[1],xname="Age",
+                     yname=paste("Residuals", data$type, "rate"))
+    fitted <- fts(ages,t(fit),frequency=1,start=years[1],xname="Age",
+                  yname=paste("Fitted", data$type, "rate"))
 
     names(ax) <- names(bx) <- ages
 
@@ -212,12 +218,15 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     #Return
     output <- list(label=data$label,age=ages,year=year, mx=t(mx),
         ax=ax, bx=bx, kt=ts(kt,start=startyear,frequency=1), residuals=residuals, fitted=fitted,
-        varprop=svd.mx$d[1]^2/sum(svd.mx$d^2), y=fts(ages,t(mx),start=years[1],frequency=1,xname="Age",yname="Mortality"),
+        varprop=svd.mx$d[1]^2/sum(svd.mx$d^2), 
+        y=fts(ages,t(mx),start=years[1],frequency=1,xname="Age",
+              yname=ifelse(data$type == "mortality", "Mortality", "Fertility")),
         mdev=mdev)
     names(output)[4] <- series
     output$call <- match.call()
     names(output$mdev) <- c("Mean deviance base","Mean deviance total")
     output$adjust <- adjust
+    output$type <- data$type
     return(structure(output,class="lca"))
 }
 
@@ -282,10 +291,10 @@ summary.lca <- function(object,...)
 {
     print(object)
 
-    cat("\nERROR MEASURES BASED ON MORTALITY RATES\n")
+    cat(sprintf("\nERROR MEASURES BASED ON %s RATES\n", toupper(object$type)))
     printout(fdmMISE(object[[4]],exp(object$fitted$y),age=object$y$x,years=object$year))
 
-    cat("\nERROR MEASURES BASED ON LOG MORTALITY RATES\n")
+    cat(sprintf("\nERROR MEASURES BASED ON LOG %s RATES\n", toupper(object$type)))
     printout(fdmMISE(log(object[[4]]),object$fitted$y,age=object$y$x,years=object$year))
 }
 
@@ -370,7 +379,7 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
             e0=ts(e0.forecast,frequency=1,start=object$year[nyears]+1),
             kt.f=structure(list(mean=kt.f[,1],lower=kt.f[,2],upper=kt.f[,3],level=level,x=object$kt,
                                 method="Random walk with drift"),class="forecast"),
-                type = "mortality",lambda=0)
+                type = object$type,lambda=0)
     names(output$rate)[1] = names(object)[4]
     output$model <- object
     output$model$jumpchoice <- jumpchoice
