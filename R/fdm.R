@@ -257,7 +257,10 @@ models.fmforecast <- function(object, select=0, ...)
 	for(i in select)
 	{
 		cat("\n-- Coefficient",i,"--\n")
-		print(object$coeff[[i+1]]$model$model)
+        mod <- object$coeff[[i+1]]$model$model 
+        if(is.null(mod))
+            mod <- object$coeff[[i+1]]$model
+		print(mod)
 	}
 }
 
