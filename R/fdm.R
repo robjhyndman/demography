@@ -450,10 +450,10 @@ summary.fmforecast <- function(object,...)
 {
     print(object)
 
-    cat("\nERROR MEASURES BASED ON MORTALITY RATES\n")
+    cat(sprintf("\nERROR MEASURES BASED ON %s RATES\n", toupper(object$type)))
     printout(fdmMISE(object$model$y$y,exp(object$fitted$y),age=object$age,years=object$model$year))
 
-    cat("\nERROR MEASURES BASED ON LOG MORTALITY RATES\n")
+    cat(sprintf("\nERROR MEASURES BASED ON LOG %s RATES\n", toupper(object$type)))
     printout(fdmMISE(log(object$model$y$y),object$fitted$y,age=object$age,years=object$model$year))
 }
 
