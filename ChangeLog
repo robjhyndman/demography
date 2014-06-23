@@ -1,5 +1,9 @@
 v1.18
 - Updated lca() with "fertility" data
+- Modified handling of warnings in forecast.fdm()
+- Fixed problem in simulate() when there are too many missing values in residuals. Now
+  all missing residuals are set to 0
+- Better handling of weights in forecast.fdm()
 
 v1.17
 - fix for smooth.demogdata caused by changes in mgcv package
