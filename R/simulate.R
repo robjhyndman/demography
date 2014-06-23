@@ -26,7 +26,11 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
 	
   nb <- length(object$coeff)
 
-  ridx <- (1:n)[!is.na(colSums(object$model$residuals$y))]
+  ridx <- (1:n)#[!is.na(colSums(object$model$residuals$y))]
+  # Set residuals to zero for the simulations
+  resids <- object$model$residuals$y
+  resids[is.na(resids)] <- 0
+
   fmean <- BoxCox(object$rate[[1]],object$lambda)
 
   fcoeff <- matrix(1,nrow=h,ncol=nb)
@@ -44,7 +48,7 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
         output[,,i] <- output[,,i] + object$model$basis[,j] %*% matrix(simulate(mod,nsim=h,bootstrap=bootstrap,future=TRUE),nrow=1)
       }
     }
-    output[,,i] <- output[,,i] + object$model$residuals$y[,sample(ridx,h,replace=TRUE)]
+    output[,,i] <- output[,,i] + resids[,sample(ridx,h,replace=TRUE)]
     if(adjust.modelvar)
       output[,,i] <- fmean + sweep(output[,,i]-fmean,1,sqrt(object$var$adj.factor),"*")
   }
