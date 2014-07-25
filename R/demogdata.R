@@ -171,12 +171,12 @@ plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],na
     y[abs(y)==Inf] <- NA
   }
 
-
+  # Not sure why we needed this, so removed for now
   # remove NA/NaN/Inf values
-  if(any(is.na(y)|is.nan(y)|is.infinite(y)))
-  {
-    y <- apply(y, 2, na.interp)
-  }              
+  #if(any(is.na(y)|is.nan(y)|is.infinite(y)))
+  #{
+  #  y <- apply(y, 2, na.interp)
+  #}              
 
   # Choose appropriate y axis label
   if(missing(ylab))
