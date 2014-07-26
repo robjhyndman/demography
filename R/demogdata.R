@@ -116,9 +116,13 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
     if(mfile)
     {
       if(sum(pnames==mnames) != length(pnames))
+      {
         warning("Population names different from rates names")
+        if(length(pnames) <- length(mnames))
+          pnames <- mnames
+      }
       if(n!=ncol(obj$rate[[1]]) | m != nrow(obj$rate[[1]]))
-       warning("Population matrices different size from rates matrices")
+        warning("Population matrices different size from rates matrices")
     }
     p.mort <- length(pnames)
     obj$pop <- list()
