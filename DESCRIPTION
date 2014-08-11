@@ -9,6 +9,7 @@ Depends: R (>= 2.15.2), forecast (>= 3.09), rainbow, ftsa, cobs
 Imports: mgcv, strucchange, RCurl
 LazyData: yes
 ByteCompile: TRUE
+BugReports: https://github.com/robjhyndman/demography/issues
 Author: Rob J Hyndman with contributions from Heather Booth, Leonie Tickle and John Maindonald.
 Maintainer: Rob J Hyndman <Rob.Hyndman@monash.edu>
 License: GPL (>= 2)
