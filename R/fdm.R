@@ -117,8 +117,8 @@ residuals.fdm <- function(object,...)
     return(structure(list(x=object$year,y=object$age,z=t(object$residuals$y)),class="fmres"))
 }
 
-forecast.fdm <- function(object,h=50,level=80, jumpchoice=c("fit","actual"),
-    method="arima",warnings=FALSE,robust=FALSE, ...)
+forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
+    method="arima", warnings=FALSE, ...)
 {
     jumpchoice <- match.arg(jumpchoice)
 

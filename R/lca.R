@@ -39,7 +39,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
         stopyear <- min(stopyear,max(data$year))
     else
         stopyear <- max(data$year)
-    id2 <- match(startyear:stopyear,data$year)
+    id2 <- na.omit(match(startyear:stopyear,data$year))
     mx <- mx[,id2]
     pop <- pop[,id2]
     year <- data$year[id2]
