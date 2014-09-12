@@ -40,9 +40,11 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     else
         stopyear <- max(data$year)
     id2 <- na.omit(match(startyear:stopyear,data$year))
+
     mx <- mx[,id2]
     pop <- pop[,id2]
     year <- data$year[id2]
+    deltat <- year[2]-year[1]
     ages <- data$age
     n <- length(ages)
     m <- sum(id2>0)
@@ -166,7 +168,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
             bestbreak <- order(RS[1:(m-minperiod)])[1]-1
             out <- lca(data,series,year[(bestbreak+1):m],ages=ages,max.age=max.age,
                 adjust=adjust,chooseperiod=FALSE,interpolate=interpolate,scale=scale)
-            out$mdevs <- ts(cbind(devlin,devadd,RS),start=startyear,frequency=1)
+            out$mdevs <- ts(cbind(devlin,devadd,RS),start=startyear,deltat=deltat)
             dimnames(out$mdevs)[[2]] <- c("Mean deviance total","Mean deviance base","Mean deviance ratio")
             return(out)
         }
@@ -189,9 +191,9 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
         fit <- exp(logfit)*pop
         res <- deaths - fit
     }
-    residuals <- fts(ages,t(res),frequency=1,start=years[1],xname="Age",
+    residuals <- fts(ages,t(res),frequency=1/deltat,start=years[1],xname="Age",
                      yname=paste("Residuals", data$type, "rate"))
-    fitted <- fts(ages,t(fit),frequency=1,start=years[1],xname="Age",
+    fitted <- fts(ages,t(fit),frequency=1/deltat,start=years[1],xname="Age",
                   yname=paste("Fitted", data$type, "rate"))
 
     names(ax) <- names(bx) <- ages
@@ -217,9 +219,9 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 
     #Return
     output <- list(label=data$label,age=ages,year=year, mx=t(mx),
-        ax=ax, bx=bx, kt=ts(kt,start=startyear,frequency=1), residuals=residuals, fitted=fitted,
+        ax=ax, bx=bx, kt=ts(kt,start=startyear,deltat=deltat), residuals=residuals, fitted=fitted,
         varprop=svd.mx$d[1]^2/sum(svd.mx$d^2), 
-        y=fts(ages,t(mx),start=years[1],frequency=1,xname="Age",
+        y=fts(ages,t(mx),start=years[1],frequency=1/deltat,xname="Age",
               yname=ifelse(data$type == "mortality", "Mortality", "Fertility")),
         mdev=mdev)
     names(output)[4] <- series
@@ -354,7 +356,8 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
     kt.hi.forecast <- kt.forecast + (zval*kt.stderr)
     kt.f <- data.frame(kt.forecast,kt.lo.forecast,kt.hi.forecast)
     names(kt.f) <- c("kt forecast","kt lower","kt upper")
-    kt.f <- ts(kt.f,start=object$year[nyears]+1)
+    deltat <- object$year[2] - object$year[1]
+    kt.f <- ts(kt.f,start=object$year[nyears]+deltat,deltat=deltat)
 
     # Calculate expected life and mx forecasts
     e0.forecast <- rep(0,h)
@@ -371,12 +374,12 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
     }
     kt.f <- data.frame(kt.forecast,kt.lo.forecast,kt.hi.forecast)
     names(kt.f) <- c("kt forecast","kt lower","kt upper")
-    kt.f <- ts(kt.f,start=object$year[nyears]+1)
+    kt.f <- ts(kt.f,start=object$year[nyears]+deltat,deltat=deltat)
 
-    output = list(label=object$label,age=object$age,year=object$year[nyears]+x,
+    output = list(label=object$label,age=object$age,year=object$year[nyears] + x*deltat,
             rate=list(forecast=mx.forecast,lower=mx.lo.forecast,upper=mx.hi.forecast),
             fitted=object$fitted,
-            e0=ts(e0.forecast,frequency=1,start=object$year[nyears]+1),
+            e0=ts(e0.forecast,start=object$year[nyears]+deltat,deltat=deltat),
             kt.f=structure(list(mean=kt.f[,1],lower=kt.f[,2],upper=kt.f[,3],level=level,x=object$kt,
                                 method="Random walk with drift"),class="forecast"),
                 type = object$type,lambda=0)
