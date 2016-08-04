@@ -404,7 +404,7 @@ extract.ages <- function(data,ages,combine.upper=TRUE)
 }
 
 
-set.upperage <- function(data,max.age=100)
+set.upperage <- function(data, max.age)
 {
   if(max(data$age) < max.age)
     stop("max.age too large")

@@ -10,12 +10,12 @@ other options are available. \code{bms} is a wrapper for
 Booth-Maindonald-Smith methodology.}
 
 \usage{lca(data, series=names(data$rate)[1], years=data$year, 
-    ages=data$age, max.age=100,
+    ages=data$age, max.age=max(ages),
     adjust = c("dt", "dxt", "e0", "none"), chooseperiod=FALSE, 
     minperiod=20, breakmethod=c("bai","bms"), scale = FALSE, 
     restype = c("logrates", "rates", "deaths"), interpolate = FALSE)
 bms(data, series=names(data$rate)[1], years=data$year, 
-    ages=data$age, max.age=100, 
+    ages=data$age, max.age=max(ages), 
     minperiod = 20, breakmethod = c("bms", "bai"), scale = FALSE,
     restype = c("logrates", "rates", "deaths"), interpolate = FALSE)
 }

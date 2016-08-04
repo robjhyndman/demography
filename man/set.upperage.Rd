@@ -1,7 +1,7 @@
 \name{set.upperage}
 \alias{set.upperage}
 \title{Combine the upperages of a demogdata object.}
-\usage{set.upperage(data, max.age=100)
+\usage{set.upperage(data, max.age)
 }
 
 \arguments{
@@ -17,6 +17,6 @@
 
 \author{Rob J Hyndman}
 \examples{
-france.short <- set.upperage(fr.mort,85)
+france.short <- set.upperage(fr.mort, 85)
 }
 \keyword{manip}

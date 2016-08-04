@@ -5,7 +5,7 @@
 ## Made "dt" the default as in original LC paper.
 
 lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
-    max.age=100, adjust=c("dt","dxt","e0","none"),
+    max.age=max(ages), adjust=c("dt","dxt","e0","none"),
     chooseperiod=FALSE, minperiod=20, breakmethod=c("bai","bms"),
     scale=FALSE, restype=c("logrates","rates","deaths"), interpolate=FALSE)
 {
@@ -67,12 +67,14 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 
     # Transpose data and get deaths and logrates
     mx <- t(mx)
+    mx[mx==0] <- NA
     logrates <- log(mx)
+
     pop <- t(pop)
     deaths <- pop*mx
 
     # Do SVD
-    ax <- apply(logrates,2,mean) # ax is mean of logrates by column
+    ax <- apply(logrates,2,mean, na.rm=TRUE) # ax is mean of logrates by column
     if(sum(ax < -1e9) > 0)
         stop(sprintf("Some %s rates are zero.\n Try reducing the maximum age or setting interpolate=TRUE.", data$type))
     clogrates <- sweep(logrates,2,ax) # central log rates (with ax subtracted) (dimensions m*n)
@@ -233,7 +235,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 }
 
 bms <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
-    max.age=100, minperiod=20, breakmethod=c("bms","bai"), scale=FALSE, restype=c("logrates","rates","deaths"),
+    max.age=max(ages), minperiod=20, breakmethod=c("bms","bai"), scale=FALSE, restype=c("logrates","rates","deaths"),
     interpolate=FALSE)
 {
     restype <- match.arg(restype)

@@ -4,7 +4,7 @@
 \title{Integrated Squared Forecast Error for models of various orders}
 \usage{
 \method{isfe}{demogdata}(data, series=names(data$rate)[1], max.order=N-3, N=10, h=5:10,
-    ages=data$age, max.age=100, method=c("classical", "M", "rapca"),
+    ages=data$age, max.age=max(ages), method=c("classical", "M", "rapca"),
     fmethod = c("arima","ar","arfima","ets","ets.na","struct","rwdrift","rw"), 
     lambda=3, ...)
 }

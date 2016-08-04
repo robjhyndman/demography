@@ -2,7 +2,7 @@
 \alias{fdm}
 \title{Functional demographic model}
 \usage{fdm(data, series = names(data$rate)[1], order = 6, ages = data$age, 
-    max.age = 100, method = c("classical", "M", "rapca"), lambda = 3, 
+    max.age = max(ages), method = c("classical", "M", "rapca"), lambda = 3, 
     mean = TRUE, level = FALSE, transform = TRUE, ...)
 }
 

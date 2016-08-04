@@ -2,7 +2,7 @@
 ### FUNCTIONS FOR FUNCTIONAL DEMOGRAPHIC MODELS  ###
 ####################################################
 
-fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.age=100,
+fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.age=max(ages),
     method=c("classical","M","rapca"), lambda=3, mean=TRUE, level=FALSE, transform=TRUE,...)
 {
     series <- tolower(series)
@@ -428,7 +428,7 @@ plot.errorfdm <- function(x,transform=TRUE,...)
 isfe <- function(...) UseMethod("isfe")
 
 isfe.demogdata <- function(data,series=names(data$rate)[1],max.order=N-3,N=10,h=5:10,
-        ages=data$age, max.age=100,
+        ages=data$age, max.age=max(ages),
         method=c("classical","M","rapca"), fmethod=c("arima", "ar", "arfima", "ets","ets.na","struct","rwdrift","rw"),
         lambda=3, ...)
 {
