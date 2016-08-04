@@ -5,7 +5,7 @@
 ## Made "dt" the default as in original LC paper.
 
 lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
-    max.age=max(ages), adjust=c("dt","dxt","e0","none"),
+    max.age=100, adjust=c("dt","dxt","e0","none"),
     chooseperiod=FALSE, minperiod=20, breakmethod=c("bai","bms"),
     scale=FALSE, restype=c("logrates","rates","deaths"), interpolate=FALSE)
 {
@@ -235,7 +235,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 }
 
 bms <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
-    max.age=max(ages), minperiod=20, breakmethod=c("bms","bai"), scale=FALSE, restype=c("logrates","rates","deaths"),
+    max.age=100, minperiod=20, breakmethod=c("bms","bai"), scale=FALSE, restype=c("logrates","rates","deaths"),
     interpolate=FALSE)
 {
     restype <- match.arg(restype)
