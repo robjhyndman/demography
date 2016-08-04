@@ -84,7 +84,7 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
   
   if(mfile)
   {
-    tmp1 <- read.table(file,header=TRUE,na.strings=".",skip=skip)
+    tmp1 <- utils::read.table(file,header=TRUE,na.strings=".",skip=skip)
     obj$year=sort(unique(tmp1[,1]))
     n <- length(obj$year)
     m <- length(unique(tmp1[,2]))
@@ -107,7 +107,7 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
 
   if(mpopfile)
   {
-    tmp2 <- read.table(popfile,header=TRUE,na.strings=".",skip=popskip)
+    tmp2 <- utils::read.table(popfile,header=TRUE,na.strings=".",skip=popskip)
     obj$year=sort(unique(tmp2[,1]))
     n <- length(obj$year)
     m <- length(unique(tmp2[,2]))

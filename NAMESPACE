@@ -1,13 +1,12 @@
 export(bms, cm.spline, cm.splinefun, coherentfdm, combine.demogdata,
-compare.demogdata, demogdata, extract.ages, extract.years, fdm,
-fitted.fdm, fitted.lca, forecast.fdm, forecast.lca, forecast.fdmpr,
-isfe, isfe.demogdata, lca, hmd.mx,hmd.e0,hmd.pop,
-life.expectancy, lifetable, mean.demogdata,
-median.demogdata, netmigration, plot.demogdata, plot.errorfdm,
-plot.lifetable, read.demogdata,flife.expectancy,
-residuals.fdm, residuals.lca, set.upperage, 
-smooth.demogdata, tfr, simulate.fmforecast, simulate.fmforecast2, pop.sim, e0, sex.ratio,models,
-models.fmforecast,models.fmforecast2,update.fmforecast,update.fmforecast2)
+compare.demogdata, demogdata, extract.ages, extract.years, fdm, fitted.fdm,
+fitted.lca, forecast.fdm, forecast.lca, forecast.fdmpr, isfe, isfe.demogdata,
+lca, hmd.mx,hmd.e0,hmd.pop, life.expectancy, lifetable, mean.demogdata,
+median.demogdata, netmigration, plot.demogdata, plot.errorfdm, plot.lifetable,
+read.demogdata,flife.expectancy, residuals.fdm, residuals.lca, set.upperage,
+smooth.demogdata, tfr, simulate.fmforecast, simulate.fmforecast2, pop.sim, e0,
+sex.ratio,models, models.fmforecast, models.fmforecast2, update.fmforecast,
+update.fmforecast2)
 
 S3method(fitted,fdm)
 S3method(fitted,lca)
@@ -32,6 +31,7 @@ S3method(residuals,lca)
 S3method(summary,fdm)
 S3method(summary,lca)
 S3method(forecast,fdm)
+S3method(forecast,fdmpr)
 S3method(forecast,lca)
 S3method(isfe,demogdata)
 S3method(simulate,fmforecast)
@@ -48,7 +48,7 @@ S3method(update,fmforecast2)
 import(forecast)
 import(ftsa)
 import(rainbow)
-importFrom("stats", "simulate")
-importFrom("stats", "update")
 import(mgcv)
 import(cobs)
+importFrom("graphics", "abline", "lines", "plot")
+importFrom("stats", "simulate", "update", "loess", "rbinom", "rpois", "time", "ts")

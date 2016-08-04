@@ -39,7 +39,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
         stopyear <- min(stopyear,max(data$year))
     else
         stopyear <- max(data$year)
-    id2 <- na.omit(match(startyear:stopyear,data$year))
+    id2 <- stats::na.omit(match(startyear:stopyear,data$year))
 
     mx <- mx[,id2]
     pop <- pop[,id2]
@@ -92,7 +92,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 
     # Use regression to guess suitable range for root finding method
     x <- 1:m
-    ktse <- predict(lm(kt ~ x),se.fit=TRUE)$se.fit
+    ktse <- stats::predict(stats::lm(kt ~ x),se.fit=TRUE)$se.fit
     ktse[is.na(ktse)] <- 1
     agegroup = ages[4]-ages[3]
 
@@ -104,7 +104,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
             y <- as.numeric(deaths[i,])
             zi <- as.numeric(z[,i])
             weight <- as.numeric(zi > -1e-8)  # Avoid -infinity due to zero population
-            yearglm <- glm(y ~ offset(zi)-1+bx, family=poisson, weights=weight)
+            yearglm <- stats::glm(y ~ offset(zi)-1+bx, family=stats::poisson, weights=weight)
             ktadj[i] <- yearglm$coef[1]
             logdeathsadj[,i] <- z[,i]+bx*ktadj[i]
         }
@@ -346,7 +346,7 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
 
     # Project kt
     x <- 1:h
-    zval <- qnorm(0.5 + 0.005*level)
+    zval <- stats::qnorm(0.5 + 0.005*level)
     kt.forecast <- object$kt[nyears] + (x * kt.drift)
 
     # Calculate standard errors of forecast kt
@@ -409,12 +409,12 @@ findroot <- function(FUN,guess,margin,try=1,...)
     # First try in successively larger intervals around best guess
     for(i in 1:5)
     {
-        rooti <- try(uniroot(FUN,interval=guess+i*margin/3*c(-1,1),...),silent=TRUE)
+        rooti <- try(stats::uniroot(FUN,interval=guess+i*margin/3*c(-1,1),...),silent=TRUE)
         if(class(rooti) != "try-error")
             return(rooti$root)
     }
     # No luck. Try really big intervals
-    rooti <- try(uniroot(FUN,interval=guess+10*margin*c(-1,1),...),silent=TRUE)
+    rooti <- try(stats::uniroot(FUN,interval=guess+10*margin*c(-1,1),...),silent=TRUE)
     if(class(rooti) != "try-error")
         return(rooti$root)
 
@@ -473,7 +473,7 @@ quadroot <- function(FUN,guess,margin,...)
 newroot <- function(FUN,guess,...)
 {
     fred <- function(x,...){(FUN(x,...)^2)}
-    junk <- nlm(fred,guess,...)
+    junk <- stats::nlm(fred,guess,...)
     if(abs(junk$minimum)/fred(guess,...) > 1e-6)
         warning("No root exists. Returning closest")
     return(junk$estimate)
@@ -487,7 +487,7 @@ fill.zero <- function(x,method="constant")
     zeros <- abs(x) < 1e-9
     xx <- x[!zeros]
     tt <- tt[!zeros]
-    x <- approx(tt,xx,1:length(x),method=method,f=0.5,rule=2)
+    x <- stats::approx(tt,xx,1:length(x),method=method,f=0.5,rule=2)
     return(x$y)
 }
 

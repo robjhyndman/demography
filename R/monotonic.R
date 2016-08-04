@@ -2,14 +2,14 @@ cm.splinefun <- function(x, y = NULL, ...)
 # wrapper for splinefun()
 # Function retained for backwards compatibility
 { 
-    splinefun(x, y, method="hyman")
+    stats::splinefun(x, y, method="hyman")
 }
 
 cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...) 
 # wrapper for spline()
 # Function retained for backwards compatibility
 {
-    spline(x, y, n=n, xmin=xmin, xmax=xmax, method="hyman")
+    stats::spline(x, y, n=n, xmin=xmin, xmax=xmax, method="hyman")
 }
 
 # Function to do cubic smoothing spline fit to y ~ x
@@ -96,9 +96,9 @@ smooth.monotonic.cobs <- function(x,y,b,lambda=0,w=NULL,newx=x,nknots=50)
     else
         f.ug <- cobs::cobs(xx,yy,print.warn=FALSE,print.mesg=FALSE,lambda=lambda,nknots=nknots)
 
-    fred <- predict(f.ug,interval="conf",nz=200)
-    fit <- approx(fred[,1],fred[,2],xout=newx)$y
-    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=newx)$y
+    fred <- stats::predict(f.ug,interval="conf",nz=200)
+    fit <- stats::approx(fred[,1],fred[,2],xout=newx)$y
+    se <- stats::approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=newx)$y
 
     if(max(xx) > b)
     {
@@ -109,9 +109,9 @@ smooth.monotonic.cobs <- function(x,y,b,lambda=0,w=NULL,newx=x,nknots=50)
             f.mono <- cobs::cobs(xxx,yyy,constraint="increase",w=w[xx>(b-delta)],print.warn=FALSE,print.mesg=FALSE,lambda=lambda,nknots=nknots)
         else
             f.mono <- cobs::cobs(xxx,yyy,constraint="increase",print.warn=FALSE,print.mesg=FALSE,lambda=lambda,nknots=nknots)
-        fred <- predict(f.mono,interval="conf",nz=200)
-        newfit <- approx(fred[,1],fred[,2],xout=newx[newx>(b-delta)])$y
-        newse <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96,xout=newx[newx>(b-delta)])$y
+        fred <- stats::predict(f.mono,interval="conf",nz=200)
+        newfit <- stats::approx(fred[,1],fred[,2],xout=newx[newx>(b-delta)])$y
+        newse <- stats::approx(fred[,1],(fred[,4]-fred[,3])/2/1.96,xout=newx[newx>(b-delta)])$y
         preb <- sum(newx <= (b-delta))
         newfit <- c(rep(0,preb),newfit)
         newse <- c(rep(0,preb),newse)

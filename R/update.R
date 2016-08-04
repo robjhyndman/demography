@@ -14,7 +14,7 @@ update.fmforecast <- function(object, ...)
   # Update in-sample fitted values and errors.
   fitted <- matrix(NA,length(object$model$year),nb)
   meanfcast <- varfcast <- matrix(NA, nrow = h, ncol = nb)
-  qconf <- qnorm(0.5 + object$coeff[[2]]$level[1]/200)
+  qconf <- stats::qnorm(0.5 + object$coeff[[2]]$level[1]/200)
   fitted[,1] <- 1
   meanfcast[,1] <- 1
   varfcast[,1] <- 0
@@ -107,7 +107,7 @@ update.fmforecast2 <- function(object, ...)
 			object[[j]]$rate[[1]] <- object[[j]]$rate[[1]]-y
 	}
   # Variance of forecasts
-  qconf <- 2 * qnorm(0.5 + object$product$coeff[[1]]$level/200)
+  qconf <- 2 * stats::qnorm(0.5 + object$product$coeff[[1]]$level/200)
   for (j in 1:J) 
   {
     vartotal <- object$product$var$total + object$ratio[[j]]$var$total

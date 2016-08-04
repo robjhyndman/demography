@@ -35,7 +35,7 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
 	nx <- length(data$age)
 	for(i in 1+(1:order))
 	{
-		if(sum(na.omit(fit$basis[,i]) > 0) < nx/2)
+		if(sum(stats::na.omit(fit$basis[,i]) > 0) < nx/2)
 		{
 			fit$basis[,i] <- -fit$basis[,i]
 			fit$coeff[,i] <- -fit$coeff[,i]
@@ -146,7 +146,7 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
 #    browser()
     ysd <- s*NA
     for(i in 1:ncol(ysd))
-       ysd[,i] <- spline(object$age, s[,i], n=nrow(fcast$var$total))$y
+       ysd[,i] <- stats::spline(object$age, s[,i], n=nrow(fcast$var$total))$y
     ysd <- rowMeans(ysd)
 
 #    browser()
@@ -156,7 +156,7 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
     fcast$var$total <- sweep(fcast$var$total,1,fcast$var$observ,"+")
 
     # Correct prediction intervals and reverse transform
-    fse <- qnorm(.5 + fcast$coeff[[1]]$level/200) * sqrt(fcast$var$total)
+    fse <- stats::qnorm(.5 + fcast$coeff[[1]]$level/200) * sqrt(fcast$var$total)
     fcast$upper$y <- InvBoxCox(fcast$mean$y + fse,object$lambda)
     fcast$lower$y <- InvBoxCox(fcast$mean$y - fse,object$lambda)
     fcast$mean$y <- InvBoxCox(fcast$mean$y,object$lambda)
@@ -176,7 +176,7 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
     output <- list(
         label=object$label,
         age=object$age,
-        year=max(object$year)+(1:h)/frequency(object$year),
+        year=max(object$year)+(1:h)/stats::frequency(object$year),
         rate=list(forecast=fcast$mean$y,
                   lower=fcast$lower$y,
                   upper=fcast$upper$y),
@@ -305,8 +305,8 @@ fdmMISE <- function(actual,estimate,age=NULL,years=NULL,neval=1000)
 # Not exported by ftsa, and so included here to avoid using ::: in a call
 ftsaMISE <- function (actual, estimate, neval = 1000) 
 {
-  m <- frequency(actual$time)
-  s <- start(actual$time)
+  m <- stats::frequency(actual$time)
+  s <- stats::start(actual$time)
   x <- actual$x
   p <- length(x)
   n <- ncol(actual$y)
@@ -323,9 +323,9 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
     if (sum(is.na(e[, i])) == 0) 
     {
       idx <- (abs(e[,i]) == Inf) | is.na(e[,i])
-      e.big[,i] <- spline(x[!idx], e[!idx, i], n = neval, method = "natural")$y
+      e.big[,i] <- stats::spline(x[!idx], e[!idx, i], n = neval, method = "natural")$y
       idx <- (abs(pe[,i]) == Inf) | is.na(pe[,i])
-      pe.big[,i] <- spline(x[!idx], pe[!idx,i], n = neval, method = "natural")$y
+      pe.big[,i] <- stats::spline(x[!idx], pe[!idx,i], n = neval, method = "natural")$y
     }
   }
   delta <- (max(x) - min(x))/neval

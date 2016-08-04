@@ -12,8 +12,8 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
 	{
 		object$model$basis <- cbind(log(object$model$jumprates), object$model$bx)
 		object$model$coeff <- ts(cbind(rep(1,n),object$model$kt))
-		tsp(object$model$coeff) <- tsp(object$model$kt)
-		zval <- qnorm(0.5 + 0.005*object$kt.f$level)
+		stats::tsp(object$model$coeff) <- stats::tsp(object$model$kt)
+		zval <- stats::qnorm(0.5 + 0.005*object$kt.f$level)
 		# refit model using Arima so it can be simulated more easily.
 		ktmod <- Arima(object$model$kt,order=c(0,1,0),include.drift=TRUE)
 		# Find stdev of kt from kt.f (to include coefficient error)

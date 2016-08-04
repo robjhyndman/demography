@@ -35,8 +35,8 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
         else
             result$y[,j] <- smooth.fit
     }
-    interp <- spline(x,meany,n=500)
-    interp <- approx(interp$x,interp$y,xout=xgrid)$y
+    interp <- stats::spline(x,meany,n=500)
+    interp <- stats::approx(interp$x,interp$y,xout=xgrid)$y
     result$y <- sweep(result$y,1,interp,"+")
     if(se.fit)
         return(list(result,seresult))
@@ -137,11 +137,11 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
             if(sum(is.na(y[,j]) | y[,j]==0) == p)
                 smooth.fit <- list(fit=rep(NA,p),se=rep(NA,p))
 			else if(interpolate)
-				smooth.fit <- list(fit=approx(xx,yy,xout=age.grid^power,rule=1)$y,se=rep(0,length(age.grid)))
+				smooth.fit <- list(fit=stats::approx(xx,yy,xout=age.grid^power,rule=1)$y,se=rep(0,length(age.grid)))
             else if(method=="loess")
             {
                 fit <- loess(yy ~ xx,span=span,degree=2,weights=ww,surface="direct")
-                smooth.fit <- predict(fit,newdata=data.frame(xx=age.grid^power),se=TRUE)
+                smooth.fit <- stats::predict(fit,newdata=data.frame(xx=age.grid^power),se=TRUE)
             }
             else if(method=="mspline")
                 smooth.fit <- smooth.monotonic(xx, yy, b^power, max(min(round(length(xx)*.8),k),4), ww, age.grid^power)
@@ -153,9 +153,9 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
             se.y[,j] <- smooth.fit$se
             newpop[,j] <- diff(cm.spline(upperage,cumsum(c(0,data$pop[[i]][,j])),xmin=xmin-1,xmax=xmax,n=xmax-xmin+2)$y)
             if(sum(!is.na(newy[,j]))>2)
-                err[,j] <- y[,j] - approx(age.grid,newy[,j],xout=data$age)$y
+                err[,j] <- y[,j] - stats::approx(age.grid,newy[,j],xout=data$age)$y
             if(obs.var=="theoretical")
-                fred[,j] <- approx(data$age,datawt[[i]][,j],xout=age.grid,rule=2)$y
+                fred[,j] <- stats::approx(data$age,datawt[[i]][,j],xout=age.grid,rule=2)$y
         }
         dimnames(newy) <- dimnames(newpop) <- dimnames(se.y) <- list(age.grid,data$year)
         data$rate[[i]] <- InvBoxCox(newy,data$lambda)
@@ -173,10 +173,10 @@ smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fe
             y <- InvBoxCox(y,data$lambda)
             yy <- y
             for(j in 1:ny)
-                yy[,j] <- approx(age.grid,newy[,j],xout=data$age)$y
+                yy[,j] <- stats::approx(age.grid,newy[,j],xout=data$age)$y
             yy <- InvBoxCox(yy,data$lambda)
             xx <- data$age
-            ov <- exp(predict(loess(log(rowMeans((y-yy)^2)) ~ xx,span=2/sqrt(length(data$age)),degree=2,surface="direct"),newdata=data.frame(xx=age.grid)))
+            ov <- exp(stats::predict(loess(log(rowMeans((y-yy)^2)) ~ xx,span=2/sqrt(length(data$age)),degree=2,surface="direct"),newdata=data.frame(xx=age.grid)))
             data$obs.var[[i]] <- matrix(ov,length(age.grid),ny)
         }
         dimnames(data$obs.var[[i]]) <- list(age.grid,data$year)
@@ -213,17 +213,17 @@ fert.curve <- function(x,y,w,age.grid,lambda=1,interpolate=TRUE,tlambda,...)
     oldwarn <- options(warn=-1)
     # Unweighted smoothing as there seems to be a problem with the cobs function when weights specified
     if(interpolate)
-        fred <- predict(cobs(xx,y,constraint="concave",pointwise=cbind(rep(0,length(xx)),xx,y),
+        fred <- stats::predict(cobs(xx,y,constraint="concave",pointwise=cbind(rep(0,length(xx)),xx,y),
             lambda=lambda,print.warn=FALSE,print.mesg=FALSE,maxiter=1e4),interval="conf",nz=200)
     else
-        fred <- predict(cobs(xx,y,constraint="concave",
+        fred <- stats::predict(cobs(xx,y,constraint="concave",
             lambda=lambda,print.warn=FALSE,print.mesg=FALSE,maxiter=1e4),interval="conf",nz=200)
     options(warn=oldwarn$warn)
 
 #    fred[,1] <- abs(fred[,1])^(5/9)*sign(fred[,1])+30
 
-    fit <- approx(fred[,1],fred[,2],xout=age.grid,rule=1)$y
-    se <- approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid,rule=1)$y
+    fit <- stats::approx(fred[,1],fred[,2],xout=age.grid,rule=1)$y
+    se <- stats::approx(fred[,1],(fred[,4]-fred[,3])/2/1.96, xout=age.grid,rule=1)$y
     return(list(fit=fit,se=se))
 }
 

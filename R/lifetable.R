@@ -416,19 +416,19 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
     if(is.null(max.age))
       max.age <- min(100,max(data$age))
 
-    x <- window(life.expectancy(hdata,type=type,age=age,max.age=max.age),end=max(data$model$year))
+    x <- stats::window(life.expectancy(hdata,type=type,age=age,max.age=max.age),end=max(data$model$year))
     xf <- life.expectancy(data,years=years,type=type,age=age,max.age=max.age)
     if(type=="cohort")
     {
-      xf <- ts(c(window(x,start=max(data$model$year)-max.age+age+1, extend=TRUE),xf),end=max(time(xf)))
+      xf <- ts(c(stats::window(x,start=max(data$model$year)-max.age+age+1, extend=TRUE),xf),end=max(time(xf)))
       if(sum(!is.na(xf)) > 0)
-        xf <- na.omit(xf)
+        xf <- stats::na.omit(xf)
       else
         xf <- stop("Not enough data to continue")
       if(min(time(x)) > max(data$model$year)-max.age+age)
         x <- NULL#ts(NA,end=min(time(xf))-1)
       else
-        x <- window(x,end=max(data$model$year)-max.age+age)
+        x <- stats::window(x,end=max(data$model$year)-max.age+age)
     }
 
     out <- structure(list(x=x,mean=xf,method="FDM model"),class="forecast")
@@ -474,7 +474,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
             out$level <- data$coeff[[1]]$level
           out$lower <- ts(apply(e0sim,1,quantile,prob=0.5 - out$level/200,na.rm=TRUE))
           out$upper <- ts(apply(e0sim,1,quantile,prob=0.5 + out$level/200,na.rm=TRUE))
-          tsp(out$lower) <- tsp(out$upper) <- tsp(out$mean)
+          stats::tsp(out$lower) <- stats::tsp(out$upper) <- stats::tsp(out$mean)
         }
         out$sim <- sim
       }
@@ -523,7 +523,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
         out$level <- data$product$coeff[[1]]$level
         out$lower <- ts(apply(e0sim,1,quantile,prob=0.5 - out$level/200))
         out$upper <- ts(apply(e0sim,1,quantile,prob=0.5 + out$level/200))
-        tsp(out$lower) <- tsp(out$upper) <- tsp(out$mean)
+        stats::tsp(out$lower) <- stats::tsp(out$upper) <- stats::tsp(out$mean)
       }
     }
     else
