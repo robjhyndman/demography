@@ -79,6 +79,9 @@ forecast.fdmpr <- function(object, h=50, level=80, K=100, drange=c(0.0,0.5), ...
   y <- as.numeric(is.mortality) #=1 for mortality and 0 for migration
   for (j in 1:J) 
   {
+    # Use all available data other than last K years
+    # As ARFIMA can't handle missing values
+    object$ratio[[j]]$weights <- 0*object$ratio[[j]]$weights +1
     if(K < ny)
       object$ratio[[j]]$weights[1:(ny-K)] <- 0
     fcast.ratio[[j]] <- forecast(object$ratio[[j]], h=h, level=level, method="arfima", estim="mle", drange=drange,...)
