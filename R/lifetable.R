@@ -167,14 +167,14 @@ lt <- function (mx, startage = 0, agegroup = 5, sex)
     stop("0 < startage < 5 not supported for 5-year age groups")
 
   if (startage == 0) # for single year data and the first age (0) in 5-year data
-  { 
-    if (sex == "female") 
+  {
+    if (sex == "female")
     {
       if (mx[1] < 0.107)
         a0 <- 0.053 + 2.8 * mx[1]
       else a0 <- 0.35
     }
-    else if (sex == "male") 
+    else if (sex == "male")
     {
       if (mx[1] < 0.107)
         a0 <- 0.045 + 2.684 * mx[1]
@@ -189,29 +189,29 @@ lt <- function (mx, startage = 0, agegroup = 5, sex)
   }
   else if (startage > 0)
     a0 <- 0.5
-  else 
+  else
     stop("startage must be non-negative")
-  if (agegroup == 1) 
+  if (agegroup == 1)
   {
     if (nn > 1)
       ax <- c(a0, rep(0.5, nn - 2), Inf)
-    else 
+    else
       ax <- Inf
   }
-  else if (agegroup == 5 & startage == 0) 
+  else if (agegroup == 5 & startage == 0)
   {
-    if (sex == "female") 
+    if (sex == "female")
     {
       if (mx[1] < 0.107)
         a1 <- 1.522 - 1.518 * mx[1]
-      else 
+      else
         a1 <- 1.361
     }
-    else if (sex == "male") 
+    else if (sex == "male")
     {
       if (mx[1] < 0.107)
         a1 <- 1.651 - 2.816 * mx[1]
-      else 
+      else
         a1 <- 1.352
     }
     else # sex == "total"
@@ -240,12 +240,12 @@ lt <- function (mx, startage = 0, agegroup = 5, sex)
   #plot(qx)  #### TO CHECK RESULT RE QX>1
 
   qx[nn] <- 1
-  if (nn > 1) 
+  if (nn > 1)
   {
     lx <- c(1, cumprod(1 - qx[1:(nn - 1)]))
     dx <- -diff(c(lx, 0))
   }
-  else 
+  else
     lx <- dx <- 1
   Lx <- nx * lx - dx * (nx - ax)
   Lx[nn] <- lx[nn]/mx[nn]
@@ -255,7 +255,7 @@ lt <- function (mx, startage = 0, agegroup = 5, sex)
     rx <- c(Lx[1]/lx[1], Lx[2:(nn - 1)]/Lx[1:(nn - 2)], Tx[nn]/Tx[nn-1])
   else if (nn == 2)
     rx <- c(Lx[1]/lx[1], Tx[nn]/Tx[nn - 1])
-  else 
+  else
     rx <- c(Lx[1]/lx[1])
   if (agegroup == 5)
     rx <- c(0, (Lx[1] + Lx[2])/5 * lx[1], Lx[3]/(Lx[1]+Lx[2]),
@@ -372,7 +372,7 @@ life.expectancy <- function(data,series=names(data$rate)[1],years=data$year,
   else
    data.lt <- lifetable(data,series,years,type=type,ages=age,max.age=max.age)$ex
   idx <- match(age,rownames(data.lt))
-  #if(sum(is.na(data.lt[idx,]))>0 
+  #if(sum(is.na(data.lt[idx,]))>0
   # max(data.lt[idx,]) > 1e9)
   #    warning("Some missing or infinite values in the life table calculation.\n  These can probably be avoided by setting max.age to a lower value.")
 
@@ -381,7 +381,7 @@ life.expectancy <- function(data,series=names(data$rate)[1],years=data$year,
 
 
 flife.expectancy <- function(data, series=NULL, years=data$year,
-    type=c("period","cohort"), age=min(data$age), max.age=NULL, PI=FALSE, nsim=500, ...)
+    type=c("period","cohort"), age, max.age=NULL, PI=FALSE, nsim=500, ...)
 {
   type <- match.arg(type)
   if(is.element("fmforecast",class(data)))
@@ -414,7 +414,9 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
     # Fix missing values. Why are they there?
     hdata$rate[[1]][is.na(hdata$rate[[1]])] <- 1-1e-5
     if(is.null(max.age))
-      max.age <- min(100,max(data$age))
+      max.age <- max(data$age)
+    if(missing(age))
+      age <- min(hdata$age)
 
     x <- stats::window(life.expectancy(hdata,type=type,age=age,max.age=max.age),end=max(data$model$year))
     xf <- life.expectancy(data,years=years,type=type,age=age,max.age=max.age)
@@ -487,43 +489,77 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
       stop("data not a mortality object")
     if(is.null(series))
       series <- names(data)[1]
-    if(is.null(max.age))
-      max.age <- min(100,max(data[[series]]$age))
     if(is.element("product",names(data))) # Assume coherent model
     {
-      out <- flife.expectancy(data[[series]],PI=FALSE,age=age,max.age=max.age,type=type)
-      if(max.age < 0)
-        max.age <- min(100,max(data[[series]]$age))
-      if(PI)
+      if(missing(age))
+        age <- min(data[["product"]]$age)
+      if(is.null(max.age))
+        max.age <- max(data[["product"]]$age)
+      if(series=="total")
       {
-        # Generate simulated products and ratios
-        prodsim <- flife.expectancy(data$product,nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
-        data$ratio[[series]]$model$ratio <- TRUE # To avoid PI calculation on flife.expectancy
-        ratiosim <- flife.expectancy(data$ratio[[series]],nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
-        # Simulated future rates
-        sim <- prodsim$sim * ratiosim$sim
-        dimsim <- dim(sim)
-        simdata <- data[[series]]
-        nnn <- dim(data[[series]]$rate[[1]])
-        useyears <- (1:nnn[2]) + (dimsim[2]-nnn[2])
-        e0sim <- matrix(NA,nnn[2],dimsim[3])
-        for(i in 1:dim(sim)[3])
+        # Compute forecast total mortality rates
+        # Assume sex ratios of populations stay the same as last k years
+        ny <- length(data[["product"]]$model$year)
+        h <- length(data[["product"]]$year)
+        k <- 5
+        sex.ratio <- (data$female$model$pop / data$male$model$pop)[,ny-(1:k)+1]
+        sex.ratio <- apply(sex.ratio, 1, median)
+        frate <- data$female$rate$female
+        mrate <- data$male$rate$male
+        totalrate <- frate/(1+1/sex.ratio) + mrate/(1+sex.ratio)
+        # Construct demogdata object with estimated total rates
+        # Use last year of population as approximation
+        total <- demogdata(totalrate,
+                   pop=matrix(data$female$model$pop[,ny] +
+                        data$female$model$pop[,ny],
+                              nrow=max.age+1,ncol=h),
+                   ages=data[["product"]]$age,
+                   years=data[["product"]]$year,
+                   type="mortality",
+                   label=data$product$model$label,
+                   name="total",
+                   lambda=0)
+        # Compute total life expectancy
+        out <- flife.expectancy(total, PI=FALSE, age=age, max.age=max.age, type=type)
+      }
+      else
+      {
+        if(missing(age))
+          age <- min(data[[series]]$age)
+        if(is.null(max.age))
+          max.age <- max(data[[series]]$age)
+        out <- flife.expectancy(data[[series]],PI=FALSE,age=age,max.age=max.age,type=type)
+        if(PI)
         {
-          simdata$rate <- list(as.matrix(sim[,useyears,i]))
-          names(simdata$rate) <- names(data[[series]]$rate)[1]
-          fl <- flife.expectancy(simdata,type=type,age=age,max.age=max.age)
-          if(class(fl)=="ts")
-            e0sim[,i] <- fl
-          else if(class(fl)=="forecast")
-            e0sim[,i] <- fl$mean
-          else
-            stop("No idea what's going on here.")
+          # Generate simulated products and ratios
+          prodsim <- flife.expectancy(data$product,nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
+          data$ratio[[series]]$model$ratio <- TRUE # To avoid PI calculation on flife.expectancy
+          ratiosim <- flife.expectancy(data$ratio[[series]],nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
+          # Simulated future rates
+          sim <- prodsim$sim * ratiosim$sim
+          dimsim <- dim(sim)
+          simdata <- data[[series]]
+          nnn <- dim(data[[series]]$rate[[1]])
+          useyears <- (1:nnn[2]) + (dimsim[2]-nnn[2])
+          e0sim <- matrix(NA,nnn[2],dimsim[3])
+          for(i in 1:dim(sim)[3])
+          {
+            simdata$rate <- list(as.matrix(sim[,useyears,i]))
+            names(simdata$rate) <- names(data[[series]]$rate)[1]
+            fl <- flife.expectancy(simdata,type=type,age=age,max.age=max.age)
+            if(class(fl)=="ts")
+              e0sim[,i] <- fl
+            else if(class(fl)=="forecast")
+              e0sim[,i] <- fl$mean
+            else
+              stop("No idea what's going on here.")
+          }
+          #browser()
+          out$level <- data$product$coeff[[1]]$level
+          out$lower <- ts(apply(e0sim,1,quantile,prob=0.5 - out$level/200))
+          out$upper <- ts(apply(e0sim,1,quantile,prob=0.5 + out$level/200))
+          stats::tsp(out$lower) <- stats::tsp(out$upper) <- stats::tsp(out$mean)
         }
-        #browser()
-        out$level <- data$product$coeff[[1]]$level
-        out$lower <- ts(apply(e0sim,1,quantile,prob=0.5 - out$level/200))
-        out$upper <- ts(apply(e0sim,1,quantile,prob=0.5 + out$level/200))
-        stats::tsp(out$lower) <- stats::tsp(out$upper) <- stats::tsp(out$mean)
       }
     }
     else
@@ -538,6 +574,8 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
       stop("data must be a mortality object")
     if(is.null(series))
       series <- names(data$rate)[1]
+    if(missing(age))
+      age <- min(data$age)
     return(life.expectancy(data,series=series,years=years,type=type,age=age,max.age=max.age))
   }
 }
