@@ -8,7 +8,7 @@ life.expectancy(data, series = names(data$rate)[1], years = data$year,
     type = c("period", "cohort"), age = min(data$age),
     max.age = min(100, max(data$age)))
 flife.expectancy(data, series=NULL,  years = data$year, type = c("period", "cohort"), 
-    age = min(data$age), max.age = NULL, PI = FALSE, nsim = 500, ...)
+    age, max.age = NULL, PI = FALSE, nsim = 500, ...)
 e0(data, series = NULL,  years = data$year, type = c("period", "cohort"), 
 	max.age = NULL, PI = FALSE, nsim = 500, ...)
 }

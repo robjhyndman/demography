@@ -134,10 +134,6 @@ lifetable <- function(data, series=names(data$rate)[1], years=data$year, ages=da
     }
     mx <- cmx
     rx <- NULL
-#    if(minage < max.age)
-#        {
-#      warning("Insufficient data for other life tables. Try reducing max.age")
-#        }
   }
 
   return(structure(list(age=ages,year=years, mx=mx,qx=qx,lx=lx,dx=dx,Lx=Lx,Tx=Tx,ex=ex,rx=rx,
@@ -347,7 +343,6 @@ print.lifetable <- function(x,digits=4,...)
 }
 
 
-
 # Compute expected age from single year mortality rates
 get.e0 <- function(x,agegroup,sex,startage=0)
 {
@@ -511,7 +506,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
         # Use last year of population as approximation
         total <- demogdata(totalrate,
                    pop=matrix(data$female$model$pop[,ny] +
-                        data$female$model$pop[,ny],
+                        data$male$model$pop[,ny],
                               nrow=max.age+1,ncol=h),
                    ages=data[["product"]]$age,
                    years=data[["product"]]$year,
@@ -521,6 +516,55 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
                    lambda=0)
         # Compute total life expectancy
         out <- flife.expectancy(total, PI=FALSE, age=age, max.age=max.age, type=type)
+        if(PI)
+        {
+          # Create forecast object
+          if(is.element("ts",class(out)))
+          {
+            out <- structure(list(mean=out, method="Coherent FDM model"), class='forecast')
+            frate <- exp(data$female$model$female)
+            mrate <- exp(data$male$model$male)
+            htotalrate <- frate/(1+1/sex.ratio) + mrate/(1+sex.ratio)
+            historictotal <- demogdata(htotalrate,
+                   pop=data$female$model$pop + data$male$model$pop,
+                   ages=data$female$model$age,
+                   years=data$female$model$year,
+                   type="mortality",
+                   label=data$product$model$label,
+                   name="total",
+                   lambda=0)
+            out$x <- life.expectancy(historictotal)
+          }
+          # Generate simulated products and ratios
+          prodsim <- flife.expectancy(data$product,nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
+          data$ratio[["female"]]$model$ratio <- TRUE # To avoid PI calculation on flife.expectancy
+          ratiosim <- flife.expectancy(data$ratio[["female"]],nsim=nsim,PI=TRUE,age=age,max.age=max.age,type=type)
+          # Simulated future rates
+          fsim <- prodsim$sim * ratiosim$sim
+          msim <- prodsim$sim / ratiosim$sim
+          sim <- fsim/(1+1/sex.ratio) + msim/(1+sex.ratio)
+          dimsim <- dim(sim)
+          simdata <- total
+          nnn <- dim(total$rate[[1]])
+          useyears <- (1:nnn[2]) + (dimsim[2]-nnn[2])
+          e0sim <- matrix(NA,nnn[2],dimsim[3])
+          for(i in 1:dimsim[3])
+          {
+            simdata$rate <- list(as.matrix(sim[,useyears,i]))
+            names(simdata$rate) <- names(total$rate)[1]
+            fl <- flife.expectancy(simdata,type=type,age=age,max.age=max.age)
+            if(class(fl)=="ts")
+              e0sim[,i] <- fl
+            else if(class(fl)=="forecast")
+              e0sim[,i] <- fl$mean
+            else
+              stop("No idea what's going on here.")
+          }
+          out$level <- data$product$coeff[[1]]$level
+          out$lower <- ts(apply(e0sim,1,quantile,prob=0.5 - out$level/200))
+          out$upper <- ts(apply(e0sim,1,quantile,prob=0.5 + out$level/200))
+          stats::tsp(out$lower) <- stats::tsp(out$upper) <- stats::tsp(out$mean)
+        }
       }
       else
       {
@@ -529,6 +573,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
         if(is.null(max.age))
           max.age <- max(data[[series]]$age)
         out <- flife.expectancy(data[[series]],PI=FALSE,age=age,max.age=max.age,type=type)
+        out$method <- "Coherent FDM model"
         if(PI)
         {
           # Generate simulated products and ratios
