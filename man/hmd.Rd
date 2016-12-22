@@ -5,27 +5,26 @@
 \alias{hmd.pop}
 \title{Read demographic data from the Human Mortality Database}
 \usage{hmd.mx(country, username, password, label = country)
-hmd.mx(country, username, password, label = country)
 hmd.e0(country, username, password)
 }
 
 \arguments{
 \item{country}{Directory abbreviation from the HMD. For instance, Australia = "AUS". See below for other countries.}
-\item{username}{HMD username}
-\item{password}{HMD password}
+\item{username}{HMD username (case-sensitive)}
+\item{password}{HMD password (case-sensitive)}
 \item{label}{Character string giving name of country from which the data are taken.}
 }
 
-\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD \url{http://www.mortality.org}) and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an 
+\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD \url{http://mortality.org}) and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an
 FDA model using \code{\link{fdm}}.
 \code{hmd.pop} reads "Population" (1x1) data from the HMD and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}}.
 \code{hmd.e0} reads life expectancy at birth from the HMD and returns the result as a \code{ts} object.
 }
 
-\details{In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}), 
+\details{In order to read the data, users are required to create their account via the HMD website (\url{http://mortality.org}),
 and obtain a valid username and password.
 
-The country codes (as at 31 July 2012) are as follows.
+The country codes (as at 23 December 2016) are as follows.
 \tabular{ll}{
 Australia \tab AUS\cr
 Austria \tab AUT\cr
@@ -41,10 +40,11 @@ Finland \tab FIN\cr
 France\cr
   -- France total population \tab FRATNP\cr
   -- France civilian population \tab FRACNP\cr
-Germany\cr	
+Germany\cr
   -- Germany total population \tab DEUTNP\cr
   -- West Germany \tab DEUTFRG\cr
   -- East Germany \tab DEUTGDR\cr
+Greece \tab GRC\cr
 Hungary \tab HUN\cr
 Iceland \tab ISL\cr
 Ireland \tab IRL\cr
@@ -69,7 +69,7 @@ Spain \tab ESP\cr
 Sweden \tab SWE\cr
 Switzerland \tab CHE\cr
 Taiwan \tab TWN\cr
-United Kingdom\cr	
+United Kingdom\cr
   -- UK Total Population \tab GBR_NP\cr
   -- England & Wales Total Population \tab GBRTENW\cr
   -- England & Wales Civilian Population \tab GBRCENW\cr
@@ -78,7 +78,6 @@ United Kingdom\cr
 U.S.A. \tab USA\cr
 Ukraine \tab UKR\cr
 }
-Later additions to the HMD are listed at \url{http://www.mortality.org/cgi-bin/hmd/hmd_download.php}.
 }
 
 \value{\code{hmd.mx} returns an object of class \code{demogdata} with the following components:
