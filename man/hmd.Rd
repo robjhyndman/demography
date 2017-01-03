@@ -15,13 +15,12 @@ hmd.e0(country, username, password)
 \item{label}{Character string giving name of country from which the data are taken.}
 }
 
-\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD \url{http://mortality.org}) and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an
-FDA model using \code{\link{fdm}}.
+\description{\code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD \url{http://www.mortality.org}) and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS model using \code{\link{lca}} or an FDA model using \code{\link{fdm}}.
 \code{hmd.pop} reads "Population" (1x1) data from the HMD and constructs a demogdata object suitable for plotting using \code{\link{plot.demogdata}}.
 \code{hmd.e0} reads life expectancy at birth from the HMD and returns the result as a \code{ts} object.
 }
 
-\details{In order to read the data, users are required to create their account via the HMD website (\url{http://mortality.org}),
+\details{In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}),
 and obtain a valid username and password.
 
 The country codes (as at 23 December 2016) are as follows.
