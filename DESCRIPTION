@@ -1,6 +1,6 @@
 Package: demography
 Version: 1.19
-Title: Forecasting mortality, fertility, migration and population data
+Title: Forecasting Mortality, Fertility, Migration and Population Data
 Description: Functions for demographic analysis including lifetable
         calculations; Lee-Carter modelling; functional data analysis of
         mortality rates, fertility rates, net migration numbers; and
