@@ -51,4 +51,8 @@ import(rainbow)
 import(mgcv)
 import(cobs)
 importFrom("graphics", "abline", "lines", "plot")
-importFrom("stats", "simulate", "update", "loess", "rbinom", "rpois", "time", "ts")
+importFrom("stats", "simulate", "update", "approx", "frequency", "glm", "lm", "loess",
+     "na.omit", "nlm", "poisson", "predict", "qnorm", "rbinom",
+     "rpois", "spline", "splinefun", "start", "time", "ts",
+     "tsp", "tsp<-", "uniroot", "window")
+importFrom("utils", "read.table")
