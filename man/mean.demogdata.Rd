@@ -3,7 +3,7 @@
 \alias{median.demogdata}
 \title{Mean and median functions for data of class demogdata}
 \usage{\method{mean}{demogdata}(x, series = names(x$rate)[1], transform = TRUE, na.rm = TRUE, ...)
-\method{median}{demogdata}(x, series = names(x$rate)[1], transform = TRUE,
+\method{median}{demogdata}(x, na.rm=FALSE, series = names(x$rate)[1], transform = TRUE,
     method = c("hossjercroux", "coordinate"), ...)
 }
 

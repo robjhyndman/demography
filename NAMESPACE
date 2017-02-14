@@ -2,7 +2,7 @@ export(bms, cm.spline, cm.splinefun, coherentfdm, combine.demogdata,
 compare.demogdata, demogdata, extract.ages, extract.years, fdm, fitted.fdm,
 fitted.lca, forecast.fdm, forecast.lca, forecast.fdmpr, isfe, isfe.demogdata,
 lca, hmd.mx,hmd.e0,hmd.pop, life.expectancy, lifetable, mean.demogdata,
-median.demogdata, netmigration, plot.demogdata, plot.errorfdm, plot.lifetable,
+median, median.demogdata, netmigration, plot.demogdata, plot.errorfdm, plot.lifetable,
 read.demogdata,flife.expectancy, residuals.fdm, residuals.lca, set.upperage,
 smooth.demogdata, tfr, simulate.fmforecast, simulate.fmforecast2, pop.sim, e0,
 sex.ratio,models, models.fmforecast, models.fmforecast2, update.fmforecast,
@@ -54,5 +54,5 @@ importFrom("graphics", "abline", "lines", "plot")
 importFrom("stats", "simulate", "update", "approx", "frequency", "glm", "lm", "loess",
      "na.omit", "nlm", "poisson", "predict", "qnorm", "rbinom",
      "rpois", "spline", "splinefun", "start", "time", "ts",
-     "tsp", "tsp<-", "uniroot", "window")
+     "tsp", "tsp<-", "uniroot", "window",  "median.default")
 importFrom("utils", "read.table")

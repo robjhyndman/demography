@@ -558,7 +558,7 @@ mean.demogdata <- function(x,series=names(x$rate)[1],transform=TRUE,na.rm=TRUE,.
   return(list(x=x$age,y=loc))
 }
 
-median.demogdata <- function(x,series=names(x$rate)[1],
+median.demogdata <- function(x,  na.rm=FALSE, series=names(x$rate)[1],
     transform=TRUE,method=c("hossjercroux","coordinate"),...)
 {
   method = match.arg(method)

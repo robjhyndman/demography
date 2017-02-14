@@ -5,8 +5,8 @@ Description: Functions for demographic analysis including lifetable
         calculations; Lee-Carter modelling; functional data analysis of
         mortality rates, fertility rates, net migration numbers; and
         stochastic population forecasting.
-Depends: R (>= 2.15.2), forecast (>= 3.09), rainbow, ftsa, cobs
-Imports: mgcv, strucchange, RCurl
+Depends: R (>= 2.15.2), forecast (>= 3.09)  
+Imports: rainbow, ftsa, cobs, mgcv, strucchange, RCurl
 LazyData: yes
 ByteCompile: TRUE
 BugReports: https://github.com/robjhyndman/demography/issues
