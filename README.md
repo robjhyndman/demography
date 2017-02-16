@@ -4,7 +4,7 @@ The R package *demography* provides functions for demographic analysis including
 
 ## Installation
 You can install the **stable** version on 
-[R CRAN](http://cran.r-project.org/package=demography).
+[R CRAN](https://CRAN.R-project.org/package=demography).
 
 ```s
 install.packages('demography', dependencies = TRUE)
