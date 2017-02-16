@@ -1,4 +1,4 @@
-median <- function(x, na.rm=FALSE, ...) UseMethod("median")
+#median <- function(...) UseMethod("median")
 
 # median.default <- function (x, na.rm = FALSE)
 # {
