@@ -1,12 +1,12 @@
 Package: demography
-Version: 1.19
+Version: 1.20
 Title: Forecasting Mortality, Fertility, Migration and Population Data
 Description: Functions for demographic analysis including lifetable
         calculations; Lee-Carter modelling; functional data analysis of
         mortality rates, fertility rates, net migration numbers; and
         stochastic population forecasting.
-Depends: R (>= 2.15.2), forecast (>= 3.09), ftsa
-Imports: rainbow, cobs, mgcv, strucchange, RCurl
+Depends: R (>= 3.4), forecast (>= 3.09)
+Imports: ftsa (>= 4.8), rainbow, cobs, mgcv, strucchange, RCurl
 LazyData: yes
 ByteCompile: TRUE
 BugReports: https://github.com/robjhyndman/demography/issues
