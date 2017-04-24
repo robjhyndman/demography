@@ -1,3 +1,12 @@
+v1.20
+ - Removed dependency on ftsa now that we no longer need a special median function.
+
+v1.19
+ - Lots of clean up to conform to CRAN policy
+ - Fixed conflicts with some packages
+ - total life expectancy for coherentfdm added
+ - Added PI for coherent total life expectancy 
+ 
 v1.18
 - Updated lca() with "fertility" data
 - Modified handling of warnings in forecast.fdm()
@@ -119,7 +128,7 @@ Changes in v0.994 (26 February 2009)
 - Corrected lifetable calculations to work when the sex is unknown.
 
 Changes in v0.993 (4 August 2008)
-- Corrected combine.demogdata to produce a “pop” object when possible, and modified associated help file accordingly.
+- Corrected combine.demogdata to produce a ?pop? object when possible, and modified associated help file accordingly.
 - Updated the lifetable function to allow five-??year age groups.
 
 Changes in v0.992 (3 July 2008)
@@ -130,12 +139,12 @@ Changes in v0.992 (3 July 2008)
 
 Changes in v0.991 (12 May 2008)
 - Prediction intervals for fdm objects now allowed using structural time series and random walks with drift.
-- Changed default forecasting method to “arima” in forecast.fdm and forecast.ftsm
+- Changed default forecasting method to ?arima? in forecast.fdm and forecast.ftsm
 - Corrected time component of coefficients from forecast.fdm
 
 Changes in v0.99
 - Bug fixes in smooth.demogdata
-- Bug fix in forecast.fdm to allow method=“ets.na” to work again.
+- Bug fix in forecast.fdm to allow method=?ets.na? to work again.
 
 Changes in v0.98
 - Updated documentation to conform to new CRAN rules.
@@ -156,11 +165,11 @@ Changes in v0.96
 
 Major changes in v0.95
 - Most data have now been taken out of the package (as it is now publicly available). The only data sets in the demography package are fr.mort (French mortality) and aus.fert (Australian fertility).
-- The package now handles fertility, mortality and migration data. The basic data class is “demogdata” and demogdata$type indicates the type of demographic data.
-- Many functions have been revised to handle the new data structures. However, I’ve tried to keep the calling syntax the same. If existing code no longer works, check the help files first.
+- The package now handles fertility, mortality and migration data. The basic data class is ?demogdata? and demogdata$type indicates the type of demographic data.
+- Many functions have been revised to handle the new data structures. However, I?ve tried to keep the calling syntax the same. If existing code no longer works, check the help files first.
 - fmm has been renamed as fdm as it now fits functional demographic models (and not only functional mortality models).
 - read.mortality has been renamed as read.demogdata. Similarly, other functions of the form xxx.mortality are now called xxx.demogdata.
 - smooth.demogdata now handles various types of smoothing and smoothing constraints. See the help file for details. It tries to do something appropriate depending on the type of data passed. At the moment, it only handles mortality and fertility data.
-- I’ve added tfr to compute total fertility rates, and isfe to compute the Integrated Squared Forecast Error for different model orders.
+- I?ve added tfr to compute total fertility rates, and isfe to compute the Integrated Squared Forecast Error for different model orders.
 - The documentation has been revised in many places, and several references added.
 - All these changes have almost certainly introduced new errors
