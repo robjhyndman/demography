@@ -6,6 +6,7 @@
 \title{Read demographic data from the Human Mortality Database}
 \usage{hmd.mx(country, username, password, label = country)
 hmd.e0(country, username, password)
+hmd.pop(country, username, password, label=country)
 }
 
 \arguments{
