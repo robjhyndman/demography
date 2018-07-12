@@ -95,9 +95,9 @@ summary.fdm <- function(object,...)
     rownames(junk2) = object$year
     colnames(junk2) = c("IE","ISE","IPE","IAPE")
     cat(paste("\nAverages across ages:\n"))
-    print(round(colMeans(junk1),5))
+    print(round(colMeans(junk1, na.rm = TRUE),5))
     cat(paste("\nAverages across years:\n"))
-    print(round(colMeans(junk2),5))
+    print(round(colMeans(junk2, na.rm = TRUE),5))
     cat("\n")
 }
 
@@ -146,8 +146,9 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
 #    browser()
     ysd <- s*NA
     for(i in 1:ncol(ysd))
-       ysd[,i] <- stats::spline(object$age, s[,i], n=nrow(fcast$var$total))$y
-    ysd <- rowMeans(ysd)
+      if(sum(!is.na(s[,i])) >= 2) # enough data to fix NAs?
+        ysd[,i] <- stats::spline(object$age, s[,i], n=nrow(fcast$var$total))$y
+    ysd <- rowMeans(ysd, na.rm = TRUE)
 
 #    browser()
 
@@ -328,16 +329,16 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
       pe.big[,i] <- stats::spline(x[!idx], pe[!idx,i], n = neval, method = "natural")$y
     }
   }
-  delta <- (max(x) - min(x))/neval
+  delta <- (max(x) - min(x))
   out <- list(x = x, error = e)
-  out$MIE <- ts(colSums(e.big, na.rm = TRUE) * delta, start = s, frequency = m)
-  out$MIAE <- ts(colSums(abs(e.big), na.rm = TRUE) * delta, start = s, frequency = m)
-  out$MISE <- ts(colSums(e.big^2, na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MIE <- ts(colMeans(e.big, na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MIAE <- ts(colMeans(abs(e.big), na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MISE <- ts(colMeans(e.big^2, na.rm = TRUE) * delta, start = s, frequency = m)
   out$ME <- rowMeans(e, na.rm = TRUE)
   out$MAE <- rowMeans(abs(e), na.rm = TRUE)
   out$MSE <- rowMeans(e^2, na.rm = TRUE)
-  out$MIPE <- ts(colSums(pe.big, na.rm = TRUE) * delta,  start = s, frequency = m)
-  out$MIAPE <- ts(colSums(abs(pe.big), na.rm = TRUE) * delta, start = s, frequency = m)
+  out$MIPE <- ts(colMeans(pe.big, na.rm = TRUE) * delta,  start = s, frequency = m)
+  out$MIAPE <- ts(colMeans(abs(pe.big), na.rm = TRUE) * delta, start = s, frequency = m)
   out$MPE <- rowMeans(pe, na.rm = TRUE)
   out$MAPE <- rowMeans(abs(pe), na.rm = TRUE)
   return(out)
