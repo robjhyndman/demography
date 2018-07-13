@@ -1,7 +1,7 @@
 # Function to construct a mortality demogdata object from HMD
 hmd.mx <- function(country, username, password, label=country)
 {
-    path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
+    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -10,7 +10,7 @@ hmd.mx <- function(country, username, password, label=country)
     if(class(mx)=="try-error")
         stop("Connection error at www.mortality.org. Please check username, password and country label.")
 
-    path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
+    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -48,7 +48,7 @@ hmd.mx <- function(country, username, password, label=country)
 
 hmd.e0 <- function(country, username, password)
 {
-    path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
+    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -63,7 +63,7 @@ hmd.e0 <- function(country, username, password)
 
 hmd.pop <- function(country, username, password, label=country)
 {
-    path <- paste("http://www.mortality.org/hmd/", country, "/STATS/", "Population.txt", sep = "")
+    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Population.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
