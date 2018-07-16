@@ -1,4 +1,4 @@
-#demography
+# demography
 
 The R package *demography* provides functions for demographic analysis including: lifetable calculations; Lee-Carter modelling; functional data analysis of mortality rates, fertility rates, net migration numbers;  and stochastic population forecasting.
 
