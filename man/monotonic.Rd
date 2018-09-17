@@ -18,8 +18,7 @@ cm.spline(x, y = NULL, n = 3*length(x),
 \item{...}{Other arguments are ignored.}
 }
 
-\details{From version 1.14 in R 2.15.2 or later, these are simply wrappers to the \code{\link[stats]{spline}} and \code{\link[stats]{splinefun}} functions from the 
-stats package.}
+\details{These are simply wrappers to the \code{\link[stats]{splinefun}} function family from the stats package.}
 
 \value{
 \item{cm.spline}{returns a list containing components \code{x} and \code{y} which give the ordinates where interpolation took place and the interpolated values.}
