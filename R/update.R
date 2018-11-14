@@ -2,7 +2,7 @@
 # Original object from forecast.fdm
 # Assumed that the coefficient forecasts have been subsequently changed
 # Object needs to be updated to reflect those changes.
-
+#' @export
 update.fmforecast <- function(object, ...)
 {
   if(!is.element("fmforecast",class(object)))
@@ -65,7 +65,7 @@ update.fmforecast <- function(object, ...)
 # Function to combine product and ratio forecasts
 # object is output from forecast.fdmpr, but with modified forecasts
 # This function simply recombines them again.
-
+#' @export
 update.fmforecast2 <- function(object, ...) 
 {
   if(!is.element("fmforecast2",class(object)))

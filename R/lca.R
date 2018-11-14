@@ -3,7 +3,7 @@
 ## Changed way of limiting ages in lca
 ## Fixed bug which arose occasionally when using method "dt"
 ## Made "dt" the default as in original LC paper.
-
+#' @export
 lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     max.age=100, adjust=c("dt","dxt","e0","none"),
     chooseperiod=FALSE, minperiod=20, breakmethod=c("bai","bms"),
@@ -234,6 +234,8 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     return(structure(output,class="lca"))
 }
 
+
+#' @export
 bms <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     max.age=100, minperiod=20, breakmethod=c("bms","bai"), scale=FALSE, restype=c("logrates","rates","deaths"),
     interpolate=FALSE)
@@ -246,6 +248,7 @@ bms <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     out$call <- match.call()
     return(out)
 }
+
 
 estimate.e0 <- function(kt,ax,bx,agegroup,series,startage=0)
 {
@@ -267,6 +270,8 @@ fitmx <- function (kt,ax,bx,transform=FALSE)
         return(exp(logratesfit))
 }
 
+
+#' @export
 plot.lca <- function(x,...)
 {
     x$basis <- cbind(x$ax,x$bx)
@@ -279,7 +284,7 @@ plot.lca <- function(x,...)
     ftsa::plot.ftsm(x,1,"Age","bx","Year",xlab,mean.lab="ax",...)
 }
 
-
+#' @export
 print.lca <- function(x,...)
 {
     cat("Lee-Carter analysis\n")
@@ -290,7 +295,7 @@ print.lca <- function(x,...)
     cat(paste("\nAges in fit:",min(x$age),"-",max(x$age),"\n"))
     cat(paste("\nPercentage variation explained: ",round(x$varprop*100,1),"%\n",sep=""))
 }
-
+#' @export
 summary.lca <- function(object,...)
 {
     print(object)
@@ -301,6 +306,7 @@ summary.lca <- function(object,...)
     cat(sprintf("\nERROR MEASURES BASED ON LOG %s RATES\n", toupper(object$type)))
     printout(fdmMISE(log(object[[4]]),object$fitted$y,age=object$y$x,years=object$year))
 }
+
 
 printout <- function(output)
 {
@@ -318,7 +324,7 @@ printout <- function(output)
 }
 
 # Function performs predictions of k and life expectancy based on leecarter results (in lcaout)
-
+#' @export
 forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoice=c("fit","actual"), level=80, ...)
 {
     se <- match.arg(se)
@@ -394,15 +400,18 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
     return(structure(output,class=c("fmforecast","demogdata")))
 }
 
+#' @export
 fitted.lca <- function(object,...)
 {
     object$fitted
 }
 
+#' @export
 residuals.lca <- function(object,...)
 {
     return(structure(list(x=object$year,y=object$age,z=t(object$residuals$y)),class="fmres"))
 }
+
 
 findroot <- function(FUN,guess,margin,try=1,...)
 {

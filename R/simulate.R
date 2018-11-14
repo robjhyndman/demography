@@ -1,6 +1,6 @@
 # Function to simulate future sample paths of functional data
 # given output from forecast.fdm
-
+#' @export
 simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjust.modelvar=TRUE,...)
 {
   n <- length(object$model$year)
@@ -60,7 +60,7 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
   return(output)
 }
 
-
+#' @export
 simulate.fmforecast2 <- function (object, ...) 
 {
 	is.mortality <- (object$ratio[[1]]$type == "mortality")

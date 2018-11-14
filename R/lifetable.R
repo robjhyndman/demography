@@ -1,6 +1,6 @@
 # Lifetable functions
 # Produce lifetable from mortality rates
-
+#' @export
 lifetable <- function(data, series=names(data$rate)[1], years=data$year, ages=data$age,
   max.age=min(100,max(data$age)), type=c("period","cohort"))
 {
@@ -140,6 +140,8 @@ lifetable <- function(data, series=names(data$rate)[1], years=data$year, ages=da
         series=series, type=type, label=data$label),class="lifetable"))
 }
 
+
+
 lt <- function (mx, startage = 0, agegroup = 5, sex)
 {
   # Omit missing ages
@@ -261,6 +263,8 @@ lt <- function (mx, startage = 0, agegroup = 5, sex)
   return(result)
 }
 
+
+#' @export
 plot.lifetable <- function(x,years=x$year,main,xlab="Age",ylab="Expected number of years left",...)
 {
   if(x$type != "period")
@@ -286,6 +290,8 @@ plot.lifetable <- function(x,years=x$year,main,xlab="Age",ylab="Expected number 
   plot(fts(x$age,x$ex[,idx],start=years[1],frequency=1),main=main,ylab=ylab,xlab=xlab,...)
 }
 
+
+#' @export
 lines.lifetable <- function(x,years=x$year,...)
 {
   if(x$type != "period")
@@ -302,6 +308,8 @@ lines.lifetable <- function(x,years=x$year,...)
   lines(fts(x$age,x$ex[,idx],start=x$year[1],frequency=1),...)
 }
 
+
+#' @export
 print.lifetable <- function(x,digits=4,...)
 {
   ny <- ncol(x$ex)
@@ -350,6 +358,7 @@ get.e0 <- function(x,agegroup,sex,startage=0)
 }
 
 # Compute expected ages for multiple years
+#' @export
 life.expectancy <- function(data,series=names(data$rate)[1],years=data$year,
     type=c("period","cohort"), age=min(data$age), max.age=min(100,max(data$age)))
 {
@@ -374,7 +383,7 @@ life.expectancy <- function(data,series=names(data$rate)[1],years=data$year,
   return(ts(data.lt[idx,],start=years[1],frequency=1))
 }
 
-
+#' @export
 flife.expectancy <- function(data, series=NULL, years=data$year,
     type=c("period","cohort"), age, max.age=NULL, PI=FALSE, nsim=500, ...)
 {
@@ -625,6 +634,7 @@ flife.expectancy <- function(data, series=NULL, years=data$year,
   }
 }
 
+#' @export
 e0 <- function(data, series=NULL, years=data$year,
     type=c("period","cohort"), max.age=NULL,PI=FALSE, nsim=500, ...)
 {

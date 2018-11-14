@@ -1,3 +1,5 @@
+
+#' @export
 tfr <- function(data, PI=FALSE, nsim=500, ...)
 {
     if(!is.element("demogdata",class(data)))

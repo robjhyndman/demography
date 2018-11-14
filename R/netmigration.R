@@ -1,3 +1,4 @@
+#' @export
 netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 {
   # Basic checks on inputs
@@ -74,7 +75,7 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 # data must be a demogdata object containing population values for the last year of observation mort
 # and mig are fmforecast2 objects and fert is a fmforecast object.  If they are NULL, it is assumed
 # all values are zero.
-
+#' @export
 pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfratio = 1.05, bootstrap = FALSE)
 {
   no.mortality <- FALSE  # Not possible to proceed without mort object

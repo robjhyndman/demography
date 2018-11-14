@@ -1,4 +1,5 @@
 # Function to construct a mortality demogdata object from HMD
+#' @export
 hmd.mx <- function(country, username, password, label=country)
 {
     path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
@@ -45,7 +46,7 @@ hmd.mx <- function(country, username, password, label=country)
     return(structure(obj, class = "demogdata"))
 }
 
-
+#' @export
 hmd.e0 <- function(country, username, password)
 {
     path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
@@ -60,7 +61,7 @@ hmd.e0 <- function(country, username, password)
     return(lt)
 }
 
-
+#' @export
 hmd.pop <- function(country, username, password, label=country)
 {
     path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Population.txt", sep = "")

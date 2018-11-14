@@ -1,7 +1,7 @@
 ####################################################
 ### FUNCTIONS FOR FUNCTIONAL DEMOGRAPHIC MODELS  ###
 ####################################################
-
+#' @export
 fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.age=max(ages),
     method=c("classical","M","rapca"), lambda=3, mean=TRUE, level=FALSE, transform=TRUE,...)
 {
@@ -65,7 +65,7 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
     return(output)
 }
 
-
+#' @export
 print.fdm <- function(x,...)
 {
     cat("Functional demographic model\n")
@@ -84,6 +84,7 @@ print.fdm <- function(x,...)
     cat("\n")
 }
 
+#' @export
 summary.fdm <- function(object,...)
 {
     print(object)
@@ -101,6 +102,7 @@ summary.fdm <- function(object,...)
     cat("\n")
 }
 
+#' @export
 summary.fdmpr <- function(object, ...)
 {
 	cat("*** PRODUCT MODEL ***\n")
@@ -112,11 +114,15 @@ summary.fdmpr <- function(object, ...)
 		summary(object$ratio[[i]])
 	}
 }
+
+#' @export
 residuals.fdm <- function(object,...)
 {
     return(structure(list(x=object$year,y=object$age,z=t(object$residuals$y)),class="fmres"))
 }
 
+
+#' @export
 forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
     method="arima", warnings=FALSE, ...)
 {
@@ -194,7 +200,7 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
     return(structure(output,class=c("fmforecast","demogdata")))
 }
 
-
+#' @export
 print.fmforecast <- function(x,...)
 {
     cat(paste("Forecasts for",x$label))
@@ -211,6 +217,8 @@ print.fmforecast <- function(x,...)
     cat(paste("\n    Ages: ",min(x$age),"-",max(x$age),"\n"))
 }
 
+
+#' @export
 plot.fmforecast <- function(x,plot.type=c("function","component","variance"),vcol=1:4,mean.lab="Mean",
     xlab2="Year",h=1,...)
 {
@@ -245,10 +253,11 @@ plot.fmforecast <- function(x,plot.type=c("function","component","variance"),vco
     }
 }
 
+#' @export
 models <- function(object, ...)
 UseMethod("models")
 
-
+#' @export
 models.fmforecast <- function(object, select=0, ...)
 {
 	if(!select[1])
@@ -263,6 +272,7 @@ models.fmforecast <- function(object, select=0, ...)
 	}
 }
 
+#' @export
 models.fmforecast2 <- function(object, ...)
 {
 	cat("\n************* PRODUCT MODEL *************\n")
@@ -344,6 +354,8 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
   return(out)
 }
 
+
+#' @export
 compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
     ages = data$age, max.age=min(max(data$age),max(forecast$age)), years=data$year,
     interpolate=FALSE)
@@ -391,11 +403,13 @@ compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
     return(structure(fred,class="errorfdm"))
 }
 
+#' @export
 fitted.fdm <- function(object,...)
 {
     object$fitted
 }
 
+#' @export
 print.errorfdm <- function(x,...)
 {
     cat(paste("Demographic comparison for",x$label,"\n"))
@@ -420,14 +434,18 @@ print.errorfdm <- function(x,...)
     }
 }
 
+#' @export
 plot.errorfdm <- function(x,transform=TRUE,...)
 {
     i <- ifelse(transform,5,4)
     plot(fts(x=x$age,y=x[[i]],start=x$year[1],frequency=1,xname="Age",yname=names(x)[i]),...)
 }
 
+#' @export
 isfe <- function(...) UseMethod("isfe")
 
+
+#' @export
 isfe.demogdata <- function(data,series=names(data$rate)[1],max.order=N-3,N=10,h=5:10,
         ages=data$age, max.age=max(ages),
         method=c("classical","M","rapca"), fmethod=c("arima", "ar", "arfima", "ets","ets.na","struct","rwdrift","rw"),
@@ -447,7 +465,7 @@ isfe.demogdata <- function(data,series=names(data$rate)[1],max.order=N-3,N=10,h=
     return(isfe(data.fts,max.order=max.order,N=N,h=h,method=method,fmethod=fmethod,lambda=lambda,...))
 }
 
-
+#' @export
 summary.fmforecast <- function(object,...)
 {
     print(object)
@@ -459,6 +477,7 @@ summary.fmforecast <- function(object,...)
     printout(fdmMISE(log(object$model$y$y),object$fitted$y,age=object$age,years=object$model$year))
 }
 
+#' @export
 summary.fmforecast2 <- function(object,...)
 {
 	if(is.element("product",names(object))) # Assume coherent model

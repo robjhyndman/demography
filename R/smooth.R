@@ -50,7 +50,7 @@ smooth.fts <- function(data, k=-1, xgrid=data$x, se.fit=FALSE, w=rep(1,nrow(data
 ## Will smooth second period (a-b)
 ## For third period (b+) it uses montonically increasing smooths if monotonic TRUE
 ## Number of knots for smoothing set by k
-
+#' @export
 smooth.demogdata <- function(data,method=switch(data$type,mortality="mspline",fertility="cspline",migration="loess"), age.grid,
     power=switch(data$type,mortality=0.4,fertility=1,migration=1),
     b=65, k=30, span=0.2, lambda=1e-10, interpolate=FALSE, weight=data$type != "migration",

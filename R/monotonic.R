@@ -1,3 +1,4 @@
+#' @export
 cm.splinefun <- function(x, y = NULL, ...) 
 # wrapper for splinefun()
 # Function retained for backwards compatibility
@@ -5,6 +6,8 @@ cm.splinefun <- function(x, y = NULL, ...)
     stats::splinefun(x, y, method="hyman")
 }
 
+
+#' @export
 cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...) 
 # wrapper for spline()
 # Function retained for backwards compatibility

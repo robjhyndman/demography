@@ -10,7 +10,7 @@
 # pop - population matrices matching rates
 # label (e.g., country, state, etc.) - character string
 # type - mortality, fertility, migration, etc. character string.
-
+#' @export
 demogdata <- function(data, pop, ages, years, type, label, name, lambda)
 {
   p <- nrow(data)
@@ -64,7 +64,7 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
 # Population file of same format.
 # Output format:  object of class demogdata
 # scale indicates the rates. scale=1 means per person. scale=1000 means per 1000 people.
-
+#' @export
 read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip,lambda, scale=1)
 {
   if(missing(lambda))
@@ -144,7 +144,7 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
 
   return(structure(obj,class="demogdata"))
 }
-
+#' @export
 plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]), 
     datatype=ifelse(!is.null(x$rate),"rate","pop"),
     years=x$year, ages=x$age, max.age=max(x$age), transform=(x$type=="mortality"),
@@ -239,7 +239,7 @@ plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],na
 
   plot(fts(data$age,y,start=years[1],frequency=1,yname="",xname=""),plot.type=plot.type,xlab=xlab, ylab=ylab,main=main,type=type,...)
 }
-
+#' @export
 lines.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]), 
     datatype=ifelse(!is.null(x$rate),"rate",""),
     years=x$year, ages=x$age, max.age=max(x$age), transform=(x$type=="mortality"),
@@ -272,12 +272,12 @@ lines.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],n
   # Set other arguments to appropriate values
   lines(fts(data$age,y,start=years[1],frequency=1),plot.type=plot.type, ...)
 }
-
+#' @export
 points.demogdata <- function(...,pch=1)
 {
   lines.demogdata(...,type="p",pch=pch)
 }
-
+#' @export
 print.demogdata <- function(x,...)
 {
   Type <- x$type
@@ -292,11 +292,13 @@ print.demogdata <- function(x,...)
   minx <- ifelse(min(x$age) < 0,"B",min(x$age))
   cat(paste("\n    Ages: ",minx,"-",max(x$age),"\n"))
 }
-
+#' @export
 summary.demogdata <- function(object, ...)
 {
 	print(object)
 }
+
+#' @export
 extract.years <- function(data,years)
 {
   idx <- match(years,data$year)
@@ -344,7 +346,7 @@ extract.years <- function(data,years)
   return(data)
 }
 
-
+#' @export
 extract.ages <- function(data,ages,combine.upper=TRUE)
 {
 	no.pop <- is.null(data$pop)
@@ -403,7 +405,7 @@ extract.ages <- function(data,ages,combine.upper=TRUE)
   return(data)
 }
 
-
+#' @export
 set.upperage <- function(data, max.age)
 {
   if(max(data$age) < max.age)
@@ -491,7 +493,7 @@ get.series <- function(data,series)
   i <- match(toupper(series),toupper(names(data)))
   return(as.matrix(data[[i]]))
 }
-
+#' @export
 combine.demogdata <- function(obj1, obj2)
 {
   if(!is.element("demogdata",class(obj1))  | !is.element("demogdata",class(obj2)))
@@ -546,6 +548,7 @@ combine.demogdata <- function(obj1, obj2)
   return(structure(m.obj,class="demogdata"))
 }
 
+#' @export
 mean.demogdata <- function(x,series=names(x$rate)[1],transform=TRUE,na.rm=TRUE,...)
 {
   mx <- get.series(x$rate,series)
@@ -558,6 +561,7 @@ mean.demogdata <- function(x,series=names(x$rate)[1],transform=TRUE,na.rm=TRUE,.
   return(list(x=x$age,y=loc))
 }
 
+#' @export
 median.demogdata <- function(x,  na.rm=FALSE, series=names(x$rate)[1],
     transform=TRUE,method=c("hossjercroux","coordinate"),...)
 {
@@ -572,7 +576,7 @@ median.demogdata <- function(x,  na.rm=FALSE, series=names(x$rate)[1],
 
 
 # Sex ratios
-
+#' @export
 sex.ratio <- function(data) 
 {
   if (class(data) == "demogdata") 

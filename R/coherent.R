@@ -1,6 +1,6 @@
 
 # COHERENT FORECASTING FOR MULTIPLE GROUPS
-
+#' @export
 coherentfdm <- function(data, order1=6, order2=6, ...) 
 {
 	# Check if missing data
@@ -59,7 +59,7 @@ coherentfdm <- function(data, order1=6, order2=6, ...)
   return(structure(list(product=fdm.mean, ratio=fdm.ratio), class="fdmpr"))
 }
 
-
+#' @export
 forecast.fdmpr <- function(object, h=50, level=80, K=100, drange=c(0.0,0.5), ...) 
 {
   fcast.ratio <- fc <- totalvar.r <- list()
