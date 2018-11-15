@@ -1,6 +1,65 @@
 ####################################################
 ### FUNCTIONS FOR FUNCTIONAL DEMOGRAPHIC MODELS  ###
 ####################################################
+
+
+#' Functional demographic model
+#'
+#' Fits a basis function model to demographic data. The function uses optimal
+#' orthonormal basis functions obtained from a principal components
+#' decomposition.
+#'
+#' @param data demogdata object. Output from read.demogdata.
+#' @param series name of series within data holding rates (1x1).
+#' @param order Number of basis functions to fit.
+#' @param ages Ages to include in fit.
+#' @param max.age Maximum age to fit. Ages beyond this are collapsed into the
+#'   upper age group.
+#' @param method Method to use for principal components decomposition.
+#'   Possibilities are \dQuote{M}, \dQuote{rapca} and \dQuote{classical}. See
+#'   \code{\link[ftsa]{ftsm}} for details.
+#' @param lambda Tuning parameter for robustness when \code{method="M"}.
+#' @param mean If TRUE, will estimate mean term in the model before computing
+#'   basis terms. If FALSE, the mean term is assumed to be zero.
+#' @param level If TRUE, will include an additional (intercept) term that
+#'   depends on the year but not on ages.
+#' @param transform If TRUE, the data are transformed with a Box-Cox
+#'   transformation before the model is fitted.
+#' @param ... Extra arguments passed to \code{\link[ftsa]{ftsm}}.
+#'
+#' @return Object of class \dQuote{fdm} with the following components:
+#'   \item{label}{Name of country} \item{age}{Ages from \code{data} object.}
+#'   \item{year}{Years from \code{data} object.} \item{<series>}{Matrix of
+#'   demographic data as contained in \code{data}. It takes the name given by
+#'   the series argument.} \item{fitted}{Matrix of fitted values.}
+#'   \item{residuals}{Residuals (difference between observed and fitted).}
+#'   \item{basis}{Matrix of basis functions evaluated at each age level (one
+#'   column for each basis function). The first column is the fitted mean.}
+#'   \item{coeffs}{Matrix of coefficients (one column for each coefficient
+#'   series). The first column are all ones.} \item{mean.se}{Standard errors for
+#'   the estimated mean function.} \item{varprop}{Proportion of variation
+#'   explained by each basis function.} \item{weights}{Weight associated with
+#'   each time period.} \item{v}{Measure of variation for each time period.}
+#'   \item{type}{Data type (mortality, fertility, etc.)} \item{y}{The data
+#'   stored as a functional time series object.}
+#'
+#' @author Rob J Hyndman
+#' @references Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of
+#' mortality and fertility rates: a functional data approach.
+#' \emph{Computational Statistics & Data Analysis}, \bold{51}, 4942-4956.
+#' \url{http://robjhyndman.com/papers/funcfor}
+#'
+#' @seealso \code{\link[ftsa]{ftsm}}, \code{\link{forecast.fdm}}
+#'
+#' @examples
+#' france.fit <- fdm(fr.mort)
+#' summary(france.fit)
+#' plot(france.fit)
+#' plot(residuals(france.fit))
+#'
+#' @keywords models
+#'
+#'
 #' @export
 fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.age=max(ages),
     method=c("classical","M","rapca"), lambda=3, mean=TRUE, level=FALSE, transform=TRUE,...)
@@ -31,7 +90,8 @@ fdm <- function(data, series=names(data$rate)[1], order=6, ages=data$age, max.ag
     data.fts <- fts(ages,mx,start=data$year[1],xname="Age",yname=yname)
     fit <- ftsm(data.fts, order=order, method=method, mean=mean, level=level, lambda=lambda, ...)
 
-	# Adjust signs of output so that basis functions are primarily positive. (Easier to interpret.)
+	# Adjust signs of output so that basis functions are primarily positive.
+	# (Easier to interpret.)
 	nx <- length(data$age)
 	for(i in 1+(1:order))
 	{
@@ -84,6 +144,26 @@ print.fdm <- function(x,...)
     cat("\n")
 }
 
+#' Summary for functional demographic model or Lee-Carter model
+#'
+#' Summarizes a basis function model fitted to age-specific demographic rate
+#' data. It returns various measures of goodness-of-fit.
+#'
+#' @param object Output from \code{\link{fdm}} or \code{\link{lca}}.
+#' @param ... Other arguments.
+#'
+#' @seealso \code{\link{fdm}}, \code{\link{lca}}, \code{\link{bms}},
+#'   \code{\link{compare.demogdata}}
+#' @author Rob J Hyndman
+#' 
+#' @examples 
+#' fit1 <- lca(fr.mort)
+#' fit2 <- bms(fr.mort,breakmethod="bai")
+#' fit3 <- fdm(fr.mort)
+#' summary(fit1)
+#' summary(fit2)
+#' summary(fit3)
+#' @keywords models
 #' @export
 summary.fdm <- function(object,...)
 {
@@ -102,6 +182,7 @@ summary.fdm <- function(object,...)
     cat("\n")
 }
 
+
 #' @export
 summary.fdmpr <- function(object, ...)
 {
@@ -115,6 +196,32 @@ summary.fdmpr <- function(object, ...)
 	}
 }
 
+
+#' Compute residuals and fitted values from functional demographic model or
+#' Lee-Carter model
+#'
+#' After fitting a Lee-Carter model or functional demographic model, it is
+#' useful to inspect the residuals or plot the fitted values. These functions
+#' extract the relevant information from the fit object.
+#'
+#' @param object Output from \code{\link{fdm}} or \code{\link{lca}}.
+#' @param ... Other arguments.
+#'
+#' @return \code{residuals.fdm} and \code{residuals.lca} produce an object of
+#'   class \dQuote{fmres} containing the residuals from the model.
+#'   \code{fitted.fdm} and \code{fitted.lca} produce an object of class
+#'   \dQuote{fts} containing the fitted values from the model.
+#'
+#' @author Rob J Hyndman.
+#'
+#' @seealso \code{\link{fdm}}, \code{\link{lca}}, \code{\link{bms}}
+#'
+#' @examples
+#'   fit1 <- lca(fr.mort)
+#'   plot(residuals(fit1))
+#'   plot(fitted(fit1))
+#'
+#' @keywords models
 #' @export
 residuals.fdm <- function(object,...)
 {
@@ -122,6 +229,47 @@ residuals.fdm <- function(object,...)
 }
 
 
+#' Forecast functional demographic model.
+#'
+#' The coefficients from the fitted object are forecast using a univariate time
+#' series model. The forecast coefficients are then multiplied by the basis
+#' functions to obtain a forecast demographic rate curve.
+#'
+#' @param object Output from \code{\link{fdm}}.
+#' @param h Forecast horizon.
+#' @param level Confidence level for prediction intervals.
+#' @param jumpchoice If "actual", the forecasts are bias-adjusted by the
+#'   difference between the fit and the last year of observed data. Otherwise,
+#'   no adjustment is used.
+#' @param method Forecasting method to be used.
+#' @param warnings If TRUE, warnings arising from the forecast models for
+#'   coefficients will be shown. Most of these can be ignored, so the default is
+#'   \code{warnings=FALSE}.
+#' @param ... Other arguments as for \code{\link[ftsa]{forecast.ftsm}}.
+#'
+#' @return Object of class \code{fmforecast} with the following components:
+#'   \item{label}{Name of region from which the data are taken.} \item{age}{Ages
+#'   from \code{lcaout} object.} \item{year}{Years from \code{lcaout} object.}
+#'   \item{rate}{List of matrices containing forecasts, lower bound and upper
+#'   bound of prediction intervals. Point forecast matrix takes the same name as
+#'   the series that has been forecast.} \item{error}{Matrix of one-step errors
+#'   for historical data} \item{fitted}{Matrix of one-step forecasts for
+#'   historical data} \item{coeff}{List of objects of type \code{forecast}
+#'   containing the coefficients and their forecasts.}
+#'   \item{coeff.error}{One-step errors for each of the coefficients.}
+#'   \item{var}{List containing the various components of variance: model,
+#'   error, mean, total and coeff.} \item{model}{Fitted model in \code{obj}.}
+#'   \item{type}{Type of data: \dQuote{mortality}, \dQuote{fertility} or
+#'   \dQuote{migration}.}
+#' 
+#' @seealso \code{\link{fdm}}, \code{\link{forecast.lca}}, \code{\link[ftsa]{forecast.ftsm}}.
+#' @author Rob J Hyndman
+#' @examples 
+#' france.fit <- fdm(fr.mort,order=2)
+#' france.fcast <- forecast(france.fit,50)
+#' plot(france.fcast)
+#' models(france.fcast)
+#' @keywords models
 #' @export
 forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
     method="arima", warnings=FALSE, ...)
@@ -218,6 +366,37 @@ print.fmforecast <- function(x,...)
 }
 
 
+#' Plot forecasts from a functional demographic modell
+#'
+#' Type of plot depends on value of \code{plot.type}: \describe{
+#' \item{\code{plot.type="function"}}{produces a plot of the forecast
+#' functions;} \item{\code{plot.type="components"}}{produces a plot of the basis
+#' functions and coefficients with forecasts and prediction intervals for each
+#' coefficient;} \item{\code{plot.type="variance"}}{produces a plot of the
+#' variance components.} }
+#'
+#' @param x Output from \code{\link[ftsa]{forecast.ftsm}},
+#'   \code{\link{forecast.fdm}} or \code{\link{lca}}.
+#' @param plot.type Type of plot. See details.
+#' @param vcol Colors to use if \code{plot.type="variance"}.
+#' @param mean.lab Label for mean component.
+#' @param xlab2 x-axis label for coefficient time series.
+#' @param h If \code{plot.type="variance"}, h gives the forecast horizon for
+#'   which the variance is plotted.
+#' @param ... Other arguments are passed to \code{\link{plot.demogdata}} (if
+#'   \code{plot.type=="function"}), \code{\link[graphics]{plot}} (if
+#'   \code{plot.type=="variance"}) or \code{\link[ftsa]{plot.ftsf}} (if
+#'   \code{plot.type=="component"}).
+#'
+#' @return None. Function produces a plot
+#' @author Rob J Hyndman
+#' @seealso \link{fdm}, \link{lca}, \link{forecast.fdm}
+#' @examples
+#' france.fcast <- forecast(fdm(fr.mort))
+#' plot(france.fcast)
+#' plot(france.fcast,"c")
+#' plot(france.fcast,"v")
+#' @keywords hplot
 #' @export
 plot.fmforecast <- function(x,plot.type=c("function","component","variance"),vcol=1:4,mean.lab="Mean",
     xlab2="Year",h=1,...)
@@ -253,10 +432,34 @@ plot.fmforecast <- function(x,plot.type=c("function","component","variance"),vco
     }
 }
 
+#' Show model information for the forecast coefficients in FDM models.
+#' 
+#' The models for the time series coefficients used in forecasting fdm models are shown.
+#' 
+#' 
+#' @param object Output from \code{\link{forecast.fdm}} or \code{\link{forecast.fdmpr}}.
+#' @param select Indexes of coefficients to display. If select=0, all coefficients are displayed.
+#' @param ... Other arguments.
+#' 
+#' @author Rob J Hyndman
+#' @seealso \code{\link{forecast.fdm}}, \code{\link{forecast.fdmpr}}.
+#' @examples 
+#' \dontrun{
+#' fr.short <- extract.years(fr.sm,1950:2006)
+#' fr.fit <- fdm(fr.short,series="male")
+#' fr.fcast <- forecast(fr.fit)
+#' models(fr.fcast)
+#' 
+#' fr.fit <- coherentfdm(fr.short)
+#' fr.fcast <- forecast(fr.fit)
+#' models(fr.fcast,select=1:3)
+#' }
+#' @keywords models
 #' @export
 models <- function(object, ...)
 UseMethod("models")
 
+#' @rdname models
 #' @export
 models.fmforecast <- function(object, select=0, ...)
 {
@@ -272,6 +475,7 @@ models.fmforecast <- function(object, select=0, ...)
 	}
 }
 
+#' @rdname models
 #' @export
 models.fmforecast2 <- function(object, ...)
 {
@@ -355,6 +559,59 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
 }
 
 
+#' Evaluation of demographic forecast accuracy
+#'
+#' Computes mean forecast errors and mean square forecast errors for each age
+#' level. Computes integrated squared forecast errors and integrated absolute
+#' percentage forecast errors for each year.
+#'
+#' @param data Demogdata object such as created using
+#'   \code{\link{read.demogdata}} containing actual demographic rates.
+#' @param forecast Demogdata object such as created using
+#'   \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}.
+#' @param series Name of series to use. Default: the first matrix within
+#'   \code{forecast$rate}.
+#' @param ages Ages to use for comparison. Default: all available ages.
+#' @param max.age Upper age to use for comparison.
+#' @param years Years to use in comparison. Default is to use all available
+#'   years that are common between data and forecast.
+#' @param interpolate If TRUE, all zeros in data are replaced by interpolated
+#'   estimates when computing the error measures on the log scale. Error
+#'   measures on the original (rate) scale are unchanged.
+#'
+#' @return Object of class "errorfdm" with the following components:
+#'   \item{label}{Name of region from which data taken.} 
+#'   \item{age}{Ages from \code{data} object.} 
+#'   \item{year}{Years from \code{data} object.}
+#'   \item{<error>}{Matrix of forecast errors on rates.}
+#'   \item{<logerror>}{Matrix of forecast errors on log rates.}
+#'   \item{mean.error}{Various measures of forecast accuracy averaged across
+#'   years. Specifically ME=mean error, MSE=mean squared error, MPE=mean
+#'   percentage error and MAPE=mean absolute percentage error.}
+#'   \item{int.error}{Various measures of forecast accuracy integrated across
+#'   ages. Specifically IE=integrated error, ISE=integrated squared error,
+#'   IPE=integrated percentage error and IAPE=integrated absolute percentage
+#'   error.} 
+#'   \item{life.expectancy}{If \code{data$type="mortality"}, function
+#'   returns this component which is a matrix containing actual, forecast and
+#'   actual-forecast for life expectancies.} Note that the error matrices have
+#'   different names indicating if the series forecast was male, female or
+#'   total.
+#'
+#' @seealso  \link{forecast.fdm},\link{plot.errorfdm}
+#' @author Rob J Hyndman
+#' @examples
+#' fr.test <- extract.years(fr.sm,years=1921:1980)
+#' fr.fit <- fdm(fr.test,order=2)
+#' fr.error <- compare.demogdata(fr.mort, forecast(fr.fit,20))
+#' plot(fr.error)
+#' par(mfrow=c(2,1))
+#' plot(fr.error$age,fr.error$mean.error[,"ME"],
+#'      type="l",xlab="Age",ylab="Mean Forecast Error")
+#' plot(fr.error$int.error[,"ISE"],
+#'      xlab="Year",ylab="Integrated Square Error")
+#' 
+#' @keywords models
 #' @export
 compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
     ages = data$age, max.age=min(max(data$age),max(forecast$age)), years=data$year,
@@ -403,6 +660,7 @@ compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
     return(structure(fred,class="errorfdm"))
 }
 
+#' @rdname residuals.fdm
 #' @export
 fitted.fdm <- function(object,...)
 {
@@ -434,6 +692,22 @@ print.errorfdm <- function(x,...)
     }
 }
 
+#' Plot differences between actuals and estimates from fitted demographic model
+#' 
+#' Function produces a plot of errors from a fitted demographic model.
+#' 
+#' @param x Object of class \code{"errorfdm"} generated by \code{\link{compare.demogdata}}.
+#' @param transform Plot errors on transformed scale or original scale?
+#' @param ... Plotting parameters.
+#' 
+#' @seealso \link{compare.demogdata}
+#' @author Rob J Hyndman
+#' @examples 
+#' fr.fit <- lca(extract.years(fr.mort,years=1921:1980))
+#' fr.error <- compare.demogdata(fr.mort, forecast(fr.fit,20))
+#' plot(fr.error)
+#' 
+#' @keywords hplot
 #' @export
 plot.errorfdm <- function(x,transform=TRUE,...)
 {
@@ -441,10 +715,40 @@ plot.errorfdm <- function(x,transform=TRUE,...)
     plot(fts(x=x$age,y=x[[i]],start=x$year[1],frequency=1,xname="Age",yname=names(x)[i]),...)
 }
 
+#' Integrated Squared Forecast Error for models of various orders
+#' 
+#' Computes ISFE values for functional time series models of various orders.
+#' 
+#' 
+#' @param data demogdata object.
+#' @param series name of series within data holding rates (1x1)
+#' @param ages Ages to include in fit.
+#' @param max.age Maximum age to fit.
+#' @param max.order Maximum number of basis functions to fit.
+#' @param N Minimum number of functional observations to be used in fitting a
+#'   model.
+#' @param h Forecast horizons over which to average.
+#' @param method Method to use for principal components decomposition.
+#'   Possibilities are \dQuote{M}, \dQuote{rapca} and \dQuote{classical}.
+#' @param fmethod Method used for forecasting. Current possibilities are
+#'   \dQuote{ets}, \dQuote{arima}, \dQuote{ets.na}, \dQuote{struct},
+#'   \dQuote{rwdrift} and \dQuote{rw}.
+#' @param lambda Tuning parameter for robustness when \code{method="M"}.
+#' @param ... Additional arguments control the fitting procedure.
+#'
+#' @return Numeric matrix with \code{(max.order+1)} rows and \code{length(h)} columns
+#' containing ISFE values for models of orders 0:max.order.
+#' 
+#' @author Rob J Hyndman
+#' @references Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of mortality and
+#' fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis}, 
+#' \bold{51}, 4942-4956. \url{http://robjhyndman.com/papers/funcfor}
+#' @keywords models
+#' @seealso \code{\link{fdm}}, \code{\link{forecast.fdm}}.
 #' @export
 isfe <- function(...) UseMethod("isfe")
 
-
+#' @rdname isfe
 #' @export
 isfe.demogdata <- function(data,series=names(data$rate)[1],max.order=N-3,N=10,h=5:10,
         ages=data$age, max.age=max(ages),
