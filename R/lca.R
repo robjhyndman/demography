@@ -340,9 +340,9 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
 
     # Time series estimation of kt as Random walk with drift
     fit <- forecast::rwf(object$kt, drift=TRUE)
-    kt.drift <- fit$model$drift
-    sec <- fit$model$drift.se
-    see <- fit$model$sd
+    kt.drift <- fit$model$par$drift
+    sec <- fit$model$par$drift.se
+    see <- sqrt(fit$model$sigma2)
 
     # Project kt
     x <- 1:h
