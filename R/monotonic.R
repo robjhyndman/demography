@@ -1,16 +1,53 @@
-cm.splinefun <- function(x, y = NULL, ...) 
-# wrapper for splinefun()
-# Function retained for backwards compatibility
-{ 
-    stats::splinefun(x, y, method="hyman")
-}
 
+
+
+#' Monotonic interpolating splines
+#' 
+#' Perform cubic spline monotonic interpolation of given data points, returning either a list of points obtained by the interpolation or a function performing the interpolation. The splines are constrained to be monotonically increasing (i.e., the slope is never negative).
+#' 
+#' These are simply wrappers to the \code{\link[stats]{splinefun}} function family from the stats package.
+#' 
+#' @param x,y vectors giving the coordinates of the points to be interpolated. Alternatively a single plotting structure can be specified: see \code{\link[grDevices]{xy.coords}}.
+#' @param n interpolation takes place at n equally spaced points spanning the interval [\code{xmin}, \code{xmax}].
+#' @param xmin left-hand endpoint of the interpolation interval.
+#' @param xmax right-hand endpoint of the interpolation interval.
+#' @param ... Other arguments are ignored.
+#' 
+#' @return \item{cm.spline}{returns a list containing components \code{x} and \code{y} which give the ordinates where interpolation took place and the interpolated values.}
+#' \item{cm.splinefun}{returns a function which will perform cubic spline interpolation of the given data points. This is often more useful than \code{spline}.}
+#' 
+#' @references Forsythe, G. E., Malcolm, M. A. and Moler, C. B. (1977) \emph{Computer Methods for Mathematical Computations}.
+#' Hyman (1983) \emph{SIAM J. Sci. Stat. Comput.} \bold{4}(4):645-654.
+#' Dougherty, Edelman and Hyman 1989 \emph{Mathematics of Computation}, \bold{52}: 471-494. 
+#' 
+#' @author Rob J Hyndman
+#' 
+#' @examples 
+#' x <- seq(0,4,l=20)
+#' y <- sort(rnorm(20))
+#' plot(x,y)
+#' lines(spline(x, y, n = 201), col = 2) # Not necessarily monotonic
+#' lines(cm.spline(x, y, n = 201), col = 3) # Monotonic
+#' @keywords smooth
+#' @aliases monotonic
+#' @export
 cm.spline <- function (x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...) 
 # wrapper for spline()
 # Function retained for backwards compatibility
 {
     stats::spline(x, y, n=n, xmin=xmin, xmax=xmax, method="hyman")
 }
+
+
+#' @rdname cm.spline
+#' @export
+cm.splinefun <- function(x, y = NULL, ...) 
+  # wrapper for splinefun()
+  # Function retained for backwards compatibility
+{ 
+  stats::splinefun(x, y, method="hyman")
+}
+
 
 # Function to do cubic smoothing spline fit to y ~ x
 # with constraint of monotonic increasing for x>b.

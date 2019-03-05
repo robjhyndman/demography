@@ -1,6 +1,34 @@
 # Function to simulate future sample paths of functional data
 # given output from forecast.fdm
-
+#' Simulate future sample paths from functional demographic model forecasts.
+#' 
+#' This function will simulate future sample paths given forecasting models 
+#' from a functional demographic model such as those obtained using \code{\link{forecast.fdm}} or \code{\link{forecast.fdmpr}}.
+#' 
+#' @param object Object of class \code{fmforecast}. Typically, this is output from \code{\link{forecast.fdm}}.
+#' @param nsim Number of sample paths to simulate.
+#' @param seed Either NULL or an integer that will be used in a call to set.seed before simulating the time seriers.
+#'   The default, NULL will not change the random generator state.
+#' @param bootstrap If TRUE, simulation uses resampled errors rather than normally distributed errors.
+#' @param adjust.modelvar If TRUE, will adjust the model variance by the ratio of the empirical and theoretical variances for one-step forecasts.
+#' @param ... Other arguments passed to \code{simulate.fmforecast}.
+#' 
+#' @return An array containing the future simulated values (in the case of a \code{fmforecast} object), 
+#' or a list of arrays containing the future simulated values (in the case of a \code{fmforecast2} object).
+#' 
+#' @author Rob J Hyndman
+#' @seealso \code{\link{forecast.fdm}}, \code{\link{forecast.lca}}, \code{\link[ftsa]{forecast.ftsm}}.
+#' @examples 
+#' \dontrun{
+#' france.fit <- fdm(fr.mort,order=2)
+#' france.fcast <- forecast(france.fit,50,method="ets")
+#' france.sim <- simulate(france.fcast,nsim=100)
+#' 
+#' france.fit2 <- coherentfdm(fr.sm)
+#' france.fcast2 <- forecast(france.fit2,50)
+#' france.sim2 <- simulate(france.fcast2,nsim=100)}
+#' @keywords models
+#' @export
 simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjust.modelvar=TRUE,...)
 {
   n <- length(object$model$year)
@@ -60,7 +88,8 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
   return(output)
 }
 
-
+#' @rdname simulate.fmforecast
+#' @export
 simulate.fmforecast2 <- function (object, ...) 
 {
 	is.mortality <- (object$ratio[[1]]$type == "mortality")

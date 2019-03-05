@@ -1,3 +1,31 @@
+
+#' Compute total fertility rate from fertility rates
+#'
+#' Compute total fertility rates from age-specific fertility rates contained in
+#' a \code{demogdata} object.
+#'
+#' @param data Demogdata object of type \code{"fertility"} such as obtained from
+#'   \code{\link{read.demogdata}}, \code{\link{forecast.fdm}}.
+#' @param PI If TRUE, produce a prediction interval.
+#' @param nsim Number of simulations to use when computing a prediction
+#'   interval.
+#' @param ... Other arguments passed to \code{simulate} when producing
+#'   prediction intervals.
+#'
+#' @return If data are of class \code{demogdata}, the function returns a time
+#'   series of fertility rates. If data are from \code{\link{forecast.fdm}}, the
+#'   function returns an object of class \code{forecast} containing point
+#'   forecasts and (optionally) prediction intervals.
+#'
+#' @author Rob J Hyndman
+#' @seealso \code{\link{fdm}}
+#' @examples 
+#' plot(tfr(aus.fert))
+#' ausfert.fcast <- forecast(fdm(aus.fert))
+#' plot(tfr(ausfert.fcast,PI=TRUE,nsim=400))
+#' 
+#' @keywords models
+#' @export
 tfr <- function(data, PI=FALSE, nsim=500, ...)
 {
     if(!is.element("demogdata",class(data)))

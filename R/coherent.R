@@ -1,6 +1,43 @@
 
 # COHERENT FORECASTING FOR MULTIPLE GROUPS
 
+#' Coherent functional demographic model for grouped data
+#'
+#' Fits a coherent functional model to demographic data as described in Hyndman,
+#' Booth & Yasmeen (2012). If two of the series in \code{data} are named
+#' \code{male} and \code{female}, then it will use these two groups. Otherwise
+#' it will use all available groups.
+#'
+#' @param data demogdata object containing at least two groups.
+#' @param order1 Number of basis functions to fit to the model for the geometric
+#'   mean.
+#' @param order2 Number of basis functions to fit to the models for each ratio.
+#' @param ... Extra arguments passed to \code{\link{fdm}}.
+#'
+#' @return A list (of class \code{fdmpr}) consisting of two objects:
+#'   \code{product} (an \code{\link{fdm}} object containing a del for the
+#'   geometric mean of the data) and \code{ratio} (a list of \code{\link{fdm}}
+#'   objects, being the models for the ratio of each series with the geometric
+#'   mean).
+#'
+#' @author Rob J Hyndman
+#'
+#' @references Hyndman, R.J., Booth, H., and Yasmeen, F. (2012) Coherent
+#' mortality forecasting: the product-ratio method with functional time series
+#' models. \emph{Demography}, to appear.
+#' \url{http://robjhyndman.com/papers/coherentfdm}
+#'
+#' @seealso \code{\link{fdm}}, \code{\link{forecast.fdmpr}}
+#'
+#' @examples
+#' fr.short <- extract.years(fr.sm,1950:2006)
+#' fr.fit <- coherentfdm(fr.short)
+#' summary(fr.fit)
+#' plot(fr.fit$product, components=3)
+#' @keywords models
+#'
+#'
+#' @export
 coherentfdm <- function(data, order1=6, order2=6, ...) 
 {
 	# Check if missing data
@@ -60,6 +97,36 @@ coherentfdm <- function(data, order1=6, order2=6, ...)
 }
 
 
+
+#' Forecast coherent functional demographic model.
+#'
+#' The product and ratio models from \code{\link{coherentfdm}} are forecast, and
+#' the results combined to give forecasts for each group in the original data.
+#'
+#' @param object Output from \code{\link{coherentfdm}}.
+#' @param h Forecast horizon.
+#' @param level Confidence level for prediction intervals.
+#' @param K Maximum number of years to use in forecasting coefficients for ratio
+#'   components.
+#' @param drange Range of fractional differencing parameter for the ratio
+#'   coefficients.
+#' @param ... Other arguments as for \code{\link{forecast.fdm}}.
+#'
+#' @return Object of class \code{fmforecast2} containing a list of objects each
+#'   of class \code{fmforecast}. The forecasts for each group in the original
+#'   data are given first. Then the forecasts from the product model, and
+#'   finally a list of forecasts from each of the ratio models.
+#' @author Rob J Hyndman
+#' @seealso \code{\link{coherentfdm}}, \code{\link{forecast.fdm}}.
+#' @examples fr.short <- extract.years(fr.sm,1950:2006)
+#' fr.fit <- coherentfdm(fr.short)
+#' fr.fcast <- forecast(fr.fit)
+#' plot(fr.fcast$male)
+#' plot(fr.fcast$ratio$male, plot.type='component', components=3)
+#' models(fr.fcast)
+#' 
+#' @keywords models
+#' @export
 forecast.fdmpr <- function(object, h=50, level=80, K=100, drange=c(0.0,0.5), ...) 
 {
   fcast.ratio <- fc <- totalvar.r <- list()
