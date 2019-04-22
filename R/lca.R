@@ -10,14 +10,14 @@
 #' standard Lee-Carter model by default, although many other options are
 #' available. \code{bms} is a wrapper for \code{lca} and returns a model based
 #' on the Booth-Maindonald-Smith methodology.
-#' 
-#' 
+#'
+#'
 #' All mortality or fertility data are assumed to be in matrices of
 #' mortality or fertility rates within \code{data$rate}. Each row is one age group
 #' (assumed to be single years). Each column is one year. The
 #' function produces a model for the \code{series} mortality or fertility rate matrix
 #' within \code{data$rate}. Forecasts from this model can be obtained using \code{\link{forecast.lca}}.
-#' 
+#'
 #' @param data demogdata object of type \dQuote{mortality} or
 #'   \dQuote{fertility}. Output from read.demogdata.
 #' @param series name of series within data containing mortality or fertility
@@ -38,14 +38,14 @@
 #' @param breakmethod method to use for identifying breakpoints if
 #'   chooseperiod=TRUE. Possibilities are \dQuote{bai} (Bai's method computed
 #'   using \code{\link[strucchange]{breakpoints}} in the strucchange package)
-#'   and \dQuote{bms} (method based on mean deviance ratios described in BMS). 
+#'   and \dQuote{bms} (method based on mean deviance ratios described in BMS).
 #' @param scale If TRUE, it will rescale bx and kt so that kt has drift
 #'   parameter = 1.
 #' @param restype method to use for calculating residuals. Possibilities are
 #'   \dQuote{logrates}, \dQuote{rates} and \dQuote{deaths}.
 #' @param interpolate If TRUE, it will estimate any zero mortality or fertility
 #'   rates using the same age group from nearby years.
-#' 
+#'
 #' @return Object of class \dQuote{lca} with the following components:
 #' \item{label}{Name of region}
 #' \item{age}{Ages from \code{data} object.}
@@ -59,24 +59,24 @@
 #' \item{varprop}{Proportion of variance explained by model.}
 #' \item{y}{The data stored as a functional time series object.}
 #' \item{mdev}{Mean deviance of total and base lack of fit, as described in Booth, Maindonald and Smith.}
-#' 
+#'
 #' @references Booth, H., Maindonald, J., and Smith, L. (2002) Applying Lee-Carter
 #' under conditions of variable mortality decline. \emph{Population Studies}, \bold{56}, 325-336.
-#' 
+#'
 #' Lee, R.D., and Carter, L.R. (1992) Modeling and forecasting US mortality. \emph{Journal of
 #'   the American Statistical Association}, \bold{87}, 659-671.
-#' 
+#'
 #' @author Heather Booth, Leonie Tickle, John Maindonald and Rob J Hyndman.
-#' 
+#'
 #' @seealso \code{\link{forecast.lca}}, \code{\link{fdm}}
-#' @examples 
+#' @examples
 #' \dontrun{
 #' france.LC1 <- lca(fr.mort, adjust="e0")
 #' plot(france.LC1)
 #' par(mfrow=c(1,2))
 #' plot(fr.mort,years=1953:2002,ylim=c(-11,1))
 #' plot(forecast(france.LC1,jumpchoice="actual"),ylim=c(-11,1))
-#' 
+#'
 #' france.bms <- bms(fr.mort, breakmethod="bai")
 #' fcast.bms <- forecast(france.bms)
 #' par(mfrow=c(1,1))
@@ -127,10 +127,10 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     deltat <- year[2]-year[1]
     ages <- data$age
     n <- length(ages)
-    m <- sum(id2>0)
+    m <- length(year)
     mx <- matrix(mx,nrow=n,ncol=m)
-#    n <- nrow(mx) # number of ages
-#    m <- ncol(mx) # number of years
+    colnames(mx) <- year
+    rownames(mx) <- ages
 
     # Interpolate where rates are zero
     if(interpolate)
@@ -258,6 +258,8 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
 
     # Estimate rates from fitted values and get residuals
     logfit <- fitmx(kt,ax,bx,transform=TRUE)
+    colnames(logfit) <- ages
+    rownames(logfit) <- year
     if(restype=="logrates")
     {
         fit <- logfit
@@ -302,7 +304,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     #Return
     output <- list(label=data$label,age=ages,year=year, mx=t(mx),
         ax=ax, bx=bx, kt=ts(kt,start=startyear,deltat=deltat), residuals=residuals, fitted=fitted,
-        varprop=svd.mx$d[1]^2/sum(svd.mx$d^2), 
+        varprop=svd.mx$d[1]^2/sum(svd.mx$d^2),
         y=fts(ages,t(mx),start=years[1],frequency=1/deltat,xname="Age",
               yname=ifelse(data$type == "mortality", "Mortality", "Fertility")),
         mdev=mdev)
@@ -361,7 +363,7 @@ plot.lca <- function(x,...)
         xlab <- "kt (adjusted)"
     else
         xlab <- "kt"
-    ftsa::plot.ftsm(x,1,"Age","bx","Year",xlab,mean.lab="ax",...)
+    ftsa::plot.ftsm(x,1,xlab1="Age",ylab1="bx",xlab2="Year",ylab2=xlab,mean.lab="ax",...)
 }
 
 #' @export
@@ -408,18 +410,18 @@ printout <- function(output)
 # Function performs predictions of k and life expectancy based on leecarter results (in lcaout)
 
 #' Forecast demogdata data using Lee-Carter method.
-#' 
+#'
 #' The kt coefficients are forecast using a random walk with drift.
 #' The forecast coefficients are then multiplied by bx to
 #' obtain a forecast demographic rate curve.
-#' 
+#'
 #' @param object Output from \code{\link{lca}}.
 #' @param h Number of years ahead to forecast.
 #' @param se Method used for computation of standard error. Possibilities: \dQuote{innovdrift} (innovations and drift) and \dQuote{innovonly} (innovations only).
 #' @param jumpchoice Method used for computation of jumpchoice. Possibilities: \dQuote{actual} (use actual rates from final year) and \dQuote{fit} (use fitted rates).
 #' @param level Confidence level for prediction intervals.
 #' @param ... Other arguments.
-#' 
+#'
 #' @return Object of class \code{fmforecast} with the following components:
 #' \item{label}{Region from which the data are taken.}
 #' \item{age}{Ages from \code{object}.}
@@ -432,9 +434,9 @@ printout <- function(output)
 #' \item{kt.f}{Forecasts of coefficients from the model.}
 #' \item{type}{Data type.}
 #' \item{model}{Details about the fitted model}
-#' 
+#'
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' france.lca <- lca(fr.mort, adjust="e0")
 #' france.fcast <- forecast(france.lca, 50)
 #' plot(france.fcast)
@@ -485,7 +487,10 @@ forecast.lca <- function(object, h=50, se=c("innovdrift","innovonly"), jumpchoic
 
     # Calculate expected life and mx forecasts
     e0.forecast <- rep(0,h)
-    mx.forecast <- mx.lo.forecast <- mx.hi.forecast <- matrix(0,nrow=nages,ncol=h)
+    mx.forecast <- matrix(0,nrow=nages,ncol=h)
+    colnames(mx.forecast) <- seq(h)
+    rownames(mx.forecast) <- object$age
+    mx.lo.forecast <- mx.hi.forecast <- mx.forecast
     logjumprates <- log(jumprates)
     series <- names(object)[4]
     agegroup <- object$age[4]-object$age[3]
