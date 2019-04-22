@@ -155,8 +155,8 @@ print.fdm <- function(x,...)
 #' @seealso \code{\link{fdm}}, \code{\link{lca}}, \code{\link{bms}},
 #'   \code{\link{compare.demogdata}}
 #' @author Rob J Hyndman
-#' 
-#' @examples 
+#'
+#' @examples
 #' fit1 <- lca(fr.mort)
 #' fit2 <- bms(fr.mort,breakmethod="bai")
 #' fit3 <- fdm(fr.mort)
@@ -261,10 +261,10 @@ residuals.fdm <- function(object,...)
 #'   error, mean, total and coeff.} \item{model}{Fitted model in \code{obj}.}
 #'   \item{type}{Type of data: \dQuote{mortality}, \dQuote{fertility} or
 #'   \dQuote{migration}.}
-#' 
+#'
 #' @seealso \code{\link{fdm}}, \code{\link{forecast.lca}}, \code{\link[ftsa]{forecast.ftsm}}.
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' france.fit <- fdm(fr.mort,order=2)
 #' france.fcast <- forecast(france.fit,50)
 #' plot(france.fcast)
@@ -425,31 +425,31 @@ plot.fmforecast <- function(x,plot.type=c("function","component","variance"),vco
                 xlab <- "kt (adjusted)"
             else
                 xlab <- "kt"
-            plot.ftsf(x, "component", xlab2=xlab2, ylab2=xlab, mean.lab="ax", ...)
+            plot.ftsf(x, plot.type="component", xlab2=xlab2, ylab2=xlab, mean.lab="ax", ...)
         }
         else
-            plot.ftsf(x, "component", xlab2=xlab2, mean.lab=mean.lab, ...)
+            plot.ftsf(x, plot.type="component", xlab2=xlab2, mean.lab=mean.lab, ...)
     }
 }
 
 #' Show model information for the forecast coefficients in FDM models.
-#' 
+#'
 #' The models for the time series coefficients used in forecasting fdm models are shown.
-#' 
-#' 
+#'
+#'
 #' @param object Output from \code{\link{forecast.fdm}} or \code{\link{forecast.fdmpr}}.
 #' @param select Indexes of coefficients to display. If select=0, all coefficients are displayed.
 #' @param ... Other arguments.
-#' 
+#'
 #' @author Rob J Hyndman
 #' @seealso \code{\link{forecast.fdm}}, \code{\link{forecast.fdmpr}}.
-#' @examples 
+#' @examples
 #' \dontrun{
 #' fr.short <- extract.years(fr.sm,1950:2006)
 #' fr.fit <- fdm(fr.short,series="male")
 #' fr.fcast <- forecast(fr.fit)
 #' models(fr.fcast)
-#' 
+#'
 #' fr.fit <- coherentfdm(fr.short)
 #' fr.fcast <- forecast(fr.fit)
 #' models(fr.fcast,select=1:3)
@@ -468,7 +468,7 @@ models.fmforecast <- function(object, select=0, ...)
 	for(i in select)
 	{
 		cat("\n-- Coefficient",i,"--\n")
-        mod <- object$coeff[[i+1]]$model$model 
+        mod <- object$coeff[[i+1]]$model$model
         if(is.null(mod))
             mod <- object$coeff[[i+1]]$model
 		print(mod)
@@ -518,24 +518,24 @@ fdmMISE <- function(actual,estimate,age=NULL,years=NULL,neval=1000)
 # Following function adapted from MISE borrowed from the ftsa package
 # Originally written by RJH a long time ago before Han took over ftsa package
 # Not exported by ftsa, and so included here to avoid using ::: in a call
-ftsaMISE <- function (actual, estimate, neval = 1000) 
+ftsaMISE <- function (actual, estimate, neval = 1000)
 {
   m <- stats::frequency(actual$time)
   s <- stats::start(actual$time)
   x <- actual$x
   p <- length(x)
   n <- ncol(actual$y)
-  if (length(estimate$x)!=p | nrow(actual$y)!=p | p!=nrow(estimate$y) | n!=ncol(estimate$y)) 
+  if (length(estimate$x)!=p | nrow(actual$y)!=p | p!=nrow(estimate$y) | n!=ncol(estimate$y))
     stop("Dimensions of inputs don't match")
-  if (max(abs(actual$x - estimate$x)) > 1e-05) 
+  if (max(abs(actual$x - estimate$x)) > 1e-05)
     stop("Different x variables")
   e <- estimate$y - actual$y
   e.big <- pe.big <- matrix(NA, nrow = neval, ncol = n)
   pe <- e/actual$y
   pe.big <- matrix(NA, nrow = neval, ncol = n)
-  for (i in 1:n) 
+  for (i in 1:n)
   {
-    if (sum(is.na(e[, i])) == 0) 
+    if (sum(is.na(e[, i])) == 0)
     {
       idx <- (abs(e[,i]) == Inf) | is.na(e[,i])
       e.big[,i] <- stats::spline(x[!idx], e[!idx, i], n = neval, method = "natural")$y
@@ -580,8 +580,8 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
 #'   measures on the original (rate) scale are unchanged.
 #'
 #' @return Object of class "errorfdm" with the following components:
-#'   \item{label}{Name of region from which data taken.} 
-#'   \item{age}{Ages from \code{data} object.} 
+#'   \item{label}{Name of region from which data taken.}
+#'   \item{age}{Ages from \code{data} object.}
 #'   \item{year}{Years from \code{data} object.}
 #'   \item{<error>}{Matrix of forecast errors on rates.}
 #'   \item{<logerror>}{Matrix of forecast errors on log rates.}
@@ -591,7 +591,7 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
 #'   \item{int.error}{Various measures of forecast accuracy integrated across
 #'   ages. Specifically IE=integrated error, ISE=integrated squared error,
 #'   IPE=integrated percentage error and IAPE=integrated absolute percentage
-#'   error.} 
+#'   error.}
 #'   \item{life.expectancy}{If \code{data$type="mortality"}, function
 #'   returns this component which is a matrix containing actual, forecast and
 #'   actual-forecast for life expectancies.} Note that the error matrices have
@@ -610,7 +610,7 @@ ftsaMISE <- function (actual, estimate, neval = 1000)
 #'      type="l",xlab="Age",ylab="Mean Forecast Error")
 #' plot(fr.error$int.error[,"ISE"],
 #'      xlab="Year",ylab="Integrated Square Error")
-#' 
+#'
 #' @keywords models
 #' @export
 compare.demogdata <- function(data, forecast, series=names(forecast$rate)[1],
@@ -693,20 +693,20 @@ print.errorfdm <- function(x,...)
 }
 
 #' Plot differences between actuals and estimates from fitted demographic model
-#' 
+#'
 #' Function produces a plot of errors from a fitted demographic model.
-#' 
+#'
 #' @param x Object of class \code{"errorfdm"} generated by \code{\link{compare.demogdata}}.
 #' @param transform Plot errors on transformed scale or original scale?
 #' @param ... Plotting parameters.
-#' 
+#'
 #' @seealso \link{compare.demogdata}
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' fr.fit <- lca(extract.years(fr.mort,years=1921:1980))
 #' fr.error <- compare.demogdata(fr.mort, forecast(fr.fit,20))
 #' plot(fr.error)
-#' 
+#'
 #' @keywords hplot
 #' @export
 plot.errorfdm <- function(x,transform=TRUE,...)
@@ -716,10 +716,10 @@ plot.errorfdm <- function(x,transform=TRUE,...)
 }
 
 #' Integrated Squared Forecast Error for models of various orders
-#' 
+#'
 #' Computes ISFE values for functional time series models of various orders.
-#' 
-#' 
+#'
+#'
 #' @param data demogdata object.
 #' @param series name of series within data holding rates (1x1)
 #' @param ages Ages to include in fit.
@@ -738,10 +738,10 @@ plot.errorfdm <- function(x,transform=TRUE,...)
 #'
 #' @return Numeric matrix with \code{(max.order+1)} rows and \code{length(h)} columns
 #' containing ISFE values for models of orders 0:max.order.
-#' 
+#'
 #' @author Rob J Hyndman
 #' @references Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of mortality and
-#' fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis}, 
+#' fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis},
 #' \bold{51}, 4942-4956. \url{http://robjhyndman.com/papers/funcfor}
 #' @keywords models
 #' @seealso \code{\link{fdm}}, \code{\link{forecast.fdm}}.
