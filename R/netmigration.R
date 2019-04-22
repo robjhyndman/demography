@@ -11,7 +11,7 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 
   # Find years with both mortality and fertility data and startpop data
   yrs <- mort$year[sort(match(fert$year, mort$year))]
-  yrs <- mort$year[sort(match(startyearpop$year,mort$year))]
+  yrs <- yrs[sort(match(startyearpop$year,yrs))]
   if(max(startyearpop$year) > max(yrs))
     startyearpop <- extract.years(startyearpop, c(yrs,max(yrs)+1))
   else
@@ -76,9 +76,9 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 # and mig are fmforecast2 objects and fert is a fmforecast object.  If they are NULL, it is assumed
 # all values are zero.
 #' Population simulation
-#' 
+#'
 #' Simulate future sample paths of a population using functional models for mortality, fertility and migration.
-#' 
+#'
 #' @param mort Forecasts of class \code{fmforecast2} for mortality.
 #' @param fert Forecasts of class \code{fmforecast} for female fertility.
 #' @param mig Forecasts of class \code{fmforecast2} for net migration.
@@ -86,9 +86,9 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 #' @param N Number of sample paths to simulate.
 #' @param mfratio Male-female ratio used in distributing births.
 #' @param bootstrap If TRUE, simulation uses resampled errors rather than normally distributed errors.
-#' 
-#' @return A list of two arrays containing male and female future simulated population values. 
-#' The arrays are of dimension (p,h,N) where p is the number of age groups, h is the forecast horizon 
+#'
+#' @return A list of two arrays containing male and female future simulated population values.
+#' The arrays are of dimension (p,h,N) where p is the number of age groups, h is the forecast horizon
 #' and N is the number of simulated sample paths.
 #' @author Rob J Hyndman
 #' @seealso \code{\link{simulate.fmforecast}}, \code{\link{simulate.fmforecast2}}.
@@ -109,7 +109,7 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 #' mig.fcast <- forecast(mig.fit)
 #' # Simulate
 #' aus.sim <- pop.sim(mort.fcast,fert.fcast,mig.fcast,australia)}
-#' 
+#'
 #' @keywords models
 #' @export
 pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfratio = 1.05, bootstrap = FALSE)
