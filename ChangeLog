@@ -1,3 +1,11 @@
+v1.22
+ - Made compatible with latest rainbow and ftsa packages
+
+v1.21
+ - Using https for HMD
+ - roxygenized all documentation
+ - made compatible with latest forecast package
+
 v1.20
  - Removed dependency on ftsa now that we no longer need a special median function.
 
@@ -5,8 +13,8 @@ v1.19
  - Lots of clean up to conform to CRAN policy
  - Fixed conflicts with some packages
  - total life expectancy for coherentfdm added
- - Added PI for coherent total life expectancy 
- 
+ - Added PI for coherent total life expectancy
+
 v1.18
 - Updated lca() with "fertility" data
 - Modified handling of warnings in forecast.fdm()
