@@ -384,7 +384,7 @@ print.fmforecast <- function(x,...)
 #' @param h If \code{plot.type="variance"}, h gives the forecast horizon for
 #'   which the variance is plotted.
 #' @param ... Other arguments are passed to \code{\link{plot.demogdata}} (if
-#'   \code{plot.type=="function"}), \code{\link[graphics]{plot}} (if
+#'   \code{plot.type=="function"}), \code{\link[base]{plot}} (if
 #'   \code{plot.type=="variance"}) or \code{\link[ftsa]{plot.ftsf}} (if
 #'   \code{plot.type=="component"}).
 #'

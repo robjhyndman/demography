@@ -12,13 +12,13 @@
 # type - mortality, fertility, migration, etc. character string.
 
 #' Create demogdata object from raw data matrices
-#' 
+#'
 #' Create demogdata object suitable for plotting using \code{\link{plot.demogdata}} and
 #' fitting an LC or BMS model using \code{\link{lca}} or an FDA model using \code{\link{fdm}}.
-#' 
+#'
 #' @param data Matrix of data: either mortality rates or fertility rates
-#' @param pop Matrix of population values of same dimension as data. 
-#' These are population numbers as at 30 June of each year (i.e., the "exposures"). 
+#' @param pop Matrix of population values of same dimension as data.
+#' These are population numbers as at 30 June of each year (i.e., the "exposures").
 #' So, for example, the number of deaths is data*pop if data contains mortality rates.
 #' @param ages Vector of ages corresponding to rows of \code{data}.
 #' @param years Vector of years corresponding to columns of \code{data}.
@@ -27,7 +27,7 @@
 #' @param label Character string of the name of area from which the data are taken.
 #' @param name Name of series: usually male, female or total.
 #' @param lambda Box-Cox transformation parameter.
-#' 
+#'
 #' @return Object of class \dQuote{demogdata} with the following components:
 #' \item{year}{Vector of years}
 #' \item{age}{Vector of ages}
@@ -36,7 +36,7 @@
 #' \item{type}{Type of object: \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}.}
 #' \item{label}{label}
 #' \item{lambda}{lambda}
-#' 
+#'
 #' @seealso \code{\link{read.demogdata}}
 #' @author Rob J Hyndman
 #' @keywords manip
@@ -112,16 +112,16 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
 #' the Exposures and \code{file} contains the Mx rates from the HMD, then
 #' everything will work seamlessly.
 #'
-#' @param file Filename containing demographic rates. 
-#' @param popfile Filename containing population numbers. 
+#' @param file Filename containing demographic rates.
+#' @param popfile Filename containing population numbers.
 #' @param type Character string showing type of demographic series:
-#'     either \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}. 
-#' @param label Name of area from which the data are taken. 
-#' @param max.mx Maximum allowable value for demographic rate. All values greater than max.mx will be set to max.mx. 
-#' @param skip Number of lines to skip at the start of \code{file}. 
-#' @param popskip Number of lines to skip at the start of \code{popfile}. 
-#' @param lambda Box-Cox transformation parameter to be used in modelling and plotting. If missing, default values are 0 (for mortality), 0.4 (for fertility) and 1 (for migration). 
-#' @param scale Number of people in the rate definition. \code{scale=1} indicates the rates are per person; \code{scale=1000} indicates the rates are per 1000 people. 
+#'     either \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}.
+#' @param label Name of area from which the data are taken.
+#' @param max.mx Maximum allowable value for demographic rate. All values greater than max.mx will be set to max.mx.
+#' @param skip Number of lines to skip at the start of \code{file}.
+#' @param popskip Number of lines to skip at the start of \code{popfile}.
+#' @param lambda Box-Cox transformation parameter to be used in modelling and plotting. If missing, default values are 0 (for mortality), 0.4 (for fertility) and 1 (for migration).
+#' @param scale Number of people in the rate definition. \code{scale=1} indicates the rates are per person; \code{scale=1000} indicates the rates are per 1000 people.
 #'
 #' @return Object of class \dQuote{demogdata} with the following components:
 #'   \item{year}{Vector of years} \item{age}{Vector of ages} \item{rate}{A list
@@ -134,10 +134,10 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda)
 #' @seealso \code{\link{demogdata}}
 #'
 #' @examples
-#' 
+#'
 #'   \dontrun{ norway <- read.demogdata("Mx_1x1.txt",
 #'   "Exposures_1x1.txt", type="mortality", label="Norway")}
-#' @author Rob J Hyndman 
+#' @author Rob J Hyndman
 #' @keywords manip
 #'
 #' @export
@@ -152,12 +152,12 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
     else
       lambda <- 1
   }
-  
+
   mfile <- !missing(file)
   mpopfile <- !missing(popfile)
 
   obj <- list(type=type,label=label,lambda=lambda)
-  
+
   if(mfile)
   {
     tmp1 <- utils::read.table(file,header=TRUE,na.strings=".",skip=skip)
@@ -223,13 +223,13 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
 
 
 #' Plot age-specific demographic functions
-#' 
-#' 
+#'
+#'
 #' If \code{plot.type="functions"}, then years are plotted using a rainbow palette so the
 #' earliest years are red, followed by orange, yellow, green, blue
-#' and indigo with the most recent years plotted in violet.  
+#' and indigo with the most recent years plotted in violet.
 #' If \code{plot.type="time"}, then each age is shown as a separate time series in a time plot.
-#' 
+#'
 #' @param x Demogdata object such as created using \code{\link{read.demogdata}} or \code{\link{smooth.demogdata}}.
 #' @param series Name of series to plot. Default: the first matrix within \code{datatype}.
 #' @param datatype Name of demogdata object which contains series. Default \dQuote{rate}. Alternative: \dQuote{pop}.
@@ -238,23 +238,23 @@ read.demogdata <- function(file,popfile,type,label,max.mx=10,skip=2,popskip=skip
 #' @param max.age Maximum age to plot. Default: all available ages.
 #' @param transform Should a transformation of the data be plotted? Default is TRUE if the object contains mortality data and datatype="rate", and FALSE otherwise.
 #' @param plot.type Type of plot: either \dQuote{functions} or \dQuote{time}.
-#' @param type What type of plot should be drawn. See \code{\link[graphics]{plot}} for possible types.
+#' @param type What type of plot should be drawn. See \code{\link[base]{plot}} for possible types.
 #' @param main Main title for the plot.
 #' @param xlab Label for x-axis.
 #' @param ylab Label for y-axis.
 #' @param pch Plotting character.
 #' @param ... Other plotting parameters. In \code{points.demogdata}, all arguments are passed to \code{lines.demogdata}.
-#' 
+#'
 #' @return None. Function produces a plot
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' plot(fr.mort)
 #' par(mfrow=c(1,2))
 #' plot(aus.fert,plot.type="time")
 #' plot(aus.fert,plot.type="functions")
 #' @keywords hplot
 #' @export
-plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]), 
+plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]),
     datatype=ifelse(!is.null(x$rate),"rate","pop"),
     years=x$year, ages=x$age, max.age=max(x$age), transform=(x$type=="mortality"),
     plot.type= c("functions", "time", "depth", "density"), type="l", main=NULL, xlab, ylab,...)
@@ -289,7 +289,7 @@ plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],na
   #if(any(is.na(y)|is.nan(y)|is.infinite(y)))
   #{
   #  y <- apply(y, 2, na.interp)
-  #}              
+  #}
 
   # Choose appropriate y axis label
   if(missing(ylab))
@@ -351,20 +351,20 @@ plot.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],na
 
 #' @rdname plot.demogdata
 #' @export
-lines.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]), 
+lines.demogdata <- function(x, series=ifelse(!is.null(x$rate),names(x$rate)[1],names(x$pop)[1]),
     datatype=ifelse(!is.null(x$rate),"rate",""),
     years=x$year, ages=x$age, max.age=max(x$age), transform=(x$type=="mortality"),
     plot.type= c("functions", "time", "depth", "density"), ...)
 {
   plot.type <- match.arg(plot.type)
-  
+
   series <- tolower(series)
   ages <- ages[ages <= max.age]
   data <- extract.ages(extract.years(x,years),ages,FALSE)
 
   if(x$type == "population")
     datatype <- "pop"
-      
+
   # Extract data matrix
   if(!is.element(datatype,names(data)))
     stop(paste("Data type",datatype,"not found"))
@@ -413,16 +413,16 @@ summary.demogdata <- function(object, ...)
 
 
 #' Extract some years from a demogdata object
-#' 
+#'
 #' Creates subset of demogdata object.
-#' 
+#'
 #' @param data Demogdata object such as created using \code{\link{read.demogdata}} or \code{\link{smooth.demogdata}}.
 #' @param years Vector of years to extract from data.
-#' 
+#'
 #' @return Demogdata object with same components as \code{data} but with a subset of years.
-#' 
+#'
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' france.1918 <- extract.years(fr.mort,1918)
 #' @keywords manip
 #' @export
@@ -448,7 +448,7 @@ extract.years <- function(data,years)
   }
   else
     stop("No data!")
-      
+
   for(j in 1:nn)
   {
     if(!no.rate)
@@ -476,15 +476,15 @@ extract.years <- function(data,years)
 
 
 #' Extract some ages from a demogdata object
-#' 
+#'
 #' Creates subset of demogdata object.
-#' 
+#'
 #' @param data Demogdata object such as created using \code{\link{read.demogdata}} or \code{\link{smooth.demogdata}}.
 #' @param ages Vector of ages to extract from data.
 #' @param combine.upper If TRUE, ages beyond the maximum of \code{ages} are combined into the upper age group.
 #' @return Demogdata object with same components as \code{data} but with a subset of ages.
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' france.teens <- extract.ages(fr.mort,13:19,FALSE)
 #' plot(france.teens)
 #' @keywords manip
@@ -497,7 +497,7 @@ extract.ages <- function(data,ages,combine.upper=TRUE)
 	{
 		if(no.pop)
     {
-      if(max(data$age) > max(ages))   
+      if(max(data$age) > max(ages))
         warning("No population data available for combining upper ages")
     }
 		else
@@ -548,15 +548,15 @@ extract.ages <- function(data,ages,combine.upper=TRUE)
 }
 
 #' Combine the upperages of a demogdata object.
-#' 
+#'
 #' Computes demographic rates by combining age groups.
-#' 
+#'
 #' @param data Demogdata object such as created using \code{\link{read.demogdata}} or \code{\link{smooth.demogdata}}.
 #' @param max.age Upper age group. Ages beyond this are combined into the upper age group.
-#' 
+#'
 #' @return Demogdata object with same components as \code{data} but with a subset of ages.
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' france.short <- set.upperage(fr.mort, 85)
 #' @keywords manip
 #' @export
@@ -569,7 +569,7 @@ set.upperage <- function(data, max.age)
 
   if(is.null(data$pop))
     stop("This procedure needs the population data")
-      
+
   no.rate <- is.null(data$rate)
   multiple.series <- is.list(data$pop)
 
@@ -651,27 +651,27 @@ get.series <- function(data,series)
 
 
 #' Combine two demogdata objects into one demogdata object
-#' 
+#'
 #' Function to combine demogdata objects containing
 #' different years but the same age structure into one demogdata
 #' object. The standard use for this function will be combining
 #' historical data with forecasts. The objects must be of the same type.
-#' 
+#'
 #' @param obj1 First demogdata object (e.g., historical data).
 #' @param obj2 Second demogdata object (e.g., forecasts).
-#' 
+#'
 #' @return Object of class \dQuote{demogdata} with the following components:
 #' \item{year}{Vector of years}
 #' \item{age}{Vector of ages}
 #' \item{rate}{Matrix of rates with with one age group per row and one column per year.}
-#' \item{pop}{Matrix of populations in same form as \code{rate} and containing population numbers. This is only 
+#' \item{pop}{Matrix of populations in same form as \code{rate} and containing population numbers. This is only
 #'   produced when both objects contain a \code{pop} component.}
 #' \item{type}{Type of object: \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}.}
 #' \item{label}{Name of area from which the data are taken.}
-#' 
+#'
 #' @seealso \code{\link{demogdata}}
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' fit <- fdm(fr.mort)
 #' fcast <- forecast(fit, h=50)
 #' france2 <- combine.demogdata(fr.mort,fcast)
@@ -737,9 +737,9 @@ combine.demogdata <- function(obj1, obj2)
 
 
 #' Mean and median functions for data of class demogdata
-#' 
+#'
 #' Computes mean or median of demographic rates for each age level.
-#' 
+#'
 #' @param x Demogdata object such as created using \code{\link{read.demogdata}} or \code{\link{smooth.demogdata}}.
 #' @param series Name of demogdata series to plot..
 #' @param transform Should transform of data be taken first?
@@ -747,14 +747,14 @@ combine.demogdata <- function(obj1, obj2)
 #' @param method Method for computing the median. Either "coordinate" for a coordinate-wise median, or "hossjercroux" for the
 #'   L1-median using the Hossjer-Croux algorithm.
 #' @param ... Other arguments.
-#' 
+#'
 #' @return A list containing \code{x}=ages and \code{y}=mean or median rates.
 #' @author Rob J Hyndman
-#' @references 
+#' @references
 #' Hossjer, O., and Croux, C. (1995) Generalized univariate signed rank statistics for testing
 #' and estimating a multivariate location parameter. \emph{Nonparametric Statistics}, \bold{4}, 293-308.
-#' 
-#' @examples 
+#'
+#' @examples
 #' plot(fr.mort)
 #' lines(mean(fr.mort),lwd=2)
 #' lines(median(fr.mort),lwd=2,col=2)
@@ -789,23 +789,23 @@ median.demogdata <- function(x,  na.rm=FALSE, series=names(x$rate)[1],
 
 # Sex ratios
 #' Compute sex ratios from mortality rates
-#' 
+#'
 #' Calculates the Male/Female ratios from historical or forecasted mortality rates.
-#' 
-#' @param data Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}}, 
+#'
+#' @param data Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}},
 #' or an object of class \code{fmforecast} such as the output from  \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}.
-#' 
+#'
 #' @return Functional time series of sex ratios.
-#' 
+#'
 #' @author Rob J Hyndman
 #' @examples plot(sex.ratio(fr.mort),ylab="Sex ratios (M/F)")
 #' @keywords models
 #' @export
-sex.ratio <- function(data) 
+sex.ratio <- function(data)
 {
-  if (class(data) == "demogdata") 
+  if (class(data) == "demogdata")
     rate.sr <- fts(x=data$age,y=data$rate$male/data$rate$female,start=min(data$year),frequency=1,xname="Age",yname="Sex ratio (M/F)")
-  else if(class(data) == "fmforecast2") 
+  else if(class(data) == "fmforecast2")
     rate.sr <- fts(x=data$male$age,data$male$rate$male/data$female$rate$female,start=min(data$male$year),frequency=1,xname="Age",yname="Sex ratio (M/F)")
   else
     stop("Unknown class of data")
