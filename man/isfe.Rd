@@ -7,11 +7,19 @@
 \usage{
 isfe(...)
 
-\method{isfe}{demogdata}(data, series = names(data$rate)[1],
-  max.order = N - 3, N = 10, h = 5:10, ages = data$age,
-  max.age = max(ages), method = c("classical", "M", "rapca"),
-  fmethod = c("arima", "ar", "arfima", "ets", "ets.na", "struct",
-  "rwdrift", "rw"), lambda = 3, ...)
+\method{isfe}{demogdata}(
+  data,
+  series = names(data$rate)[1],
+  max.order = N - 3,
+  N = 10,
+  h = 5:10,
+  ages = data$age,
+  max.age = max(ages),
+  method = c("classical", "M", "rapca"),
+  fmethod = c("arima", "ar", "arfima", "ets", "ets.na", "struct", "rwdrift", "rw"),
+  lambda = 3,
+  ...
+)
 }
 \arguments{
 \item{...}{Additional arguments control the fitting procedure.}
@@ -49,7 +57,7 @@ Computes ISFE values for functional time series models of various orders.
 }
 \references{
 Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of mortality and
-fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis}, 
+fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis},
 \bold{51}, 4942-4956. \url{http://robjhyndman.com/papers/funcfor}
 }
 \seealso{

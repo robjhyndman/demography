@@ -4,9 +4,19 @@
 \alias{fdm}
 \title{Functional demographic model}
 \usage{
-fdm(data, series = names(data$rate)[1], order = 6, ages = data$age,
-  max.age = max(ages), method = c("classical", "M", "rapca"),
-  lambda = 3, mean = TRUE, level = FALSE, transform = TRUE, ...)
+fdm(
+  data,
+  series = names(data$rate)[1],
+  order = 6,
+  ages = data$age,
+  max.age = max(ages),
+  method = c("classical", "M", "rapca"),
+  lambda = 3,
+  mean = TRUE,
+  level = FALSE,
+  transform = TRUE,
+  ...
+)
 }
 \arguments{
 \item{data}{demogdata object. Output from read.demogdata.}

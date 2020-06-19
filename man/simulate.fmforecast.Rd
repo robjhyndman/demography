@@ -5,8 +5,14 @@
 \alias{simulate.fmforecast2}
 \title{Simulate future sample paths from functional demographic model forecasts.}
 \usage{
-\method{simulate}{fmforecast}(object, nsim = 100, seed = NULL,
-  bootstrap = FALSE, adjust.modelvar = TRUE, ...)
+\method{simulate}{fmforecast}(
+  object,
+  nsim = 100,
+  seed = NULL,
+  bootstrap = FALSE,
+  adjust.modelvar = TRUE,
+  ...
+)
 
 \method{simulate}{fmforecast2}(object, ...)
 }

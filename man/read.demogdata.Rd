@@ -4,8 +4,17 @@
 \alias{read.demogdata}
 \title{Read demographic data and construct demogdata object}
 \usage{
-read.demogdata(file, popfile, type, label, max.mx = 10, skip = 2,
-  popskip = skip, lambda, scale = 1)
+read.demogdata(
+  file,
+  popfile,
+  type,
+  label,
+  max.mx = 10,
+  skip = 2,
+  popskip = skip,
+  lambda,
+  scale = 1
+)
 }
 \arguments{
 \item{file}{Filename containing demographic rates.}

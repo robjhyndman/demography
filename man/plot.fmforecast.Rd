@@ -5,9 +5,15 @@
 \alias{plot.lca}
 \title{Plot forecasts from a functional demographic modell}
 \usage{
-\method{plot}{fmforecast}(x, plot.type = c("function", "component",
-  "variance"), vcol = 1:4, mean.lab = "Mean", xlab2 = "Year",
-  h = 1, ...)
+\method{plot}{fmforecast}(
+  x,
+  plot.type = c("function", "component", "variance"),
+  vcol = 1:4,
+  mean.lab = "Mean",
+  xlab2 = "Year",
+  h = 1,
+  ...
+)
 
 \method{plot}{lca}(x, ...)
 }
@@ -27,7 +33,7 @@
 which the variance is plotted.}
 
 \item{...}{Other arguments are passed to \code{\link{plot.demogdata}} (if
-\code{plot.type=="function"}), \code{\link[graphics]{plot}} (if
+\code{plot.type=="function"}), \code{\link[base]{plot}} (if
 \code{plot.type=="variance"}) or \code{\link[ftsa]{plot.ftsf}} (if
 \code{plot.type=="component"}).}
 }

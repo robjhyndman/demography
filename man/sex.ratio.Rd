@@ -7,7 +7,7 @@
 sex.ratio(data)
 }
 \arguments{
-\item{data}{Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}}, 
+\item{data}{Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}},
 or an object of class \code{fmforecast} such as the output from  \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}.}
 }
 \value{

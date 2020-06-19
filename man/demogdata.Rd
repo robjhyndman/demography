@@ -10,8 +10,8 @@ demogdata(data, pop, ages, years, type, label, name, lambda)
 \arguments{
 \item{data}{Matrix of data: either mortality rates or fertility rates}
 
-\item{pop}{Matrix of population values of same dimension as data. 
-These are population numbers as at 30 June of each year (i.e., the "exposures"). 
+\item{pop}{Matrix of population values of same dimension as data.
+These are population numbers as at 30 June of each year (i.e., the "exposures").
 So, for example, the number of deaths is data*pop if data contains mortality rates.}
 
 \item{ages}{Vector of ages corresponding to rows of \code{data}.}

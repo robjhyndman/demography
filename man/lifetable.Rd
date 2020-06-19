@@ -4,9 +4,14 @@
 \alias{lifetable}
 \title{Construct lifetables from mortality rates}
 \usage{
-lifetable(data, series = names(data$rate)[1], years = data$year,
-  ages = data$age, max.age = min(100, max(data$age)),
-  type = c("period", "cohort"))
+lifetable(
+  data,
+  series = names(data$rate)[1],
+  years = data$year,
+  ages = data$age,
+  max.age = min(100, max(data$age)),
+  type = c("period", "cohort")
+)
 }
 \arguments{
 \item{data}{Demogdata object such as obtained from \code{\link{read.demogdata}}, 

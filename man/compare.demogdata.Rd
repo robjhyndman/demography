@@ -4,9 +4,15 @@
 \alias{compare.demogdata}
 \title{Evaluation of demographic forecast accuracy}
 \usage{
-compare.demogdata(data, forecast, series = names(forecast$rate)[1],
-  ages = data$age, max.age = min(max(data$age), max(forecast$age)),
-  years = data$year, interpolate = FALSE)
+compare.demogdata(
+  data,
+  forecast,
+  series = names(forecast$rate)[1],
+  ages = data$age,
+  max.age = min(max(data$age), max(forecast$age)),
+  years = data$year,
+  interpolate = FALSE
+)
 }
 \arguments{
 \item{data}{Demogdata object such as created using
@@ -31,8 +37,8 @@ measures on the original (rate) scale are unchanged.}
 }
 \value{
 Object of class "errorfdm" with the following components:
-  \item{label}{Name of region from which data taken.} 
-  \item{age}{Ages from \code{data} object.} 
+  \item{label}{Name of region from which data taken.}
+  \item{age}{Ages from \code{data} object.}
   \item{year}{Years from \code{data} object.}
   \item{<error>}{Matrix of forecast errors on rates.}
   \item{<logerror>}{Matrix of forecast errors on log rates.}
@@ -42,7 +48,7 @@ Object of class "errorfdm" with the following components:
   \item{int.error}{Various measures of forecast accuracy integrated across
   ages. Specifically IE=integrated error, ISE=integrated squared error,
   IPE=integrated percentage error and IAPE=integrated absolute percentage
-  error.} 
+  error.}
   \item{life.expectancy}{If \code{data$type="mortality"}, function
   returns this component which is a matrix containing actual, forecast and
   actual-forecast for life expectancies.} Note that the error matrices have

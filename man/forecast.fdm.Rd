@@ -4,9 +4,15 @@
 \alias{forecast.fdm}
 \title{Forecast functional demographic model.}
 \usage{
-\method{forecast}{fdm}(object, h = 50, level = 80,
-  jumpchoice = c("fit", "actual"), method = "arima",
-  warnings = FALSE, ...)
+\method{forecast}{fdm}(
+  object,
+  h = 50,
+  level = 80,
+  jumpchoice = c("fit", "actual"),
+  method = "arima",
+  warnings = FALSE,
+  ...
+)
 }
 \arguments{
 \item{object}{Output from \code{\link{fdm}}.}

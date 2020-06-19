@@ -4,8 +4,15 @@
 \alias{pop.sim}
 \title{Population simulation}
 \usage{
-pop.sim(mort, fert = NULL, mig = NULL, firstyearpop, N = 100,
-  mfratio = 1.05, bootstrap = FALSE)
+pop.sim(
+  mort,
+  fert = NULL,
+  mig = NULL,
+  firstyearpop,
+  N = 100,
+  mfratio = 1.05,
+  bootstrap = FALSE
+)
 }
 \arguments{
 \item{mort}{Forecasts of class \code{fmforecast2} for mortality.}
@@ -23,8 +30,8 @@ pop.sim(mort, fert = NULL, mig = NULL, firstyearpop, N = 100,
 \item{bootstrap}{If TRUE, simulation uses resampled errors rather than normally distributed errors.}
 }
 \value{
-A list of two arrays containing male and female future simulated population values. 
-The arrays are of dimension (p,h,N) where p is the number of age groups, h is the forecast horizon 
+A list of two arrays containing male and female future simulated population values.
+The arrays are of dimension (p,h,N) where p is the number of age groups, h is the forecast horizon
 and N is the number of simulated sample paths.
 }
 \description{

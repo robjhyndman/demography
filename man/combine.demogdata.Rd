@@ -16,7 +16,7 @@ Object of class \dQuote{demogdata} with the following components:
 \item{year}{Vector of years}
 \item{age}{Vector of ages}
 \item{rate}{Matrix of rates with with one age group per row and one column per year.}
-\item{pop}{Matrix of populations in same form as \code{rate} and containing population numbers. This is only 
+\item{pop}{Matrix of populations in same form as \code{rate} and containing population numbers. This is only
   produced when both objects contain a \code{pop} component.}
 \item{type}{Type of object: \dQuote{mortality}, \dQuote{fertility} or \dQuote{migration}.}
 \item{label}{Name of area from which the data are taken.}

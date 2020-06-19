@@ -6,8 +6,7 @@
 \alias{cm.splinefun}
 \title{Monotonic interpolating splines}
 \usage{
-cm.spline(x, y = NULL, n = 3 * length(x), xmin = min(x),
-  xmax = max(x), ...)
+cm.spline(x, y = NULL, n = 3 * length(x), xmin = min(x), xmax = max(x), ...)
 
 cm.splinefun(x, y = NULL, ...)
 }

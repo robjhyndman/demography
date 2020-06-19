@@ -5,8 +5,14 @@
 \alias{lines.lifetable}
 \title{Plot life expectancy from lifetable}
 \usage{
-\method{plot}{lifetable}(x, years = x$year, main, xlab = "Age",
-  ylab = "Expected number of years left", ...)
+\method{plot}{lifetable}(
+  x,
+  years = x$year,
+  main,
+  xlab = "Age",
+  ylab = "Expected number of years left",
+  ...
+)
 
 \method{lines}{lifetable}(x, years = x$year, ...)
 }

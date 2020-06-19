@@ -6,16 +6,37 @@
 \alias{e0}
 \title{Estimate life expectancy from mortality rates}
 \usage{
-life.expectancy(data, series = names(data$rate)[1], years = data$year,
-  type = c("period", "cohort"), age = min(data$age),
-  max.age = min(100, max(data$age)))
+life.expectancy(
+  data,
+  series = names(data$rate)[1],
+  years = data$year,
+  type = c("period", "cohort"),
+  age = min(data$age),
+  max.age = min(100, max(data$age))
+)
 
-flife.expectancy(data, series = NULL, years = data$year,
-  type = c("period", "cohort"), age, max.age = NULL, PI = FALSE,
-  nsim = 500, ...)
+flife.expectancy(
+  data,
+  series = NULL,
+  years = data$year,
+  type = c("period", "cohort"),
+  age,
+  max.age = NULL,
+  PI = FALSE,
+  nsim = 500,
+  ...
+)
 
-e0(data, series = NULL, years = data$year, type = c("period",
-  "cohort"), max.age = NULL, PI = FALSE, nsim = 500, ...)
+e0(
+  data,
+  series = NULL,
+  years = data$year,
+  type = c("period", "cohort"),
+  max.age = NULL,
+  PI = FALSE,
+  nsim = 500,
+  ...
+)
 }
 \arguments{
 \item{data}{Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}}, 

@@ -4,8 +4,7 @@
 \alias{forecast.fdmpr}
 \title{Forecast coherent functional demographic model.}
 \usage{
-\method{forecast}{fdmpr}(object, h = 50, level = 80, K = 100,
-  drange = c(0, 0.5), ...)
+\method{forecast}{fdmpr}(object, h = 50, level = 80, K = 100, drange = c(0, 0.5), ...)
 }
 \arguments{
 \item{object}{Output from \code{\link{coherentfdm}}.}

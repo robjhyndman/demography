@@ -5,16 +5,33 @@
 \alias{bms}
 \title{Model mortality or fertility data using Lee-Carter approach}
 \usage{
-lca(data, series = names(data$rate)[1], years = data$year,
-  ages = data$age, max.age = 100, adjust = c("dt", "dxt", "e0",
-  "none"), chooseperiod = FALSE, minperiod = 20,
-  breakmethod = c("bai", "bms"), scale = FALSE,
-  restype = c("logrates", "rates", "deaths"), interpolate = FALSE)
+lca(
+  data,
+  series = names(data$rate)[1],
+  years = data$year,
+  ages = data$age,
+  max.age = 100,
+  adjust = c("dt", "dxt", "e0", "none"),
+  chooseperiod = FALSE,
+  minperiod = 20,
+  breakmethod = c("bai", "bms"),
+  scale = FALSE,
+  restype = c("logrates", "rates", "deaths"),
+  interpolate = FALSE
+)
 
-bms(data, series = names(data$rate)[1], years = data$year,
-  ages = data$age, max.age = 100, minperiod = 20,
-  breakmethod = c("bms", "bai"), scale = FALSE,
-  restype = c("logrates", "rates", "deaths"), interpolate = FALSE)
+bms(
+  data,
+  series = names(data$rate)[1],
+  years = data$year,
+  ages = data$age,
+  max.age = 100,
+  minperiod = 20,
+  breakmethod = c("bms", "bai"),
+  scale = FALSE,
+  restype = c("logrates", "rates", "deaths"),
+  interpolate = FALSE
+)
 }
 \arguments{
 \item{data}{demogdata object of type \dQuote{mortality} or

@@ -4,12 +4,20 @@
 \alias{smooth.demogdata}
 \title{Create smooth demogdata functions}
 \usage{
-smooth.demogdata(data, method = switch(data$type, mortality = "mspline",
-  fertility = "cspline", migration = "loess"), age.grid,
-  power = switch(data$type, mortality = 0.4, fertility = 1, migration =
-  1), b = 65, k = 30, span = 0.2, lambda = 1e-10,
-  interpolate = FALSE, weight = data$type != "migration",
-  obs.var = "empirical")
+smooth.demogdata(
+  data,
+  method = switch(data$type, mortality = "mspline", fertility = "cspline", migration =
+    "loess"),
+  age.grid,
+  power = switch(data$type, mortality = 0.4, fertility = 1, migration = 1),
+  b = 65,
+  k = 30,
+  span = 0.2,
+  lambda = 1e-10,
+  interpolate = FALSE,
+  weight = data$type != "migration",
+  obs.var = "empirical"
+)
 }
 \arguments{
 \item{data}{Demogdata object such as created using \code{\link{read.demogdata}}.}
