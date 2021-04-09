@@ -137,7 +137,7 @@ hmd.mx <- function(country, username, password, label=country)
     }
     names(obj$pop) = names(obj$rate) <- tolower(mnames)
 
-    obj$age <- as.numeric(as.character(obj$age))
+    suppressWarnings(obj$age <- as.numeric(as.character(obj$age)))
     if (is.na(obj$age[m]))
         obj$age[m] <- 2 * obj$age[m - 1] - obj$age[m - 2]
     return(structure(obj, class = "demogdata"))
@@ -191,7 +191,7 @@ hmd.pop <- function(country, username, password, label=country)
     }
     names(obj$pop) <- tolower(mnames)
 
-    obj$age <- as.numeric(as.character(obj$age))
+    suppressWarnings(obj$age <- as.numeric(as.character(obj$age)))
     if (is.na(obj$age[m]))
         obj$age[m] <- 2 * obj$age[m - 1] - obj$age[m - 2]
     return(structure(obj, class = "demogdata"))
