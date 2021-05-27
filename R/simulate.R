@@ -1,6 +1,34 @@
 # Function to simulate future sample paths of functional data
 # given output from forecast.fdm
-
+#' Simulate future sample paths from functional demographic model forecasts.
+#' 
+#' This function will simulate future sample paths given forecasting models 
+#' from a functional demographic model such as those obtained using \code{\link{forecast.fdm}} or \code{\link{forecast.fdmpr}}.
+#' 
+#' @param object Object of class \code{fmforecast}. Typically, this is output from \code{\link{forecast.fdm}}.
+#' @param nsim Number of sample paths to simulate.
+#' @param seed Either NULL or an integer that will be used in a call to set.seed before simulating the time seriers.
+#'   The default, NULL will not change the random generator state.
+#' @param bootstrap If TRUE, simulation uses resampled errors rather than normally distributed errors.
+#' @param adjust.modelvar If TRUE, will adjust the model variance by the ratio of the empirical and theoretical variances for one-step forecasts.
+#' @param ... Other arguments passed to \code{simulate.fmforecast}.
+#' 
+#' @return An array containing the future simulated values (in the case of a \code{fmforecast} object), 
+#' or a list of arrays containing the future simulated values (in the case of a \code{fmforecast2} object).
+#' 
+#' @author Rob J Hyndman
+#' @seealso \code{\link{forecast.fdm}}, \code{\link{forecast.lca}}, \code{\link[ftsa]{forecast.ftsm}}.
+#' @examples 
+#' \dontrun{
+#' france.fit <- fdm(fr.mort,order=2)
+#' france.fcast <- forecast(france.fit,50,method="ets")
+#' france.sim <- simulate(france.fcast,nsim=100)
+#' 
+#' france.fit2 <- coherentfdm(fr.sm)
+#' france.fcast2 <- forecast(france.fit2,50)
+#' france.sim2 <- simulate(france.fcast2,nsim=100)}
+#' @keywords models
+#' @export
 simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjust.modelvar=TRUE,...)
 {
   n <- length(object$model$year)
@@ -12,8 +40,8 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
 	{
 		object$model$basis <- cbind(log(object$model$jumprates), object$model$bx)
 		object$model$coeff <- ts(cbind(rep(1,n),object$model$kt))
-		tsp(object$model$coeff) <- tsp(object$model$kt)
-		zval <- qnorm(0.5 + 0.005*object$kt.f$level)
+		stats::tsp(object$model$coeff) <- stats::tsp(object$model$kt)
+		zval <- stats::qnorm(0.5 + 0.005*object$kt.f$level)
 		# refit model using Arima so it can be simulated more easily.
 		ktmod <- Arima(object$model$kt,order=c(0,1,0),include.drift=TRUE)
 		# Find stdev of kt from kt.f (to include coefficient error)
@@ -26,7 +54,11 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
 	
   nb <- length(object$coeff)
 
-  ridx <- (1:n)[!is.na(colSums(object$model$residuals$y))]
+  ridx <- (1:n)#[!is.na(colSums(object$model$residuals$y))]
+  # Set residuals to zero for the simulations
+  resids <- object$model$residuals$y
+  resids[is.na(resids)] <- 0
+
   fmean <- BoxCox(object$rate[[1]],object$lambda)
 
   fcoeff <- matrix(1,nrow=h,ncol=nb)
@@ -44,7 +76,7 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
         output[,,i] <- output[,,i] + object$model$basis[,j] %*% matrix(simulate(mod,nsim=h,bootstrap=bootstrap,future=TRUE),nrow=1)
       }
     }
-    output[,,i] <- output[,,i] + object$model$residuals$y[,sample(ridx,h,replace=TRUE)]
+    output[,,i] <- output[,,i] + resids[,sample(ridx,h,replace=TRUE)]
     if(adjust.modelvar)
       output[,,i] <- fmean + sweep(output[,,i]-fmean,1,sqrt(object$var$adj.factor),"*")
   }
@@ -56,7 +88,8 @@ simulate.fmforecast <- function(object,nsim=100,seed=NULL,bootstrap=FALSE, adjus
   return(output)
 }
 
-
+#' @rdname simulate.fmforecast
+#' @export
 simulate.fmforecast2 <- function (object, ...) 
 {
 	is.mortality <- (object$ratio[[1]]$type == "mortality")

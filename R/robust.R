@@ -1,25 +1,25 @@
-median <- function(...) UseMethod("median")
+#median <- function(...) UseMethod("median")
 
-median.default <- function (x, na.rm = FALSE)
-{
-    if (is.factor(x) || mode(x) != "numeric")
-        stop("need numeric data")
-    if (na.rm)
-        x <- x[!is.na(x)]
-    else if (any(is.na(x)))
-        return(NA)
-    n <- length(x)
-    if (n == 0)
-        return(NA)
-    half <- (n + 1)/2
-    if (n%%2 == 1) {
-        sort(x, partial = half)[half]
-    }
-    else {
-        sum(sort(x, partial = c(half, half + 1))[c(half, half +
-            1)])/2
-    }
-}
+# median.default <- function (x, na.rm = FALSE)
+# {
+#     if (is.factor(x) || mode(x) != "numeric")
+#         stop("need numeric data")
+#     if (na.rm)
+#         x <- x[!is.na(x)]
+#     else if (any(is.na(x)))
+#         return(NA)
+#     n <- length(x)
+#     if (n == 0)
+#         return(NA)
+#     half <- (n + 1)/2
+#     if (n%%2 == 1) {
+#         sort(x, partial = half)[half]
+#     }
+#     else {
+#         sum(sort(x, partial = c(half, half + 1))[c(half, half +
+#             1)])/2
+#     }
+# }
 
 
 # L1MEDIAN calculates the multivariate L1 median
@@ -35,7 +35,7 @@ L1median <- function(X,tol=1e-6,maxstep=200,na.rm=TRUE,method=c("hossjercroux","
     method <- match.arg(method)
     # Coordinatewise median
     if(method=="coordinate")
-        return(apply(X,2,median.default,na.rm=na.rm))
+        return(apply(X,2,stats::median.default,na.rm=na.rm))
     # Gower's algorithm
 #    else if(method=="gower")
 #        return(gower(X,tol=tol,maxstep=maxstep,na.rm=na.rm))
@@ -48,7 +48,7 @@ hossjercroux <- function(X, tol=1e-6, maxstep=100, na.rm=TRUE)
 {
     n <- nrow(X)
     p <- ncol(X)
-    m=apply(X,2,median.default,na.rm=na.rm)
+    m=apply(X,2,stats::median.default,na.rm=na.rm)
     hctol <- max(1,min(abs(m),na.rm=na.rm)) * tol
     for(k in 1:maxstep)
     {
