@@ -1,3 +1,6 @@
+dev
+ - Updated hmd functions due to changes at mortality.org
+
 v1.22
  - Made compatible with latest rainbow and ftsa packages
 
