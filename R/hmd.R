@@ -3,7 +3,7 @@
 #' Summary for functional demographic model or Lee-Carter model
 #'
 #' \code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD
-#' \url{http://www.mortality.org}) and constructs a demogdata object suitable
+#' \url{https://www.mortality.org}) and constructs a demogdata object suitable
 #' for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS
 #' model using \code{\link{lca}} or an FDA model using \code{\link{fdm}}.
 #' \code{hmd.pop} reads "Population" (1x1) data from the HMD and constructs a
@@ -11,7 +11,7 @@
 #' \code{hmd.e0} reads life expectancy at birth from the HMD and returns the
 #' result as a \code{ts} object.
 #'
-#' In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}),
+#' In order to read the data, users are required to create their account via the HMD website (\url{https://www.mortality.org}),
 #' and obtain a valid username and password.
 #' 
 #' The country codes (as at 23 December 2016) are as follows.
@@ -99,7 +99,7 @@
 #' @export
 hmd.mx <- function(country, username, password, label=country)
 {
-    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
+    path <- paste("https://former.mortality.org/hmd/", country, "/STATS/", "Mx_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -108,7 +108,7 @@ hmd.mx <- function(country, username, password, label=country)
     if(class(mx)=="try-error")
         stop("Connection error at www.mortality.org. Please check username, password and country label.")
 
-    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
+    path <- paste("https://former.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -147,7 +147,7 @@ hmd.mx <- function(country, username, password, label=country)
 #' @export
 hmd.e0 <- function(country, username, password)
 {
-    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
+    path <- paste("https://former.mortality.org/hmd/", country, "/STATS/", "E0per.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
@@ -164,7 +164,7 @@ hmd.e0 <- function(country, username, password)
 #' @export
 hmd.pop <- function(country, username, password, label=country)
 {
-    path <- paste("https://www.mortality.org/hmd/", country, "/STATS/", "Population.txt", sep = "")
+    path <- paste("https://former.mortality.org/hmd/", country, "/STATS/", "Population.txt", sep = "")
     userpwd <- paste(username, ":", password, sep = "")
     txt <- RCurl::getURL(path, userpwd = userpwd)
     con <- textConnection(txt)
