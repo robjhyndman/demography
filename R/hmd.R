@@ -13,7 +13,7 @@
 #'
 #' In order to read the data, users are required to create their account via the HMD website (\url{https://www.mortality.org}),
 #' and obtain a valid username and password.
-#' 
+#'
 #' The country codes (as at 23 December 2016) are as follows.
 #' \tabular{ll}{
 #'   Australia \tab AUS\cr
@@ -68,9 +68,9 @@
 #'   U.S.A. \tab USA\cr
 #'   Ukraine \tab UKR\cr
 #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' @param country Directory abbreviation from the HMD. For instance, Australia =
 #'   "AUS". See below for other countries.
 #' @param username HMD username (case-sensitive)
@@ -87,10 +87,10 @@
 #' \item{label}{label}
 #' \code{hmd.pop} returns a similar object but without the \code{rate} component.
 #' \code{hmd.e0} returns an object of class \code{ts} with columns \code{male}, \code{female} and \code{total}.
-#' 
+#'
 #' @seealso \code{\link{demogdata}},\code{\link{read.demogdata}},\code{\link{plot.demogdata}}, \code{\link{life.expectancy}}
 #' @author Rob J Hyndman
-#' @examples 
+#' @examples
 #' \dontrun{
 #' norway <- hmd.mx("NOR", username, password, "Norway")
 #' summary(norway)}
@@ -105,7 +105,7 @@ hmd.mx <- function(country, username, password, label=country)
     con <- textConnection(txt)
     mx <- try(utils::read.table(con, skip = 2, header = TRUE, na.strings = "."),TRUE)
     close(con)
-    if(class(mx)=="try-error")
+    if(inherits(mx, "try-error"))
         stop("Connection error at www.mortality.org. Please check username, password and country label.")
 
     path <- paste("https://former.mortality.org/hmd/", country, "/STATS/", "Exposures_1x1.txt", sep = "")
@@ -114,7 +114,7 @@ hmd.mx <- function(country, username, password, label=country)
     con <- textConnection(txt)
     pop <- try(utils::read.table(con, skip = 2, header = TRUE, na.strings = "."),TRUE)
     close(con)
-    if(class(pop)=="try-error")
+    if(inherits(pop, "try-error"))
         stop("Exposures file not found at www.mortality.org")
 
     obj <- list(type="mortality",label=label,lambda=0)
@@ -153,7 +153,7 @@ hmd.e0 <- function(country, username, password)
     con <- textConnection(txt)
     lt <- try(utils::read.table(con, skip = 2, header = TRUE, na.strings = "."), TRUE)
     close(con)
-    if (class(lt) == "try-error")
+    if (inherits(lt, "try-error"))
         stop("Life expectancy file not found at www.mortality.org")
 	lt <- ts(lt[,-1],start=lt[1,1],frequency=1)
     return(lt)
@@ -170,7 +170,7 @@ hmd.pop <- function(country, username, password, label=country)
     con <- textConnection(txt)
     pop <- try(utils::read.table(con, skip = 2, header = TRUE, na.strings = "."),TRUE)
     close(con)
-    if(class(pop)=="try-error")
+    if(inherits(pop, "try-error"))
         stop("Population file not found at www.mortality.org")
 
     obj <- list(type="population",label=label,lambda=0)
@@ -196,4 +196,3 @@ hmd.pop <- function(country, username, password, label=country)
         obj$age[m] <- 2 * obj$age[m - 1] - obj$age[m - 2]
     return(structure(obj, class = "demogdata"))
 }
-

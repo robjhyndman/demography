@@ -2,7 +2,7 @@
 netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 {
   # Basic checks on inputs
-  if (class(mort) != "demogdata" | class(fert) != "demogdata")
+  if (!inherits(mort, "demogdata") | !inherits(fert, "demogdata"))
     stop("Inputs not demogdata objects")
   if (mort$type != "mortality")
     stop("mort not mortality data")
@@ -121,21 +121,21 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
   # Basic checks on inputs
   if (!no.mortality)
   {
-    if (class(mort) != "fmforecast2")
+    if (!inherits(mort, "fmforecast2"))
       stop("Inputs not fmforecast2 objects")
     if (mort$female$type != "mortality" | mort$male$type != "mortality")
       stop("mort not based on mortality data")
   }
   if (!no.fertility)
   {
-    if (class(fert)[1] != "fmforecast")
+    if (!inherits(fert, "fmforecast"))
       stop("Inputs not fmforecast objects")
     if (fert$type != "fertility")
       stop("fert not based on fertility data")
   }
   if (!no.migration)
   {
-    if (class(mig) != "fmforecast2")
+    if (!inherits(mig, "fmforecast2"))
       stop("Inputs not fmforecast2 objects")
     if (mig$male$type != "migration" | mig$female$type != "migration")
       stop("mig not based on migration data")
@@ -310,7 +310,7 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
 
 deaths <- function(x)
 {
-  if (class(x) != "demogdata" | x$type != "mortality")
+  if (!inherits(x, "demogdata") | x$type != "mortality")
     stop("Not a mortality object")
   npop <- length(x$rate)
   out <- list()
@@ -325,7 +325,7 @@ deaths <- function(x)
 
 births <- function(x)
 {
-  if (class(x) != "demogdata" | x$type != "fertility")
+  if (!inherits(x, "demogdata") | x$type != "fertility")
     stop("Not a fertility object")
   out <- round(x$rate[[1]] * x$pop[[1]]/1000)
   out[is.na(out)] <- 0

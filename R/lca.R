@@ -89,7 +89,7 @@ lca <-  function(data,series=names(data$rate)[1],years=data$year, ages=data$age,
     chooseperiod=FALSE, minperiod=20, breakmethod=c("bai","bms"),
     scale=FALSE, restype=c("logrates","rates","deaths"), interpolate=FALSE)
 {
-  if (class(data) != "demogdata") {
+  if (!inherits(data, "demogdata")) {
     stop("Not demography data")
   }
   if (!any(data$type == c("mortality", "fertility"))) {
@@ -542,36 +542,36 @@ findroot <- function(FUN,guess,margin,try=1,...)
     for(i in 1:5)
     {
         rooti <- try(stats::uniroot(FUN,interval=guess+i*margin/3*c(-1,1),...),silent=TRUE)
-        if(class(rooti) != "try-error")
+        if(!inherits(rooti, "try-error"))
             return(rooti$root)
     }
     # No luck. Try really big intervals
     rooti <- try(stats::uniroot(FUN,interval=guess+10*margin*c(-1,1),...),silent=TRUE)
-    if(class(rooti) != "try-error")
+    if(!inherits(rooti, "try-error"))
         return(rooti$root)
 
     # Still no luck. Try guessing root using quadratic approximation
     if(try<3)
     {
         root <- try(quadroot(FUN,guess,10*margin,...),silent=TRUE)
-        if(class(root)!="try-error")
+        if(!inherits(root, "try-error"))
             return(findroot(FUN,root,margin,try+1,...))
         root <- try(quadroot(FUN,guess,20*margin,...),silent=TRUE)
-        if(class(root)!="try-error")
+        if(!inherits(root, "try-error"))
             return(findroot(FUN,root,margin,try+1,...))
     }
 
     # Finally try optimization
     root <- try(newroot(FUN,guess,...),silent=TRUE)
-    if(class(root)!="try-error")
+    if(!inherits(root, "try-error"))
         return(root)
     else
         root <- try(newroot(FUN,guess-margin,...),silent=TRUE)
-    if(class(root)!="try-error")
+    if(!inherits(root, "try-error"))
         return(root)
     else
         root <- try(newroot(FUN,guess+margin,...),silent=TRUE)
-    if(class(root)!="try-error")
+    if(!inherits(root, "try-error"))
         return(root)
     else
         stop("Unable to find root")
@@ -622,4 +622,3 @@ fill.zero <- function(x,method="constant")
     x <- stats::approx(tt,xx,1:length(x),method=method,f=0.5,rule=2)
     return(x$y)
 }
-

@@ -803,9 +803,9 @@ median.demogdata <- function(x,  na.rm=FALSE, series=names(x$rate)[1],
 #' @export
 sex.ratio <- function(data)
 {
-  if (class(data) == "demogdata")
+  if (inherits(data, "demogdata"))
     rate.sr <- fts(x=data$age,y=data$rate$male/data$rate$female,start=min(data$year),frequency=1,xname="Age",yname="Sex ratio (M/F)")
-  else if(class(data) == "fmforecast2")
+  else if(inherits(data, "fmforecast2"))
     rate.sr <- fts(x=data$male$age,data$male$rate$male/data$female$rate$female,start=min(data$male$year),frequency=1,xname="Age",yname="Sex ratio (M/F)")
   else
     stop("Unknown class of data")
