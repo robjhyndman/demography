@@ -16,7 +16,7 @@ Authors@R: c(
   person("John", "Maindonald", role = "ctb"),
   person("Simon", "Wood", role = "ctb"),
   person("R Core Team", role = "ctb")
-)
+  )
 URL: https://pkg.robjhyndman.com/demography/, https://github.com/robjhyndman/demography
 BugReports: https://github.com/robjhyndman/demography/issues
 License: GPL (>= 3)
