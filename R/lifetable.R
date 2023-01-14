@@ -18,7 +18,7 @@
 #' 
 #' @param data Demogdata object such as obtained from \code{\link{read.demogdata}}, 
 #' \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}.
-#' @param series Name of series to use.  Default is the first series in data\$rate.
+#' @param series Name of series to use.  Default is the first series in \code{data[["rate"]]}.
 #' @param years Vector indicating which years to include in the tables.
 #' @param ages Vector indicating which ages to include in table.
 #' @param max.age Age for last row. Ages beyond this are combined.
