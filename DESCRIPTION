@@ -13,8 +13,10 @@ Authors@R: c(
   person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0002-2140-5352")),
   person("Heather", "Booth", role = "ctb", comment = c(ORCID = "0000-0002-8356-0534")),
   person("Leonie", "Tickle", role = "ctb", comment = c(ORCID = "0000-0002-6612-2401")),
-  person("John", "Maindonald", role = "ctb")
-  )
+  person("John", "Maindonald", role = "ctb"),
+  person("Simon", "Wood", role = "ctb"),
+  person("R Core Team", role = "ctb")
+)
 URL: https://pkg.robjhyndman.com/demography/, https://github.com/robjhyndman/demography
 BugReports: https://github.com/robjhyndman/demography/issues
 License: GPL (>= 3)
