@@ -1,5 +1,5 @@
 .onAttach <- function(...)
 {
-  msg <- paste("This is demography", packageVersion("demography"),"\n")
+  msg <- paste("This is demography", utils::packageVersion("demography"),"\n")
   packageStartupMessage(msg)
 }
