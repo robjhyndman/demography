@@ -9,9 +9,14 @@ Depends: R (>= 3.4), forecast (>= 8.5)
 Imports: ftsa (>= 4.8), rainbow, cobs, mgcv, strucchange, RCurl
 LazyData: yes
 ByteCompile: TRUE
+Authors@R: 
+Authors@R: c(
+  person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0002-2140-5352")),
+  person("Heather", "Booth", role = "ctb", comment = c(ORCID = "0000-0002-8356-0534")),
+  person("Leonie", "Tickle", role = "ctb", comment = c(ORCID = "0000-0002-6612-2401")),
+  person("John", "Maindonald", role = "ctb")
+  )
+URL: https://pkg.robjhyndman.com/demography/, https://github.com/robjhyndman/demography
 BugReports: https://github.com/robjhyndman/demography/issues
-Author: Rob J Hyndman with contributions from Heather Booth, Leonie Tickle and John Maindonald.
-Maintainer: Rob J Hyndman <Rob.Hyndman@monash.edu>
 License: GPL (>= 3)
 RoxygenNote: 7.1.0
-URL: https://github.com/robjhyndman/demography
