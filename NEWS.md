@@ -1,30 +1,30 @@
-# demography 1.22.0.9000 (dev)
+# demography 1.22.0.9000
 
  - Updated hmd functions due to changes at mortality.org
  - Added pkgdown site
 
-# demography 1.22 (22 April 2019)
+# demography 1.22
 
  - Made compatible with latest rainbow and ftsa packages
 
-# demography 1.21 (18 January 2019)
+# demography 1.21
 
  - Using https for HMD
  - roxygenized all documentation
  - made compatible with latest forecast package
 
-# demography 1.20 (25 April 2017)
+# demography 1.20
 
  - Removed dependency on ftsa now that we no longer need a special median function.
 
-# demography 1.19 (16 February 2017)
+# demography 1.19
 
  - Lots of clean up to conform to CRAN policy
  - Fixed conflicts with some packages
  - total life expectancy for coherentfdm added
  - Added PI for coherent total life expectancy
 
-# demography 1.18 (15 September 2014)
+# demography 1.18
 
 - Updated lca() with "fertility" data
 - Modified handling of warnings in forecast.fdm()
@@ -33,11 +33,11 @@
 - Better handling of weights in forecast.fdm()
 - Allowed lca() to handle data that is observed less frequently than annually.
 
-# demography 1.17 (1 February 2014)
+# demography 1.17
 
 - fix for smooth.demogdata caused by changes in mgcv package
 
-# demography 1.16 (17 December 2013)
+# demography 1.16
 
 - Fixed bug in pop.sim when no migration data was used
 - Added hmd.pop() to read population data from www.mortality.org.
@@ -47,19 +47,19 @@
 - Improved documentation for read.demogdata()
 - Corrected a bug in smooth.demogdata in the default definition of age.grid
 
-# demography 1.15 (21 August 2013)
+# demography 1.15
 
 - smooth.demogdata will no longer return NAs for fertility data. Instead, the fertility rate for the nearest age with positive rate is used.
 - Fixed occasional bug in computing life expectancy prediction intervals from coherent fdm model.
 - Changed the way missing values are handled at the ends of the age range when smoothing.
 - Allowed missing values when using fdm().
 
-# demography 1.14 (26 October 2012)
+# demography 1.14
 
 - minor changes to lifetable calculation.
 - replaced cm.spline and cm.splinefun with wrappers to spline and splinefun, now that these include hyman filtering.
 
-# demography 1.13 (6 August 2012)
+# demography 1.13
 
 - Generalized lca with e0 adjustment to allow starting ages other than 0.
 - Modified forecast.fdmpr() to allow better control of fractional differencing parameter.
@@ -68,66 +68,66 @@
  an lca object.
 - Added Simon Wood and R Core Team as contributing authors.
 
-# demography 1.12 (24 April 2012)
+# demography 1.12
 
 - Removed partial arg matching throughout.
 - Added updating methods for fmforecast and fmforecast2 classes.
 
-# demography 1.11 (31 January 2012)
+# demography 1.11
 
 - added warnings option to forecast.fdm().
 - fixed rare error in forecast.fdm()
 - fixed incorrect label returned by sex.ratio()
 
-# demography 1.10 (18 October 2011)
+# demography 1.10
 
 - show.labels argument dropped from plot.demogdata() as the facility has been dropped by plot.fds() in the rainbow package.
 - Fixed a bug in lifetable() when dealing with age groups of more than 1 year.
 - Fixed bug in plot.demogdata() when logarithms of zero rates are calculated.
 
-# demography 1.09 (17 February 2011)
+# demography 1.09-1
 
 - Extended flife.expectancy() for use when there is insufficient historical data to compute cohort life expectancy.
 - Fixed a bug in flife.expectancy() when type="cohort".
 
-# demography 1.08 (15 February 2011)
+# demography 1.08
 
 - Fixed bug in plot.fmforecast() when plotting coefficients from lca object.
 - Fixed several bugs in flife.expectancy() for forecasting cohort life expectancy.
 - Fixed bug in lifetable() when type="cohort" and ages of length 1 to give one additional year.
 
-# demography 1.07 (4 November 2010)
+# demography 1.07
 
 - Modified signs of basis functions and coefficients in fdm() to make interpretation easier. This does not affect final forecasts as the signs cancel.
 - Fixed bug in forecast.fdm after fitting with weight=TRUE.
 - In forecast.fdmpr(): restricted ARFIMA forecasts for coherent models to use data only from the last K years where K can be specified.
 
-# demography 1.06 (14 October 2010)
+# demography 1.06
 
 - Fixed errors in help file for hmd.e0()
 - Fixed bug in forecast.fdm after fitting with weight=TRUE.
 
-# demography 1.05 (30 September 2010)
+# demography 1.05
 
 - Modified lifetable for type="cohort" to prevent partial lifetables being produced unless explicitly requested.
 - Added hmd.e0() function.
 
-# demography 1.04 (22 September 2010)
+# demography 1.04
 
 - Fixed bugs in the use of weights in fdm() and smooth.demogdata()
 - Lifetable functions rewritten to remove bugs and add additional functionality for cohort lifetables.
 - Improved speed of PI calculations in e0
 - Added flife.expectancy().
 
-# demography 1.03 (24 August 2010)
+# demography 1.03
 
 - improved documentation for hmd.mx()
 
-# demography 1.02 (14 August 2010)
+# demography 1.02
 
 - changed some examples in the help file for bms() to enable the CRAN checks to run faster.
 
-# demography 1.0 (12 August 2010)
+# demography 1.0
 
 - First version on CRAN
 - Added summary() functions for fmforecast, fmforecast2, fdmpr and demogdata objects.
