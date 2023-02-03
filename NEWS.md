@@ -1,6 +1,6 @@
-# demography 1.22.0.9000
+# demography 2.0
 
- - Updated hmd functions due to changes at mortality.org
+ - Updated hmd functions due to changes at mortality.org. Now using HMDHFDplus for downloads.
  - Added pkgdown site
 
 # demography 1.22
