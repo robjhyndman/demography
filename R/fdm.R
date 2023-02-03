@@ -47,7 +47,7 @@
 #' @references Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of
 #' mortality and fertility rates: a functional data approach.
 #' \emph{Computational Statistics & Data Analysis}, \bold{51}, 4942-4956.
-#' \url{http://robjhyndman.com/papers/funcfor}
+#' \url{https://robjhyndman.com/publications/funcfor/}
 #'
 #' @seealso \code{\link[ftsa]{ftsm}}, \code{\link{forecast.fdm}}
 #'
@@ -742,7 +742,7 @@ plot.errorfdm <- function(x,transform=TRUE,...)
 #' @author Rob J Hyndman
 #' @references Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of mortality and
 #' fertility rates: a functional data approach. \emph{Computational Statistics & Data Analysis},
-#' \bold{51}, 4942-4956. \url{http://robjhyndman.com/papers/funcfor}
+#' \bold{51}, 4942-4956. \url{https://robjhyndman.com/publications/funcfor/}
 #' @keywords models
 #' @seealso \code{\link{fdm}}, \code{\link{forecast.fdm}}.
 #' @export

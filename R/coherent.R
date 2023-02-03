@@ -25,7 +25,7 @@
 #' @references Hyndman, R.J., Booth, H., and Yasmeen, F. (2012) Coherent
 #' mortality forecasting: the product-ratio method with functional time series
 #' models. \emph{Demography}, to appear.
-#' \url{http://robjhyndman.com/papers/coherentfdm}
+#' \url{https://robjhyndman.com/publications/coherentfdm/}
 #'
 #' @seealso \code{\link{fdm}}, \code{\link{forecast.fdmpr}}
 #'
