@@ -5,7 +5,7 @@
 \alias{hmd.mx}
 \alias{hmd.e0}
 \alias{hmd.pop}
-\title{Summary for functional demographic model or Lee-Carter model}
+\title{Read data from HMD and construct a mortality demogdata object}
 \usage{
 hmd.mx(country, username, password, label = country)
 
@@ -15,7 +15,7 @@ hmd.pop(country, username, password, label = country)
 }
 \arguments{
 \item{country}{Directory abbreviation from the HMD. For instance, Australia =
-"AUS". See below for other countries.}
+"AUS".}
 
 \item{username}{HMD username (case-sensitive)}
 
@@ -37,7 +37,7 @@ taken.}
 }
 \description{
 \code{hmd.mx} reads "Mx" (1x1) data from the Human Mortality Database (HMD
-\url{http://www.mortality.org}) and constructs a demogdata object suitable
+\url{https://www.mortality.org}) and constructs a demogdata object suitable
 for plotting using \code{\link{plot.demogdata}} and fitting an LC or BMS
 model using \code{\link{lca}} or an FDA model using \code{\link{fdm}}.
 \code{hmd.pop} reads "Population" (1x1) data from the HMD and constructs a
@@ -46,68 +46,14 @@ demogdata object suitable for plotting using \code{\link{plot.demogdata}}.
 result as a \code{ts} object.
 }
 \details{
-In order to read the data, users are required to create their account via the HMD website (\url{http://www.mortality.org}),
+In order to read the data, users are required to create their account via the HMD website (\url{https://www.mortality.org}),
 and obtain a valid username and password.
-
-The country codes (as at 23 December 2016) are as follows.
-\tabular{ll}{
-  Australia \tab AUS\cr
-  Austria \tab AUT\cr
-  Belarus \tab BLR\cr
-  Belgium \tab BEL\cr
-  Bulgaria \tab BGR\cr
-  Canada \tab CAN\cr
-  Chile \tab CHL\cr
-  Czech Republic \tab CZE\cr
-  Denmark \tab DNK\cr
-  Estonia \tab EST\cr
-  Finland \tab FIN\cr
-  France\cr
-  -- France total population \tab FRATNP\cr
-  -- France civilian population \tab FRACNP\cr
-  Germany\cr
-  -- Germany total population \tab DEUTNP\cr
-  -- West Germany \tab DEUTFRG\cr
-  -- East Germany \tab DEUTGDR\cr
-  Greece \tab GRC\cr
-  Hungary \tab HUN\cr
-  Iceland \tab ISL\cr
-  Ireland \tab IRL\cr
-  Israel \tab ISR\cr
-  Italy \tab ITA\cr
-  Japan \tab JPN\cr
-  Latvia \tab LVA\cr
-  Lithuania \tab LTU\cr
-  Luxembourg \tab LUX\cr
-  Netherlands \tab NLD\cr
-  New Zealand	\cr
-  -- NZ total population \tab NZL_NP\cr
-  -- NZ Maori \tab NZL_MA\cr
-  -- NZ non-Maori \tab NZL_NM\cr
-  Norway \tab NOR\cr
-  Poland \tab POL\cr
-  Portugal \tab PRT\cr
-  Russia \tab RUS\cr
-  Slovakia \tab SVK\cr
-  Slovenia \tab SVN\cr
-  Spain \tab ESP\cr
-  Sweden \tab SWE\cr
-  Switzerland \tab CHE\cr
-  Taiwan \tab TWN\cr
-  United Kingdom\cr
-  -- UK Total Population \tab GBR_NP\cr
-  -- England & Wales Total Population \tab GBRTENW\cr
-  -- England & Wales Civilian Population \tab GBRCENW\cr
-  -- Scotland \tab GBR_SCO\cr
-  -- Northern Ireland \tab GBR_NIR\cr
-  U.S.A. \tab USA\cr
-  Ukraine \tab UKR\cr
-}
 }
 \examples{
 \dontrun{
 norway <- hmd.mx("NOR", username, password, "Norway")
-summary(norway)}
+summary(norway)
+}
 }
 \seealso{
 \code{\link{demogdata}},\code{\link{read.demogdata}},\code{\link{plot.demogdata}}, \code{\link{life.expectancy}}
