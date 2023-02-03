@@ -72,7 +72,7 @@ plot(france.lt.f)
 france.clt <- lifetable(fr.mort,type="cohort",age=0, years=1900:1910)
 
 # Partial cohort lifetables for 1950
-lifetable(fr.mort,type="cohort",years=1950)
+lifetable(fr.mort, years=1950)
 }
 \references{
 Chiang CL. (1984) \emph{The life table and its applications}. Robert E Krieger Publishing Company: Malabar.

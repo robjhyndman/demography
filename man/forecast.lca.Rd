@@ -52,7 +52,7 @@ plot(france.fcast)
 plot(france.fcast,'c')
 }
 \seealso{
-\code{\link{lca}}, \code{\link{plot.fmforecast}}, \code{\link{summary.fmforecast}}
+\code{\link{lca}}, \code{\link{plot.fmforecast}}
 }
 \author{
 Rob J Hyndman

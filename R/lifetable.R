@@ -62,7 +62,7 @@
 #' france.clt <- lifetable(fr.mort,type="cohort",age=0, years=1900:1910)
 #'
 #' # Partial cohort lifetables for 1950
-#' lifetable(fr.mort,type="cohort",years=1950)
+#' lifetable(fr.mort, years=1950)
 #' @keywords models
 #' @export
 lifetable <- function(data, series=names(data$rate)[1], years=data$year, ages=data$age,
@@ -394,48 +394,40 @@ lines.lifetable <- function(x,years=x$year,...)
   lines(fts(x$age,x$ex[,idx],start=x$year[1],frequency=1),...)
 }
 
+#' @export
+as.data.frame.lifetable <- function(x, ...) {
+  ny <- ncol(x$ex)
+  if(x$type=="period") {
+    year <- x$year
+  } else {
+    year <- as.numeric(colnames(x$ex))
+  }
+  outlist <- vector(length=ny,mode="list")
+  for(i in seq(ny)) {
+    idx2 <- !is.na(x$mx[,i])
+    if(sum(idx2)>0) {
+      outlist[[i]] <- data.frame(year[i], as.numeric(rownames(x$ex)), x$mx[,i],x$qx[,i],x$lx[,i],x$dx[,i],x$Lx[,i],x$Tx[,i],x$ex[,i])[idx2,]
+      colnames(outlist[[i]]) <- c("year","x","mx","qx","lx","dx","Lx","Tx","ex")
+    }
+  }
+  out <- do.call("rbind", outlist)
+  rownames(out) <- NULL
+  return(out)
+}
 
 #' @export
 print.lifetable <- function(x,digits=4,...)
 {
-  ny <- ncol(x$ex)
-  outlist <- vector(length=ny,mode="list")
-  for(i in 1:ny)
-  {
-    idx2 <- !is.na(x$mx[,i])
-    if(sum(idx2)>0)
-    {
-      outlist[[i]] <- data.frame(x$mx[,i],x$qx[,i],x$lx[,i],x$dx[,i],x$Lx[,i],x$Tx[,i],x$ex[,i])[idx2,]
-      rownames(outlist[[i]]) <- rownames(x$ex)[idx2]
-      colnames(outlist[[i]]) <- c("mx","qx","lx","dx","Lx","Tx","ex")
-    }
-  }
-  if(x$type=="period")
-  {
-    names(outlist) = x$year
+  out <- as.data.frame(x)
+  if(x$type=="period") {
     cat("Period ")
-  }
-  else
-  {
-    names(outlist) <- colnames(x$ex)
+  } else {
     cat("Cohort ")
   }
   cat(paste("lifetable for",x$label,":",x$series,"\n\n"))
-  for(i in 1:ny)
-  {
-    if(!is.null(outlist[[i]]))
-    {
-      if(x$type=="period")
-        cat(paste("Year:",names(outlist)[i],"\n"))
-      else
-        cat(paste("Cohort:",names(outlist)[i],"\n"))
-      print(round(outlist[[i]],digits=digits))
-      cat("\n")
-    }
-  }
-  invisible(outlist)
+  print(round(out, digits = digits))
+  invisible(out)
 }
-
 
 # Compute expected age from single year mortality rates
 get.e0 <- function(x,agegroup,sex,startage=0)
