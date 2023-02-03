@@ -1,6 +1,7 @@
 # demography 2.0
 
  - Updated hmd functions due to changes at mortality.org. Now using HMDHFDplus for downloads.
+ - Added functions to convert lifetable and demogdata objects to data frames.
  - Added pkgdown site
 
 # demography 1.22
