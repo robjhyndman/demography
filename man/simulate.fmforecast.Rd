@@ -31,11 +31,11 @@ The default, NULL will not change the random generator state.}
 \item{...}{Other arguments passed to \code{simulate.fmforecast}.}
 }
 \value{
-An array containing the future simulated values (in the case of a \code{fmforecast} object), 
+An array containing the future simulated values (in the case of a \code{fmforecast} object),
 or a list of arrays containing the future simulated values (in the case of a \code{fmforecast2} object).
 }
 \description{
-This function will simulate future sample paths given forecasting models 
+This function will simulate future sample paths given forecasting models
 from a functional demographic model such as those obtained using \code{\link{forecast.fdm}} or \code{\link{forecast.fdmpr}}.
 }
 \examples{

@@ -2,8 +2,7 @@
 % Please edit documentation in R/demogdata.R
 \name{demogdata}
 \alias{demogdata}
-\title{####################################################
-Create demogdata object from raw data matrices}
+\title{Create demogdata object from raw data matrices}
 \usage{
 demogdata(data, pop, ages, years, type, label, name, lambda)
 }

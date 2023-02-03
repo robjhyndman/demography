@@ -14,10 +14,10 @@ lifetable(
 )
 }
 \arguments{
-\item{data}{Demogdata object such as obtained from \code{\link{read.demogdata}}, 
+\item{data}{Demogdata object such as obtained from \code{\link{read.demogdata}},
 \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}.}
 
-\item{series}{Name of series to use.  Default is the first series in data\$rate.}
+\item{series}{Name of series to use.  Default is the first series in \code{data[["rate"]]}.}
 
 \item{years}{Vector indicating which years to include in the tables.}
 
@@ -47,11 +47,11 @@ the lifetables from the above components.
 Computes period and cohort lifetables from mortality rates for multiple years.
 }
 \details{
-For period lifetables, all years and all ages specified are included in the tables. For cohort lifetables, 
-if \code{ages} takes a scalar value, then the cohorts are taken to be of that age in each year contained in \code{years}. 
+For period lifetables, all years and all ages specified are included in the tables. For cohort lifetables,
+if \code{ages} takes a scalar value, then the cohorts are taken to be of that age in each year contained in \code{years}.
 But if \code{ages} is a vector of values, then the cohorts are taken to be of those ages in the first year contained in \code{years}.
 
-For example, if \code{ages=0} then lifetables of the birth cohorts for all years in \code{years} are computed. On the other hand, 
+For example, if \code{ages=0} then lifetables of the birth cohorts for all years in \code{years} are computed. On the other hand,
 if \code{ages=0:100} and \code{years=1950:2010}, then lifetables of each age cohort in 1950 are computed.
 
 In all cases, \eqn{q_x = m_x/(1+[(1-a_x)m_x])}{qx = mx/(1 + ((1-ax) * mx))} as per Chiang (1984).

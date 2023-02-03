@@ -39,8 +39,8 @@ e0(
 )
 }
 \arguments{
-\item{data}{Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}}, 
-or an object of class \code{fmforecast} such as the output from  \code{\link{forecast.fdm}} or \code{\link{forecast.lca}}, 
+\item{data}{Demogdata object of type \dQuote{mortality} such as obtained from \code{\link{read.demogdata}},
+or an object of class \code{fmforecast} such as the output from  \code{\link{forecast.fdm}} or \code{\link{forecast.lca}},
 or an object of class \code{fmforecast2} such as the output from \code{\link{forecast.fdmpr}}.}
 
 \item{series}{Name of mortality series to use. Default is the first demogdata series in data.}
@@ -63,8 +63,8 @@ or an object of class \code{fmforecast2} such as the output from \code{\link{for
 Time series of life expectancies (one per year), or a forecast object of life expectancies (one per year).
 }
 \description{
-All three functions estimate life expectancy from \code{lifetable}. 
-The function \code{flife.expectancy} is primarily designed for forecast life expectancies and will optionally 
+All three functions estimate life expectancy from \code{lifetable}.
+The function \code{flife.expectancy} is primarily designed for forecast life expectancies and will optionally
 produce prediction intervals. Where appropriate, it will package the results as a forecast object
 which makes it much easier to product nice plots of forecast life expectancies.
 The \code{e0} function is a shorthand wrapper for \code{flife.expectancy} with \code{age=0}.
