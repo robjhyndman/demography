@@ -123,7 +123,7 @@ Lee, R.D., and Carter, L.R. (1992) Modeling and forecasting US mortality. \emph{
   the American Statistical Association}, \bold{87}, 659-671.
 }
 \seealso{
-\code{\link{forecast.lca}}, \code{\link{fdm}}
+\code{\link{forecast.lca}}, \code{\link{plot.lca}}, \code{\link{summary.lca}}, \code{\link{fdm}}
 }
 \author{
 Heather Booth, Leonie Tickle, John Maindonald and Rob J Hyndman.

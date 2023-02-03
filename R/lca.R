@@ -68,7 +68,7 @@
 #'
 #' @author Heather Booth, Leonie Tickle, John Maindonald and Rob J Hyndman.
 #'
-#' @seealso \code{\link{forecast.lca}}, \code{\link{fdm}}
+#' @seealso \code{\link{forecast.lca}}, \code{\link{plot.lca}}, \code{\link{summary.lca}}, \code{\link{fdm}}
 #' @examples
 #' \dontrun{
 #' france.LC1 <- lca(fr.mort, adjust="e0")
@@ -436,6 +436,7 @@ printout <- function(output)
 #' \item{model}{Details about the fitted model}
 #'
 #' @author Rob J Hyndman
+#' @seealso \code{\link{lca}}, \code{\link{plot.fmforecast}}
 #' @examples
 #' france.lca <- lca(fr.mort, adjust="e0")
 #' france.fcast <- forecast(france.lca, 50)

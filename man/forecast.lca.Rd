@@ -51,6 +51,9 @@ france.fcast <- forecast(france.lca, 50)
 plot(france.fcast)
 plot(france.fcast,'c')
 }
+\seealso{
+\code{\link{lca}}, \code{\link{plot.fmforecast}}, \code{\link{summary.fmforecast}}
+}
 \author{
 Rob J Hyndman
 }
