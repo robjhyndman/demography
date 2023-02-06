@@ -5,3 +5,4 @@
 ^LICENSE\.md$
 README.Rmd
 rstudio
+Makefile
