@@ -1,0 +1,10 @@
+^cran-comments\.md$
+^.*\.Rproj$
+^\.Rproj\.user$
+^revdep$
+^\.github$
+^LICENSE\.md$
+README.Rmd
+rstudio
+Makefile
+^pkgdown$
