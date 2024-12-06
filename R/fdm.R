@@ -297,30 +297,35 @@ forecast.fdm <- function(object, h=50, level=80, jumpchoice=c("fit","actual"),
 #      {
         s <- sqrt(abs(object$obs.var))
 #      }
-#    browser()
-    ysd <- s*NA
-    for(i in 1:ncol(ysd))
-      if(sum(!is.na(s[,i])) >= 2) # enough data to fix NAs?
-        ysd[,i] <- stats::spline(object$age, s[,i], n=nrow(fcast$var$total))$y
-    ysd <- rowMeans(ysd, na.rm = TRUE)
 
-#    browser()
+    if(!is.null(fcast$var)) {
+      ysd <- s*NA
+      for(i in 1:ncol(ysd))
+        if(sum(!is.na(s[,i])) >= 2) # enough data to fix NAs?
+          ysd[,i] <- stats::spline(object$age, s[,i], n=nrow(fcast$var$total))$y
+      ysd <- rowMeans(ysd, na.rm = TRUE)
+  
+      # Add observational variance to total variance
+      fcast$var$observ <- ysd^2
+      fcast$var$total <- sweep(fcast$var$total,1,fcast$var$observ,"+")
 
-    # Add observational variance to total variance
-    fcast$var$observ <- ysd^2
-    fcast$var$total <- sweep(fcast$var$total,1,fcast$var$observ,"+")
-
-    # Correct prediction intervals and reverse transform
-    fse <- stats::qnorm(.5 + fcast$coeff[[1]]$level/200) * sqrt(fcast$var$total)
-    fcast$upper$y <- InvBoxCox(fcast$mean$y + fse,object$lambda)
-    fcast$lower$y <- InvBoxCox(fcast$mean$y - fse,object$lambda)
-    fcast$mean$y <- InvBoxCox(fcast$mean$y,object$lambda)
-    if(object$type != "migration")
-    {
-        fcast$mean$y <- pmax(fcast$mean$y, 0.000000001)
-        fcast$lower$y <- pmax(fcast$lower$y, 0.000000001)
-        fcast$lower$y[is.na(fcast$lower$y)] <- 0
-        fcast$upper$y <- pmax(fcast$upper$y, 0.000000001)
+      # Correct prediction intervals and reverse transform
+      fse <- stats::qnorm(.5 + fcast$coeff[[1]]$level/200) * sqrt(fcast$var$total)
+      fcast$upper$y <- InvBoxCox(fcast$mean$y + fse,object$lambda)
+      fcast$lower$y <- InvBoxCox(fcast$mean$y - fse,object$lambda)
+      fcast$mean$y <- InvBoxCox(fcast$mean$y,object$lambda)
+      if(object$type != "migration")
+      {
+          fcast$mean$y <- pmax(fcast$mean$y, 0.000000001)
+          fcast$lower$y <- pmax(fcast$lower$y, 0.000000001)
+          fcast$lower$y[is.na(fcast$lower$y)] <- 0
+          fcast$upper$y <- pmax(fcast$upper$y, 0.000000001)
+      }
+    } else if("bootsamp" %in% names(fcast)) {
+      # Undo logs
+      fcast$mean$y <- exp(fcast$mean$y)
+      fcast$lower$y <- exp(fcast$lower$y)
+      fcast$upper$y <- exp(fcast$upper$y)
     }
 #    if(object$type != "migration")
 #    {
