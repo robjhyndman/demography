@@ -1,15 +1,24 @@
 Package: demography
-Version: 1.17
-Title: Forecasting mortality, fertility, migration and population data
+Version: 2.0.0.9000
+Title: Forecasting Mortality, Fertility, Migration and Population Data
 Description: Functions for demographic analysis including lifetable
         calculations; Lee-Carter modelling; functional data analysis of
         mortality rates, fertility rates, net migration numbers; and
         stochastic population forecasting.
-Depends: R (>= 2.15.2), forecast (>= 3.09), rainbow, ftsa, cobs
-Imports: mgcv, strucchange, RCurl
+Depends: R (>= 3.4), forecast (>= 8.5)
+Imports: ftsa (>= 4.8), rainbow, cobs, mgcv, strucchange, HMDHFDplus (>= 2.0.3)
 LazyData: yes
 ByteCompile: TRUE
-Author: Rob J Hyndman with contributions from Heather Booth, Leonie Tickle and John Maindonald.
-Maintainer: Rob J Hyndman <Rob.Hyndman@monash.edu>
-License: GPL (>= 2)
-URL: http://robjhyndman.com/software/demography/
+Authors@R: c(
+  person("Rob", "Hyndman", email = "Rob.Hyndman@monash.edu", role = c("aut", "cre", "cph"), comment = c(ORCID = "0000-0002-2140-5352")),
+  person("Heather", "Booth", role = "ctb", comment = c(ORCID = "0000-0002-8356-0534")),
+  person("Leonie", "Tickle", role = "ctb", comment = c(ORCID = "0000-0002-6612-2401")),
+  person("John", "Maindonald", role = "ctb"),
+  person("Simon", "Wood", role = "ctb"),
+  person("R Core Team", role = "ctb")
+  )
+URL: https://pkg.robjhyndman.com/demography/, https://github.com/robjhyndman/demography
+BugReports: https://github.com/robjhyndman/demography/issues
+License: GPL (>= 3)
+Encoding: UTF-8
+RoxygenNote: 7.3.2
