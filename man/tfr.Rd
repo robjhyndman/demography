@@ -31,7 +31,7 @@ a \code{demogdata} object.
 \examples{
 plot(tfr(aus.fert))
 ausfert.fcast <- forecast(fdm(aus.fert))
-plot(tfr(ausfert.fcast,PI=TRUE,nsim=400))
+plot(tfr(ausfert.fcast, PI = TRUE, nsim = 400))
 
 }
 \seealso{

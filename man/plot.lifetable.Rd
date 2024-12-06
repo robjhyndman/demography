@@ -39,7 +39,7 @@ plot(france.lt)
 france.LC <- lca(fr.mort)
 france.fcast <- forecast(france.LC)
 france.lt.f <- lifetable(france.fcast)
-plot(france.lt.f,years=2010)
+plot(france.lt.f, years = 2010)
 }
 \seealso{
 \code{\link{life.expectancy}}, \code{\link{lifetable}}.

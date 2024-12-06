@@ -17,7 +17,7 @@ Functional time series of sex ratios.
 Calculates the Male/Female ratios from historical or forecasted mortality rates.
 }
 \examples{
-plot(sex.ratio(fr.mort),ylab="Sex ratios (M/F)")
+plot(sex.ratio(fr.mort), ylab = "Sex ratios (M/F)")
 }
 \author{
 Rob J Hyndman

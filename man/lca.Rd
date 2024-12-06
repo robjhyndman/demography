@@ -103,15 +103,15 @@ within \code{data$rate}. Forecasts from this model can be obtained using \code{\
 }
 \examples{
 \dontrun{
-france.LC1 <- lca(fr.mort, adjust="e0")
+france.LC1 <- lca(fr.mort, adjust = "e0")
 plot(france.LC1)
-par(mfrow=c(1,2))
-plot(fr.mort,years=1953:2002,ylim=c(-11,1))
-plot(forecast(france.LC1,jumpchoice="actual"),ylim=c(-11,1))
+par(mfrow = c(1, 2))
+plot(fr.mort, years = 1953:2002, ylim = c(-11, 1))
+plot(forecast(france.LC1, jumpchoice = "actual"), ylim = c(-11, 1))
 
-france.bms <- bms(fr.mort, breakmethod="bai")
+france.bms <- bms(fr.mort, breakmethod = "bai")
 fcast.bms <- forecast(france.bms)
-par(mfrow=c(1,1))
+par(mfrow = c(1, 1))
 plot(fcast.bms$kt)
 }
 }

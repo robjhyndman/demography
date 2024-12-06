@@ -33,9 +33,9 @@ useful to inspect the residuals or plot the fitted values. These functions
 extract the relevant information from the fit object.
 }
 \examples{
-  fit1 <- lca(fr.mort)
-  plot(residuals(fit1))
-  plot(fitted(fit1))
+fit1 <- lca(fr.mort)
+plot(residuals(fit1))
+plot(fitted(fit1))
 
 }
 \seealso{

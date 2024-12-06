@@ -18,7 +18,7 @@ Demogdata object with same components as \code{data} but with a subset of years.
 Creates subset of demogdata object.
 }
 \examples{
-france.1918 <- extract.years(fr.mort,1918)
+france.1918 <- extract.years(fr.mort, 1918)
 }
 \author{
 Rob J Hyndman

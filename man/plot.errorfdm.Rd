@@ -17,8 +17,8 @@
 Function produces a plot of errors from a fitted demographic model.
 }
 \examples{
-fr.fit <- lca(extract.years(fr.mort,years=1921:1980))
-fr.error <- compare.demogdata(fr.mort, forecast(fr.fit,20))
+fr.fit <- lca(extract.years(fr.mort, years = 1921:1980))
+fr.error <- compare.demogdata(fr.mort, forecast(fr.fit, 20))
 plot(fr.error)
 
 }

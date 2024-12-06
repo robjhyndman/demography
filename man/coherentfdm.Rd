@@ -30,10 +30,10 @@ Booth & Yasmeen (2012). If two of the series in \code{data} are named
 it will use all available groups.
 }
 \examples{
-fr.short <- extract.years(fr.sm,1950:2006)
+fr.short <- extract.years(fr.sm, 1950:2006)
 fr.fit <- coherentfdm(fr.short)
 summary(fr.fit)
-plot(fr.fit$product, components=3)
+plot(fr.fit$product, components = 3)
 }
 \references{
 Hyndman, R.J., Booth, H., and Yasmeen, F. (2012) Coherent

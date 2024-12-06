@@ -51,8 +51,8 @@ variance components.} }
 \examples{
 france.fcast <- forecast(fdm(fr.mort))
 plot(france.fcast)
-plot(france.fcast,"c")
-plot(france.fcast,"v")
+plot(france.fcast, "c")
+plot(france.fcast, "v")
 }
 \seealso{
 \link{fdm}, \link{lca}, \link{forecast.fdm}

@@ -41,9 +41,9 @@ Simulate future sample paths of a population using functional models for mortali
 \dontrun{
 require(addb)
 # Construct data objects
-mort.sm <- smooth.demogdata(set.upperage(extract.years(australia,1950:2002),100))
-fert.sm <- smooth.demogdata(extract.years(aus.fertility,1950:2002))
-aus.mig <- netmigration(set.upperage(australia,100),aus.fertility,mfratio=1.0545)
+mort.sm <- smooth.demogdata(set.upperage(extract.years(australia, 1950:2002), 100))
+fert.sm <- smooth.demogdata(extract.years(aus.fertility, 1950:2002))
+aus.mig <- netmigration(set.upperage(australia, 100), aus.fertility, mfratio = 1.0545)
 # Fit models
 mort.fit <- coherentfdm(mort.sm)
 fert.fit <- fdm(fert.sm)
@@ -53,7 +53,8 @@ mort.fcast <- forecast(mort.fit)
 fert.fcast <- forecast(fert.fit)
 mig.fcast <- forecast(mig.fit)
 # Simulate
-aus.sim <- pop.sim(mort.fcast,fert.fcast,mig.fcast,australia)}
+aus.sim <- pop.sim(mort.fcast, fert.fcast, mig.fcast, australia)
+}
 
 }
 \seealso{

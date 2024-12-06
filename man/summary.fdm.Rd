@@ -20,7 +20,7 @@ data. It returns various measures of goodness-of-fit.
 }
 \examples{
 fit1 <- lca(fr.mort)
-fit2 <- bms(fr.mort,breakmethod="bai")
+fit2 <- bms(fr.mort, breakmethod = "bai")
 fit3 <- fdm(fr.mort)
 summary(fit1)
 summary(fit2)

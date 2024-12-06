@@ -70,19 +70,20 @@ which makes it much easier to product nice plots of forecast life expectancies.
 The \code{e0} function is a shorthand wrapper for \code{flife.expectancy} with \code{age=0}.
 }
 \examples{
-plot(life.expectancy(fr.mort),ylab="Life expectancy")
+plot(life.expectancy(fr.mort), ylab = "Life expectancy")
 
-france.LC <- lca(fr.mort,adjust="e0",years=1950:1997)
-france.fcast <- forecast(france.LC,jumpchoice="actual")
+france.LC <- lca(fr.mort, adjust = "e0", years = 1950:1997)
+france.fcast <- forecast(france.LC, jumpchoice = "actual")
 france.e0.f <- life.expectancy(france.fcast)
 
-france.fdm <- fdm(extract.years(fr.mort,years=1950:2006))
+france.fdm <- fdm(extract.years(fr.mort, years = 1950:2006))
 france.fcast <- forecast(france.fdm)
 \dontrun{
-  e0.fcast <- e0(france.fcast,PI=TRUE,nsim=200)
-  plot(e0.fcast)}
+e0.fcast <- e0(france.fcast, PI = TRUE, nsim = 200)
+plot(e0.fcast)
+}
 
-life.expectancy(fr.mort,type='cohort',age=50)
+life.expectancy(fr.mort, type = "cohort", age = 50)
 
 }
 \seealso{

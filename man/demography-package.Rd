@@ -9,9 +9,18 @@
 Functions for demographic analysis including lifetable calculations,
 Lee-Carter modelling and functional data analysis of mortality rates.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://pkg.robjhyndman.com/demography/}
+  \item \url{https://github.com/robjhyndman/demography}
+  \item Report bugs at \url{https://github.com/robjhyndman/demography/issues}
+}
+
+}
 \author{
 Rob J Hyndman with contributions from Heather Booth, Leonie Tickle, John Maindonald, Simon Wood and the R Core Team.
 
 Maintainer: <Rob.Hyndman@monash.edu>
 }
-\keyword{package}
+\keyword{internal}

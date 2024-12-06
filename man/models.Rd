@@ -24,14 +24,14 @@ The models for the time series coefficients used in forecasting fdm models are s
 }
 \examples{
 \dontrun{
-fr.short <- extract.years(fr.sm,1950:2006)
-fr.fit <- fdm(fr.short,series="male")
+fr.short <- extract.years(fr.sm, 1950:2006)
+fr.fit <- fdm(fr.short, series = "male")
 fr.fcast <- forecast(fr.fit)
 models(fr.fcast)
 
 fr.fit <- coherentfdm(fr.short)
 fr.fcast <- forecast(fr.fit)
-models(fr.fcast,select=1:3)
+models(fr.fcast, select = 1:3)
 }
 }
 \seealso{

@@ -8,3 +8,4 @@ README.Rmd
 rstudio
 Makefile
 ^pkgdown$
+_pkgdown.yml

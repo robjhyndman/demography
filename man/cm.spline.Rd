@@ -32,9 +32,9 @@ Perform cubic spline monotonic interpolation of given data points, returning eit
 These are simply wrappers to the \code{\link[stats]{splinefun}} function family from the stats package.
 }
 \examples{
-x <- seq(0,4,l=20)
+x <- seq(0, 4, l = 20)
 y <- sort(rnorm(20))
-plot(x,y)
+plot(x, y)
 lines(spline(x, y, n = 201), col = 2) # Not necessarily monotonic
 lines(cm.spline(x, y, n = 201), col = 3) # Monotonic
 }

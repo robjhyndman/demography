@@ -64,7 +64,7 @@ everything will work seamlessly.
 }
 \examples{
 
-  \dontrun{ norway <- read.demogdata("Mx_1x1.txt",
+  \dontrun{norway <- read.demogdata("Mx_1x1.txt",
   "Exposures_1x1.txt", type="mortality", label="Norway")}
 }
 \seealso{

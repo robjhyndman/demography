@@ -18,9 +18,10 @@
 #' @importFrom stats ts tsp tsp<- uniroot window median
 #' @importFrom utils read.table
 #'
-#' @docType package
+
+
 #'
 #' @name demography-package
 #' @aliases demography
-#' @keywords package
-NULL
+#' @keywords internal
+"_PACKAGE"

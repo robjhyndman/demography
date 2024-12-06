@@ -38,8 +38,8 @@ Computes mean or median of demographic rates for each age level.
 }
 \examples{
 plot(fr.mort)
-lines(mean(fr.mort),lwd=2)
-lines(median(fr.mort),lwd=2,col=2)
+lines(mean(fr.mort), lwd = 2)
+lines(median(fr.mort), lwd = 2, col = 2)
 }
 \references{
 Hossjer, O., and Croux, C. (1995) Generalized univariate signed rank statistics for testing

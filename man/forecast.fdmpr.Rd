@@ -32,11 +32,11 @@ The product and ratio models from \code{\link{coherentfdm}} are forecast, and
 the results combined to give forecasts for each group in the original data.
 }
 \examples{
-fr.short <- extract.years(fr.sm,1950:2006)
+fr.short <- extract.years(fr.sm, 1950:2006)
 fr.fit <- coherentfdm(fr.short)
 fr.fcast <- forecast(fr.fit)
 plot(fr.fcast$male)
-plot(fr.fcast$ratio$male, plot.type='component', components=3)
+plot(fr.fcast$ratio$male, plot.type = "component", components = 3)
 models(fr.fcast)
 
 }

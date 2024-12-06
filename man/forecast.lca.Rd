@@ -46,10 +46,10 @@ The forecast coefficients are then multiplied by bx to
 obtain a forecast demographic rate curve.
 }
 \examples{
-france.lca <- lca(fr.mort, adjust="e0")
+france.lca <- lca(fr.mort, adjust = "e0")
 france.fcast <- forecast(france.lca, 50)
 plot(france.fcast)
-plot(france.fcast,'c')
+plot(france.fcast, "c")
 }
 \seealso{
 \code{\link{lca}}, \code{\link{plot.fmforecast}}

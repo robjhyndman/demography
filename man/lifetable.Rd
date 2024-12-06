@@ -61,7 +61,7 @@ Warning: the code has only been tested for data based on single-year age groups.
 \examples{
 france.lt <- lifetable(fr.mort)
 plot(france.lt)
-lt1990 <- print(lifetable(fr.mort,year=1990))
+lt1990 <- print(lifetable(fr.mort, year = 1990))
 
 france.LC <- lca(fr.mort)
 france.fcast <- forecast(france.LC)
@@ -69,10 +69,10 @@ france.lt.f <- lifetable(france.fcast)
 plot(france.lt.f)
 
 # Birth cohort lifetables, 1900-1910
-france.clt <- lifetable(fr.mort,type="cohort",age=0, years=1900:1910)
+france.clt <- lifetable(fr.mort, type = "cohort", age = 0, years = 1900:1910)
 
 # Partial cohort lifetables for 1950
-lifetable(fr.mort, years=1950)
+lifetable(fr.mort, years = 1950)
 }
 \references{
 Chiang CL. (1984) \emph{The life table and its applications}. Robert E Krieger Publishing Company: Malabar.

@@ -55,8 +55,8 @@ series model. The forecast coefficients are then multiplied by the basis
 functions to obtain a forecast demographic rate curve.
 }
 \examples{
-france.fit <- fdm(fr.mort,order=2)
-france.fcast <- forecast(france.fit,50)
+france.fit <- fdm(fr.mort, order = 2)
+france.fcast <- forecast(france.fit, 50)
 plot(france.fcast)
 models(france.fcast)
 }

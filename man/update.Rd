@@ -24,21 +24,23 @@ A list of the same class as \code{object}.
 }
 \examples{
 \dontrun{
-france.fit <- fdm(fr.mort,order=2)
-france.fcast <- forecast(france.fit,50)
+france.fit <- fdm(fr.mort, order = 2)
+france.fcast <- forecast(france.fit, 50)
 # Replace first coefficient model with ARIMA(0,1,2)+drift
-france.fcast$coeff[[2]] <- forecast(Arima(france.fit$coeff[,2],
-                                          order=c(0,1,2), include.drift=TRUE), h=50, level=80)
+france.fcast$coeff[[2]] <- forecast(Arima(france.fit$coeff[, 2],
+  order = c(0, 1, 2), include.drift = TRUE
+), h = 50, level = 80)
 france.fcast <- update(france.fcast)
 
-fr.short <- extract.years(fr.sm,1950:2006)
+fr.short <- extract.years(fr.sm, 1950:2006)
 fr.fit <- coherentfdm(fr.short)
 fr.fcast <- forecast(fr.fit)
-par(mfrow=c(1,2))
+par(mfrow = c(1, 2))
 plot(fr.fcast$male)
 # Replace first coefficient model in product component with a damped ETS model:
-fr.fcast$product$coeff[[2]] <- forecast(ets(fr.fit$product$coeff[,2], damped=TRUE),
-                                        h=50, level=80)
+fr.fcast$product$coeff[[2]] <- forecast(ets(fr.fit$product$coeff[, 2], damped = TRUE),
+  h = 50, level = 80
+)
 fr.fcast <- update(fr.fcast)
 plot(fr.fcast$male)
 }

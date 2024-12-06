@@ -40,13 +40,14 @@ from a functional demographic model such as those obtained using \code{\link{for
 }
 \examples{
 \dontrun{
-france.fit <- fdm(fr.mort,order=2)
-france.fcast <- forecast(france.fit,50,method="ets")
-france.sim <- simulate(france.fcast,nsim=100)
+france.fit <- fdm(fr.mort, order = 2)
+france.fcast <- forecast(france.fit, 50, method = "ets")
+france.sim <- simulate(france.fcast, nsim = 100)
 
 france.fit2 <- coherentfdm(fr.sm)
-france.fcast2 <- forecast(france.fit2,50)
-france.sim2 <- simulate(france.fcast2,nsim=100)}
+france.fcast2 <- forecast(france.fit2, 50)
+france.sim2 <- simulate(france.fcast2, nsim = 100)
+}
 }
 \seealso{
 \code{\link{forecast.fdm}}, \code{\link{forecast.lca}}, \code{\link[ftsa]{forecast.ftsm}}.

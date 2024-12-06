@@ -20,7 +20,7 @@ Demogdata object with same components as \code{data} but with a subset of ages.
 Creates subset of demogdata object.
 }
 \examples{
-france.teens <- extract.ages(fr.mort,13:19,FALSE)
+france.teens <- extract.ages(fr.mort, 13:19, FALSE)
 plot(france.teens)
 }
 \author{
