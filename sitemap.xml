@@ -1,129 +1,45 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>/404.html</loc>
-  </url>
-  <url>
-    <loc>/authors.html</loc>
-  </url>
-  <url>
-    <loc>/index.html</loc>
-  </url>
-  <url>
-    <loc>/news/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/as.data.frame.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/ausfert.html</loc>
-  </url>
-  <url>
-    <loc>/reference/cm.spline.html</loc>
-  </url>
-  <url>
-    <loc>/reference/coherentfdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/combine.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/compare.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/demography-package.html</loc>
-  </url>
-  <url>
-    <loc>/reference/extract.ages.html</loc>
-  </url>
-  <url>
-    <loc>/reference/extract.years.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/forecast.fdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/forecast.fdmpr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/forecast.lca.html</loc>
-  </url>
-  <url>
-    <loc>/reference/fr.mort.html</loc>
-  </url>
-  <url>
-    <loc>/reference/hmd.html</loc>
-  </url>
-  <url>
-    <loc>/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>/reference/isfe.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lca.html</loc>
-  </url>
-  <url>
-    <loc>/reference/life.expectancy.html</loc>
-  </url>
-  <url>
-    <loc>/reference/lifetable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/mean.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/migration.html</loc>
-  </url>
-  <url>
-    <loc>/reference/models.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.errorfdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.fmforecast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/plot.lifetable.html</loc>
-  </url>
-  <url>
-    <loc>/reference/pop.sim.html</loc>
-  </url>
-  <url>
-    <loc>/reference/read.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/residuals.fdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/set.upperage.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sex.ratio.html</loc>
-  </url>
-  <url>
-    <loc>/reference/simulate.fmforecast.html</loc>
-  </url>
-  <url>
-    <loc>/reference/smooth.demogdata.html</loc>
-  </url>
-  <url>
-    <loc>/reference/summary.fdm.html</loc>
-  </url>
-  <url>
-    <loc>/reference/tfr.html</loc>
-  </url>
-  <url>
-    <loc>/reference/update.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>/404.html</loc></url>
+<url><loc>/authors.html</loc></url>
+<url><loc>/index.html</loc></url>
+<url><loc>/news/index.html</loc></url>
+<url><loc>/reference/as.data.frame.demogdata.html</loc></url>
+<url><loc>/reference/ausfert.html</loc></url>
+<url><loc>/reference/cm.spline.html</loc></url>
+<url><loc>/reference/coherentfdm.html</loc></url>
+<url><loc>/reference/combine.demogdata.html</loc></url>
+<url><loc>/reference/compare.demogdata.html</loc></url>
+<url><loc>/reference/demogdata.html</loc></url>
+<url><loc>/reference/demography-package.html</loc></url>
+<url><loc>/reference/extract.ages.html</loc></url>
+<url><loc>/reference/extract.years.html</loc></url>
+<url><loc>/reference/fdm.html</loc></url>
+<url><loc>/reference/forecast.fdm.html</loc></url>
+<url><loc>/reference/forecast.fdmpr.html</loc></url>
+<url><loc>/reference/forecast.lca.html</loc></url>
+<url><loc>/reference/fr.mort.html</loc></url>
+<url><loc>/reference/hmd.html</loc></url>
+<url><loc>/reference/index.html</loc></url>
+<url><loc>/reference/isfe.html</loc></url>
+<url><loc>/reference/lca.html</loc></url>
+<url><loc>/reference/life.expectancy.html</loc></url>
+<url><loc>/reference/lifetable.html</loc></url>
+<url><loc>/reference/mean.demogdata.html</loc></url>
+<url><loc>/reference/migration.html</loc></url>
+<url><loc>/reference/models.html</loc></url>
+<url><loc>/reference/plot.demogdata.html</loc></url>
+<url><loc>/reference/plot.errorfdm.html</loc></url>
+<url><loc>/reference/plot.fmforecast.html</loc></url>
+<url><loc>/reference/plot.lifetable.html</loc></url>
+<url><loc>/reference/pop.sim.html</loc></url>
+<url><loc>/reference/read.demogdata.html</loc></url>
+<url><loc>/reference/residuals.fdm.html</loc></url>
+<url><loc>/reference/set.upperage.html</loc></url>
+<url><loc>/reference/sex.ratio.html</loc></url>
+<url><loc>/reference/simulate.fmforecast.html</loc></url>
+<url><loc>/reference/smooth.demogdata.html</loc></url>
+<url><loc>/reference/summary.fdm.html</loc></url>
+<url><loc>/reference/tfr.html</loc></url>
+<url><loc>/reference/update.html</loc></url>
 </urlset>
+
