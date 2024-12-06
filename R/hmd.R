@@ -10,7 +10,7 @@
 #' result as a \code{ts} object.
 #'
 #' In order to read the data, users are required to create their account via the HMD website (\url{https://www.mortality.org}),
-#' and obtain a valid username and password. 
+#' and obtain a valid username and password.
 #'
 #' @param country Directory abbreviation from the HMD. For instance, Australia =
 #'   "AUS".
@@ -41,10 +41,14 @@
 #' @export
 hmd.mx <- function(country, username, password, label = country) {
   # Read raw MX and Exposure data
-  mx <- HMDHFDplus::readHMDweb(country, item = "Mx_1x1",
-    username = username, password = password, fixup = TRUE)
-  pop <- HMDHFDplus::readHMDweb(country, item = "Exposures_1x1",
-    username = username, password = password, fixup = TRUE)
+  mx <- HMDHFDplus::readHMDweb(country,
+    item = "Mx_1x1",
+    username = username, password = password, fixup = TRUE
+  )
+  pop <- HMDHFDplus::readHMDweb(country,
+    item = "Exposures_1x1",
+    username = username, password = password, fixup = TRUE
+  )
 
   # Construct output
   obj <- list(type = "mortality", label = label, lambda = 0)
@@ -71,8 +75,10 @@ hmd.mx <- function(country, username, password, label = country) {
 #' @export
 hmd.e0 <- function(country, username, password) {
   # Read raw e0 data
-  lt <- HMDHFDplus::readHMDweb(country, item = "E0per",
-    username = username, password = password, fixup = TRUE)
+  lt <- HMDHFDplus::readHMDweb(country,
+    item = "E0per",
+    username = username, password = password, fixup = TRUE
+  )
   # Convert to a ts object
   ts(lt[, -1], start = lt[1, 1], frequency = 1)
 }
@@ -82,8 +88,10 @@ hmd.e0 <- function(country, username, password) {
 #' @export
 hmd.pop <- function(country, username, password, label = country) {
   # Read raw data
-  pop <- HMDHFDplus::readHMDweb(country, item = "Population",
-    username = username, password = password, fixup = FALSE)
+  pop <- HMDHFDplus::readHMDweb(country,
+    item = "Population",
+    username = username, password = password, fixup = FALSE
+  )
 
   # Only keep 1 January populations
   pop <- pop[, !grepl("2$", colnames(pop))]
@@ -97,7 +105,7 @@ hmd.pop <- function(country, username, password, label = country) {
   n <- length(obj$year)
   m <- length(unique(pop[, "Age"]))
   obj$age <- pop[seq(m), "Age"]
-  pop <- pop[, !(mnames %in% c("Year","Age","OpenInterval"))]
+  pop <- pop[, !(mnames %in% c("Year", "Age", "OpenInterval"))]
   n.pop <- NCOL(pop)
   obj$pop <- list()
   for (i in seq(n.pop)) {

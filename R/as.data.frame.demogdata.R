@@ -15,15 +15,16 @@ as.data.frame.demogdata <- function(x, ...) {
   # Size of matrices
   nyears <- length(x$year)
   nages <- length(x$age)
-  if(rates_included)
+  if (rates_included) {
     groups <- names(x$rate)
-  else if(pop_included)
+  } else if (pop_included) {
     groups <- names(x$pop)
-  else
+  } else {
     groups <- NULL
-  outlist <- vector(length=nyears, mode="list")
+  }
+  outlist <- vector(length = nyears, mode = "list")
   # Create data frame for rates
-  for(i in seq_along(groups)) {
+  for (i in seq_along(groups)) {
     outlist[[i]] <- data.frame(
       Year = rep(x$year, rep(nages, nyears)),
       Age = rep(x$age, nyears),
@@ -40,7 +41,7 @@ as.data.frame.demogdata <- function(x, ...) {
   out$Age <- as.integer(out$Age)
   out$Year <- as.integer(out$Year)
   # Assume Inf rates are due to 0/0
-  out$Rates[out$Rates==Inf] <- NA_real_
+  out$Rates[out$Rates == Inf] <- NA_real_
   # Rename rates column
   if (x$type == "mortality") {
     colnames(out)[4] <- "Mortality"
@@ -62,10 +63,9 @@ as.data.frame.demogdata <- function(x, ...) {
     }
   }
   # Reorganize
-  out <- out[order(out$Group, out$Year, out$Age),]
+  out <- out[order(out$Group, out$Year, out$Age), ]
   rownames(out) <- NULL
   return(out)
 }
 
-utils::globalVariables(c("Deaths","Births","Year","Age","Exposure","Group","Mortality","Fertility"))
-
+utils::globalVariables(c("Deaths", "Births", "Year", "Age", "Exposure", "Group", "Mortality", "Fertility"))

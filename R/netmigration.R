@@ -1,23 +1,24 @@
 #' @export
-netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
-{
+netmigration <- function(mort, fert, startyearpop = mort, mfratio = 1.05) {
   # Basic checks on inputs
-  if (!inherits(mort, "demogdata") | !inherits(fert, "demogdata"))
+  if (!inherits(mort, "demogdata") | !inherits(fert, "demogdata")) {
     stop("Inputs not demogdata objects")
-  if (mort$type != "mortality")
+  }
+  if (mort$type != "mortality") {
     stop("mort not mortality data")
-  if (fert$type != "fertility")
+  }
+  if (fert$type != "fertility") {
     stop("fert not fertility data")
+  }
 
   # Find years with both mortality and fertility data and startpop data
   yrs <- mort$year[sort(match(fert$year, mort$year))]
-  yrs <- yrs[sort(match(startyearpop$year,yrs))]
-  if(max(startyearpop$year) > max(yrs))
-    startyearpop <- extract.years(startyearpop, c(yrs,max(yrs)+1))
-  else
-  {
+  yrs <- yrs[sort(match(startyearpop$year, yrs))]
+  if (max(startyearpop$year) > max(yrs)) {
+    startyearpop <- extract.years(startyearpop, c(yrs, max(yrs) + 1))
+  } else {
     startyearpop <- extract.years(startyearpop, yrs)
-    yrs <- sort(unique(pmin(yrs, max(yrs)-1)))
+    yrs <- sort(unique(pmin(yrs, max(yrs) - 1)))
   }
   mort <- extract.years(mort, yrs)
   fert <- extract.years(fert, yrs)
@@ -25,9 +26,9 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
   p <- length(mort$age)
 
   # Splits births by male and female
-  B <- colSums(fert$pop$female * fert$rate$female/1000)
-  Bf <- B * 1/(1 + mfratio)
-  Bm <- B * mfratio/(1 + mfratio)
+  B <- colSums(fert$pop$female * fert$rate$female / 1000)
+  Bf <- B * 1 / (1 + mfratio)
+  Bm <- B * mfratio / (1 + mfratio)
 
   # Compute non-survival ratios from mortality rates
   nsr.f <- 1 - lifetable(mort, "female", max.age = max(mort$age))$rx
@@ -36,12 +37,10 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
   # Estimate deaths
   oldest.f <- colSums(as.matrix(startyearpop$pop$female[(p - 1):p, ]))
   oldest.m <- colSums(as.matrix(startyearpop$pop$male[(p - 1):p, ]))
-  if (n > 1)
-  {
+  if (n > 1) {
     Df <- nsr.f * rbind(Bf, startyearpop$pop$female[1:(p - 2), -n - 1], oldest.f[-n - 1])
     Dm <- nsr.m * rbind(Bm, startyearpop$pop$male[1:(p - 2), -n - 1], oldest.m[-n - 1])
-  } else
-  {
+  } else {
     Df <- nsr.f * c(Bf, startyearpop$pop$female[1:(p - 2), -n - 1], oldest.f[-n - 1])
     Dm <- nsr.m * c(Bm, startyearpop$pop$male[1:(p - 2), -n - 1], oldest.m[-n - 1])
   }
@@ -96,9 +95,9 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 #' \dontrun{
 #' require(addb)
 #' # Construct data objects
-#' mort.sm <- smooth.demogdata(set.upperage(extract.years(australia,1950:2002),100))
-#' fert.sm <- smooth.demogdata(extract.years(aus.fertility,1950:2002))
-#' aus.mig <- netmigration(set.upperage(australia,100),aus.fertility,mfratio=1.0545)
+#' mort.sm <- smooth.demogdata(set.upperage(extract.years(australia, 1950:2002), 100))
+#' fert.sm <- smooth.demogdata(extract.years(aus.fertility, 1950:2002))
+#' aus.mig <- netmigration(set.upperage(australia, 100), aus.fertility, mfratio = 1.0545)
 #' # Fit models
 #' mort.fit <- coherentfdm(mort.sm)
 #' fert.fit <- fdm(fert.sm)
@@ -108,44 +107,49 @@ netmigration <- function(mort, fert, startyearpop=mort, mfratio = 1.05)
 #' fert.fcast <- forecast(fert.fit)
 #' mig.fcast <- forecast(mig.fit)
 #' # Simulate
-#' aus.sim <- pop.sim(mort.fcast,fert.fcast,mig.fcast,australia)}
+#' aus.sim <- pop.sim(mort.fcast, fert.fcast, mig.fcast, australia)
+#' }
 #'
 #' @keywords models
 #' @export
-pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfratio = 1.05, bootstrap = FALSE)
-{
-  no.mortality <- FALSE  # Not possible to proceed without mort object
+pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfratio = 1.05, bootstrap = FALSE) {
+  no.mortality <- FALSE # Not possible to proceed without mort object
   no.fertility <- is.null(fert)
   no.migration <- is.null(mig)
 
   # Basic checks on inputs
-  if (!no.mortality)
-  {
-    if (!inherits(mort, "fmforecast2"))
+  if (!no.mortality) {
+    if (!inherits(mort, "fmforecast2")) {
       stop("Inputs not fmforecast2 objects")
-    if (mort$female$type != "mortality" | mort$male$type != "mortality")
+    }
+    if (mort$female$type != "mortality" | mort$male$type != "mortality") {
       stop("mort not based on mortality data")
+    }
   }
-  if (!no.fertility)
-  {
-    if (!inherits(fert, "fmforecast"))
+  if (!no.fertility) {
+    if (!inherits(fert, "fmforecast")) {
       stop("Inputs not fmforecast objects")
-    if (fert$type != "fertility")
+    }
+    if (fert$type != "fertility") {
       stop("fert not based on fertility data")
+    }
   }
-  if (!no.migration)
-  {
-    if (!inherits(mig, "fmforecast2"))
+  if (!no.migration) {
+    if (!inherits(mig, "fmforecast2")) {
       stop("Inputs not fmforecast2 objects")
-    if (mig$male$type != "migration" | mig$female$type != "migration")
+    }
+    if (mig$male$type != "migration" | mig$female$type != "migration") {
       stop("mig not based on migration data")
+    }
   }
 
   firstyr <- mort$male$year
-  if (!no.fertility)
+  if (!no.fertility) {
     firstyr <- intersect(firstyr, fert$year)
-  if (!no.migration)
+  }
+  if (!no.migration) {
     firstyr <- intersect(firstyr, mig$male$year)
+  }
   firstyr <- min(firstyr)
   pop <- extract.years(firstyearpop, firstyr)$pop
 
@@ -153,32 +157,29 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
   firstyearpop$age <- as.integer(firstyearpop$age)
   mort$male$age <- as.integer(mort$male$age)
   mig$male$age <- as.integer(mig$male$age)
-  if (!no.migration)
-  {
-    if (!identical(firstyearpop$age, mig$male$age))
+  if (!no.migration) {
+    if (!identical(firstyearpop$age, mig$male$age)) {
       stop("Please ensure that migration and population data have the same age dimension")
+    }
   }
-  if (!no.mortality)
-  {
-    if (!identical(firstyearpop$age, mort$male$age))
+  if (!no.mortality) {
+    if (!identical(firstyearpop$age, mort$male$age)) {
       stop("Please ensure that mortality and population data have the same age dimension")
+    }
   }
   p <- length(firstyearpop$age)
 
   # Simulate all components
   hm <- hf <- h <- Inf
-  if (!no.mortality)
-  {
+  if (!no.mortality) {
     mort.sim <- simulate(mort, nsim = N, bootstrap = bootstrap)
     hm <- length(mort$male$year)
   }
-  if (!no.fertility)
-  {
+  if (!no.fertility) {
     fert.sim <- simulate(fert, nsim = N, bootstrap = bootstrap)
     hf <- length(fert$year)
   }
-  if (!no.migration)
-  {
+  if (!no.migration) {
     mig.sim <- simulate(mig, nsim = N, bootstrap = bootstrap)
     h <- length(mig$male$year)
     nm <- length(mig$male$model$year)
@@ -186,13 +187,13 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
   h <- min(hm, hf, h)
 
   # Set up storage space
-  if (!no.fertility)
+  if (!no.fertility) {
     fage <- is.element(rownames(pop$female), fert$age)
+  }
   pop.f <- pop.m <- array(0, c(p, h, N))
   dimnames(pop.f) <- dimnames(pop.m) <- list(mort$female$age, 1:h, 1:N)
 
-  advance <- function(x0, x)
-  {
+  advance <- function(x0, x) {
     n <- length(x)
     newx <- c(x0, x[1:(n - 2)], x[n - 1] + x[n])
   }
@@ -207,13 +208,11 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
     for (j in 1:h)
     {
       # Compute net migration
-      if (no.migration)
-      {
+      if (no.migration) {
         netf <- netm <- 0
         Rf <- popf
         Rm <- popm
-      } else
-      {
+      } else {
         # Simulate net migration
         netf <- round(mig.sim$female[, j, i] + mig$female$model$res$y[, sample(1:nm, 1)])
         netm <- round(mig.sim$male[, j, i] + mig$male$model$res$y[, sample(1:nm, 1)])
@@ -240,7 +239,7 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
       # Simulate deaths
       cohDf <- pmax(nsr.f[c(2:p, p)] * Rf, 0)
       cohDm <- pmax(nsr.m[c(2:p, p)] * Rm, 0)
-      Rf2 <- advance(0, Rf - cohDf)  # Ignore deaths to births for now
+      Rf2 <- advance(0, Rf - cohDf) # Ignore deaths to births for now
       Rm2 <- advance(0, Rm - cohDm)
       Ef <- 0.5 * (Rf + Rf2)
       Em <- 0.5 * (Rm + Rm2)
@@ -254,19 +253,18 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
       cohDm[p - 1] <- 0.5 * Dm[p - 1] + Dm[p]
       cohDf[p] <- cohDm[p] <- 0
 
-      Rf2 <- advance(0, Rf - cohDf)  # Fix problem with deaths to births later
+      Rf2 <- advance(0, Rf - cohDf) # Fix problem with deaths to births later
       Rm2 <- advance(0, Rm - cohDm)
 
       # Simulate births from Poisson distribution
-      if (no.fertility)
+      if (no.fertility) {
         B <- 0
-      else
-      {
-        lambda <- 0.5 * (Rf[fage] + Rf2[fage]) * fert.sim[, j, i]/1000
+      } else {
+        lambda <- 0.5 * (Rf[fage] + Rf2[fage]) * fert.sim[, j, i] / 1000
         B <- sum(rpois(rep(1, length(fert$age)), lambda))
       }
       # Randomly split births into two sexes
-      Bm <- rbinom(1, B, mfratio/(1 + mfratio))
+      Bm <- rbinom(1, B, mfratio / (1 + mfratio))
       Bf <- B - Bm
 
       # Infant mortality
@@ -280,8 +278,8 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
       Em0 <- 0.5 * (Rm[1] + Rm20)
       Df0 <- rpois(1, Ef0 * mort.sim$female[1, j, i])
       Dm0 <- rpois(1, Em0 * mort.sim$male[1, j, i])
-      f0f <- cohDfB/(Ef0 * mort.sim$female[1, j, i])
-      f0m <- cohDmB/(Em0 * mort.sim$male[1, j, i])
+      f0f <- cohDfB / (Ef0 * mort.sim$female[1, j, i])
+      f0m <- cohDmB / (Em0 * mort.sim$male[1, j, i])
       cohDfB <- f0f * Df0
       cohDmB <- f0m * Dm0
 
@@ -301,17 +299,17 @@ pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfrati
     }
   }
   # Set up names of years
-  dimnames(pop.m)[[2]] <- dimnames(pop.m)[[2]] <- firstyr + (1:h)-1
+  dimnames(pop.m)[[2]] <- dimnames(pop.m)[[2]] <- firstyr + (1:h) - 1
 
   # Return all sample paths
   return(list(male = pop.m, female = pop.f))
 }
 
 
-deaths <- function(x)
-{
-  if (!inherits(x, "demogdata") | x$type != "mortality")
+deaths <- function(x) {
+  if (!inherits(x, "demogdata") | x$type != "mortality") {
     stop("Not a mortality object")
+  }
   npop <- length(x$rate)
   out <- list()
   for (i in 1:npop)
@@ -323,11 +321,11 @@ deaths <- function(x)
   return(out)
 }
 
-births <- function(x)
-{
-  if (!inherits(x, "demogdata") | x$type != "fertility")
+births <- function(x) {
+  if (!inherits(x, "demogdata") | x$type != "fertility") {
     stop("Not a fertility object")
-  out <- round(x$rate[[1]] * x$pop[[1]]/1000)
+  }
+  out <- round(x$rate[[1]] * x$pop[[1]] / 1000)
   out[is.na(out)] <- 0
   return(out)
 }
