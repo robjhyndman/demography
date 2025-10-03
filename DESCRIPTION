@@ -6,7 +6,7 @@ Description: Functions for demographic analysis including lifetable
         mortality rates, fertility rates, net migration numbers; and
         stochastic population forecasting.
 Depends: R (>= 3.4), forecast (>= 8.5)
-Imports: ftsa (>= 4.8), rainbow, cobs, mgcv, strucchange, HMDHFDplus (>= 2.0.3)
+Imports: ftsa (>= 4.8), rainbow, cobs, mgcv, strucchange, HMDHFDplus (>= 2.0.8)
 LazyData: yes
 ByteCompile: TRUE
 Authors@R: c(
