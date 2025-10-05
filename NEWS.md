@@ -1,38 +1,39 @@
 # demography (development version)
 
+- Updated HMDHFDplus dependency to v2.08+
+
 # demography 2.0
 
- - Updated hmd functions due to changes at mortality.org. Now using HMDHFDplus for downloads.
- - Added functions to convert lifetable and demogdata objects to data frames.
- - Added pkgdown site
+- Updated hmd functions due to changes at mortality.org. Now using HMDHFDplus for downloads.
+- Added functions to convert lifetable and demogdata objects to data frames.
+- Added pkgdown site
 
 # demography 1.22
 
- - Made compatible with latest rainbow and ftsa packages
+- Made compatible with latest rainbow and ftsa packages
 
 # demography 1.21
 
- - Using https for HMD
- - roxygenized all documentation
- - made compatible with latest forecast package
+- Using https for HMD
+- roxygenized all documentation
+- made compatible with latest forecast package
 
 # demography 1.20
 
- - Removed dependency on ftsa now that we no longer need a special median function.
+- Removed dependency on ftsa now that we no longer need a special median function.
 
 # demography 1.19
 
- - Lots of clean up to conform to CRAN policy
- - Fixed conflicts with some packages
- - total life expectancy for coherentfdm added
- - Added PI for coherent total life expectancy
+- Lots of clean up to conform to CRAN policy
+- Fixed conflicts with some packages
+- total life expectancy for coherentfdm added
+- Added PI for coherent total life expectancy
 
 # demography 1.18
 
 - Updated lca() with "fertility" data
 - Modified handling of warnings in forecast.fdm()
-- Fixed problem in simulate() when there are too many missing values in residuals. Now
- all missing residuals are set to 0
+- Fixed problem in simulate() when there are too many missing values in residuals. Now all missing residuals are set to 0
 - Better handling of weights in forecast.fdm()
 - Allowed lca() to handle data that is observed less frequently than annually.
 
@@ -67,8 +68,7 @@
 - Generalized lca with e0 adjustment to allow starting ages other than 0.
 - Modified forecast.fdmpr() to allow better control of fractional differencing parameter.
 - Modified tfr to be more robust to series names other than "female".
-- Fixed bug in production prediction intervals in flife.expectancy from
- an lca object.
+- Fixed bug in production prediction intervals in flife.expectancy from an lca object.
 - Added Simon Wood and R Core Team as contributing authors.
 
 # demography 1.12
