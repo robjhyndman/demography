@@ -56,7 +56,6 @@
 #' summary(france.fit)
 #' plot(france.fit)
 #' plot(residuals(france.fit))
-#'
 #' @keywords models
 #'
 #'
@@ -219,7 +218,6 @@ summary.fdmpr <- function(object, ...) {
 #' fit1 <- lca(fr.mort)
 #' plot(residuals(fit1))
 #' plot(fitted(fit1))
-#'
 #' @keywords models
 #' @export
 residuals.fdm <- function(object, ...) {
@@ -623,7 +621,6 @@ ftsaMISE <- function(actual, estimate, neval = 1000) {
 #' plot(fr.error$int.error[, "ISE"],
 #'   xlab = "Year", ylab = "Integrated Square Error"
 #' )
-#'
 #' @keywords models
 #' @export
 compare.demogdata <- function(
@@ -719,7 +716,6 @@ print.errorfdm <- function(x, ...) {
 #' fr.fit <- lca(extract.years(fr.mort, years = 1921:1980))
 #' fr.error <- compare.demogdata(fr.mort, forecast(fr.fit, 20))
 #' plot(fr.error)
-#'
 #' @keywords hplot
 #' @export
 plot.errorfdm <- function(x, transform = TRUE, ...) {

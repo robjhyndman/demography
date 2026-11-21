@@ -36,7 +36,6 @@ extract the relevant information from the fit object.
 fit1 <- lca(fr.mort)
 plot(residuals(fit1))
 plot(fitted(fit1))
-
 }
 \seealso{
 \code{\link{fdm}}, \code{\link{lca}}, \code{\link{bms}}

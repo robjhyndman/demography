@@ -55,7 +55,6 @@ mig.fcast <- forecast(mig.fit)
 # Simulate
 aus.sim <- pop.sim(mort.fcast, fert.fcast, mig.fcast, australia)
 }
-
 }
 \seealso{
 \code{\link{simulate.fmforecast}}, \code{\link{simulate.fmforecast2}}.

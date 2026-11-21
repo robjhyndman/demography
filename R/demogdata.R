@@ -137,7 +137,6 @@ demogdata <- function(data, pop, ages, years, type, label, name, lambda) {
 #' @seealso \code{\link{demogdata}}
 #'
 #' @examples
-#'
 #'   \dontrun{norway <- read.demogdata("Mx_1x1.txt",
 #'   "Exposures_1x1.txt", type="mortality", label="Norway")}
 #' @author Rob J Hyndman

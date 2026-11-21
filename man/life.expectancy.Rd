@@ -84,7 +84,6 @@ plot(e0.fcast)
 }
 
 life.expectancy(fr.mort, type = "cohort", age = 50)
-
 }
 \seealso{
 \code{\link{lifetable}}

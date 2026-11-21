@@ -32,7 +32,6 @@ a \code{demogdata} object.
 plot(tfr(aus.fert))
 ausfert.fcast <- forecast(fdm(aus.fert))
 plot(tfr(ausfert.fcast, PI = TRUE, nsim = 400))
-
 }
 \seealso{
 \code{\link{fdm}}

@@ -38,7 +38,6 @@ fr.fcast <- forecast(fr.fit)
 plot(fr.fcast$male)
 plot(fr.fcast$ratio$male, plot.type = "component", components = 3)
 models(fr.fcast)
-
 }
 \seealso{
 \code{\link{coherentfdm}}, \code{\link{forecast.fdm}}.

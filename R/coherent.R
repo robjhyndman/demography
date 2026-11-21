@@ -127,7 +127,6 @@ coherentfdm <- function(data, order1 = 6, order2 = 6, ...) {
 #' plot(fr.fcast$male)
 #' plot(fr.fcast$ratio$male, plot.type = "component", components = 3)
 #' models(fr.fcast)
-#'
 #' @keywords models
 #' @export
 forecast.fdmpr <- function(object, h = 50, level = 80, K = 100, drange = c(0.0, 0.5), ...) {

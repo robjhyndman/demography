@@ -74,7 +74,6 @@ france.fit <- fdm(fr.mort)
 summary(france.fit)
 plot(france.fit)
 plot(residuals(france.fit))
-
 }
 \references{
 Hyndman, R.J., and Ullah, S. (2007) Robust forecasting of

@@ -72,7 +72,6 @@ plot(fr.error$age, fr.error$mean.error[, "ME"],
 plot(fr.error$int.error[, "ISE"],
   xlab = "Year", ylab = "Integrated Square Error"
 )
-
 }
 \seealso{
 \link{forecast.fdm},\link{plot.errorfdm}

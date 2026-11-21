@@ -22,7 +22,6 @@
 #' plot(tfr(aus.fert))
 #' ausfert.fcast <- forecast(fdm(aus.fert))
 #' plot(tfr(ausfert.fcast, PI = TRUE, nsim = 400))
-#'
 #' @keywords models
 #' @export
 tfr <- function(data, PI = FALSE, nsim = 500, ...) {

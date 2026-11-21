@@ -98,7 +98,6 @@ smooth.fts <- function(data, k = -1, xgrid = data$x, se.fit = FALSE, w = rep(1, 
 #' plot(france.sm)
 #' plot(fr.mort, years = 1980, type = "p", pch = 1)
 #' lines(france.sm, years = 1980, col = 2)
-#'
 #' @export
 smooth.demogdata <- function(
     data, method = switch(data$type,

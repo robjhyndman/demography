@@ -109,7 +109,6 @@ netmigration <- function(mort, fert, startyearpop = mort, mfratio = 1.05) {
 #' # Simulate
 #' aus.sim <- pop.sim(mort.fcast, fert.fcast, mig.fcast, australia)
 #' }
-#'
 #' @keywords models
 #' @export
 pop.sim <- function(mort, fert = NULL, mig = NULL, firstyearpop, N = 100, mfratio = 1.05, bootstrap = FALSE) {

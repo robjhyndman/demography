@@ -491,7 +491,6 @@ get.e0 <- function(x, agegroup, sex, startage = 0) {
 #' }
 #'
 #' life.expectancy(fr.mort, type = "cohort", age = 50)
-#'
 #' @keywords models
 #' @export
 life.expectancy <- function(
