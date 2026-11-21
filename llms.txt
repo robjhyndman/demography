@@ -1,0 +1,117 @@
+# demography
+
+The R package `demography` provides functions for demographic analysis
+including: lifetable calculations; Lee-Carter modelling; functional data
+analysis of mortality rates, fertility rates, net migration numbers; and
+stochastic population forecasting.
+
+## Installation
+
+You can install the **stable** version on [R
+CRAN](https://CRAN.R-project.org/package=demography).
+
+``` r
+
+install.packages('demography', dependencies = TRUE)
+```
+
+You can also install the **development** version from
+[Github](https://github.com/robjhyndman/demography)
+
+``` r
+
+# install.packages("devtools")
+library(devtools)
+install_github("robjhyndman/demography")
+```
+
+## License
+
+This package is free and open source software, licensed under GPL (\>=
+3).
+
+# Package index
+
+## All functions
+
+- [`as.data.frame(`*`<demogdata>`*`)`](as.data.frame.demogdata.md) :
+  Coerce a demogdata object to a data.frame object
+- [`aus.fert`](ausfert.md) : Australian fertility data
+- [`cm.spline()`](cm.spline.md) [`cm.splinefun()`](cm.spline.md) :
+  Monotonic interpolating splines
+- [`coherentfdm()`](coherentfdm.md) : Coherent functional demographic
+  model for grouped data
+- [`combine.demogdata()`](combine.demogdata.md) : Combine two demogdata
+  objects into one demogdata object
+- [`compare.demogdata()`](compare.demogdata.md) : Evaluation of
+  demographic forecast accuracy
+- [`demogdata()`](demogdata.md) : Create demogdata object from raw data
+  matrices
+- [`extract.ages()`](extract.ages.md) : Extract some ages from a
+  demogdata object
+- [`extract.years()`](extract.years.md) : Extract some years from a
+  demogdata object
+- [`fdm()`](fdm.md) : Functional demographic model
+- [`forecast(`*`<fdm>`*`)`](forecast.fdm.md) : Forecast functional
+  demographic model.
+- [`forecast(`*`<fdmpr>`*`)`](forecast.fdmpr.md) : Forecast coherent
+  functional demographic model.
+- [`forecast(`*`<lca>`*`)`](forecast.lca.md) : Forecast demogdata data
+  using Lee-Carter method.
+- [`fr.mort`](fr.mort.md) [`fr.sm`](fr.mort.md) : French mortality data
+- [`hmd.mx()`](hmd.md) [`hmd.e0()`](hmd.md) [`hmd.pop()`](hmd.md) : Read
+  data from HMD and construct a mortality demogdata object
+- [`isfe()`](isfe.md) : Integrated Squared Forecast Error for models of
+  various orders
+- [`lca()`](lca.md) [`bms()`](lca.md) : Model mortality or fertility
+  data using Lee-Carter approach
+- [`life.expectancy()`](life.expectancy.md)
+  [`flife.expectancy()`](life.expectancy.md)
+  [`e0()`](life.expectancy.md) : Estimate life expectancy from mortality
+  rates
+- [`lifetable()`](lifetable.md) : Construct lifetables from mortality
+  rates
+- [`mean(`*`<demogdata>`*`)`](mean.demogdata.md)
+  [`median(`*`<demogdata>`*`)`](mean.demogdata.md) : Mean and median
+  functions for data of class demogdata
+- [`netmigration()`](migration.md) : Calculate net migration from
+  mortality and fertility data
+- [`models()`](models.md) : Show model information for the forecast
+  coefficients in FDM models.
+- [`plot(`*`<demogdata>`*`)`](plot.demogdata.md)
+  [`lines(`*`<demogdata>`*`)`](plot.demogdata.md)
+  [`points(`*`<demogdata>`*`)`](plot.demogdata.md) : Plot age-specific
+  demographic functions
+- [`plot(`*`<errorfdm>`*`)`](plot.errorfdm.md) : Plot differences
+  between actuals and estimates from fitted demographic model
+- [`plot(`*`<fmforecast>`*`)`](plot.fmforecast.md)
+  [`plot(`*`<lca>`*`)`](plot.fmforecast.md) : Plot forecasts from a
+  functional demographic modell
+- [`plot(`*`<lifetable>`*`)`](plot.lifetable.md)
+  [`lines(`*`<lifetable>`*`)`](plot.lifetable.md) : Plot life expectancy
+  from lifetable
+- [`pop.sim()`](pop.sim.md) : Population simulation
+- [`read.demogdata()`](read.demogdata.md) : Read demographic data and
+  construct demogdata object
+- [`residuals(`*`<fdm>`*`)`](residuals.fdm.md)
+  [`fitted(`*`<fdm>`*`)`](residuals.fdm.md)
+  [`fitted(`*`<lca>`*`)`](residuals.fdm.md)
+  [`residuals(`*`<lca>`*`)`](residuals.fdm.md) : Compute residuals and
+  fitted values from functional demographic model or Lee-Carter model
+- [`set.upperage()`](set.upperage.md) : Combine the upperages of a
+  demogdata object.
+- [`sex.ratio()`](sex.ratio.md) : Compute sex ratios from mortality
+  rates
+- [`simulate(`*`<fmforecast>`*`)`](simulate.fmforecast.md)
+  [`simulate(`*`<fmforecast2>`*`)`](simulate.fmforecast.md) : Simulate
+  future sample paths from functional demographic model forecasts.
+- [`smooth.demogdata()`](smooth.demogdata.md) : Create smooth demogdata
+  functions
+- [`summary(`*`<fdm>`*`)`](summary.fdm.md)
+  [`summary(`*`<lca>`*`)`](summary.fdm.md) : Summary for functional
+  demographic model or Lee-Carter model
+- [`tfr()`](tfr.md) : Compute total fertility rate from fertility rates
+- [`update(`*`<fmforecast>`*`)`](update.md)
+  [`update(`*`<fmforecast2>`*`)`](update.md) : Updating functional
+  demographic models and coherent functional demographic models.
+
